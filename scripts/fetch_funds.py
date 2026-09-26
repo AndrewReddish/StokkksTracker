@@ -74,6 +74,21 @@ _sec_map = None
 _sec_down = None  # first error; after it SEC is skipped for the rest of the run
 
 
+def pipe_text(page):
+    return re.sub(r"\s*\|[\s|]*", "|", re.sub(r"<[^>]+>", "|", page))
+
+
+def stockanalysis_country(sym):
+    """Country from the company profile page on stockanalysis.com."""
+    page = get(f"https://stockanalysis.com/stocks/{sym.lower().replace('.', '-')}/company/").decode("utf-8", "replace")
+    text = pipe_text(page)
+    m = re.search(r"\|Country\|([^|]{2,40})\|", text)
+    if not m:
+        i = text.find("Country")
+        raise ValueError(f"no Country field; near: {text[max(0, i - 60):i + 80]!r}" if i >= 0 else "no Country field")
+    return html.unescape(m.group(1)).strip()
+
+
 def sec_country(sym):
     """Country of a company's business address from its SEC filings."""
     global _sec_map, _sec_down
@@ -252,6 +267,7 @@ def ssga(sym):
         if w is None:
             continue
         hs.append({"symbol": r.get(col.get("ticker")), "name": r.get(col.get("name")), "weight": w, "sector": r.get(col.get("sector"))})
+    print(f"    ssga {sym} sample sectors: {sorted({str(h.get('sector')) for h in hs[:40]})[:8]}")
     return finish(hs, source="ssga")
 
 
@@ -311,7 +327,12 @@ def nasdaq_profile(sym):
     country, country_src = None, None
     global _sec_down
     try:
-        country, country_src = sec_country(sym), "sec"
+        country, country_src = stockanalysis_country(sym), "stockanalysis"
+    except Exception as e:  # noqa: BLE001
+        print(f"    {sym}: no stockanalysis country ({e})")
+    try:
+        if not country:
+            country, country_src = sec_country(sym), "sec"
     except urllib.error.HTTPError as e:
         if e.code in (403, 429) and not _sec_down:
             _sec_down = f"HTTP {e.code}"
@@ -319,7 +340,7 @@ def nasdaq_profile(sym):
     except Exception as e:  # noqa: BLE001
         print(f"    {sym}: no SEC country ({e})", file=sys.stderr)
     return {"kind": "stock", "name": val("CompanyName"), "sector": sector_key(val("Sector")), "sectorName": val("Sector"), "sectorSource": "nasdaq",
-            "industry": val("Industry"), "country": country, "countrySource": country_src, "region": region_of(country), "source": "nasdaq" + (" + sec" if country_src else "")}
+            "industry": val("Industry"), "country": country, "countrySource": country_src, "region": region_of(country), "source": "nasdaq" + (f" + {country_src}" if country_src else "")}
 
 
 def classify_holdings(entry, cache):
@@ -343,6 +364,13 @@ def classify_holdings(entry, cache):
             info = cache.get(sym)
             if info is not None and info.get("checked", "") < (dt.date.today() - dt.timedelta(days=30)).isoformat():
                 info = None  # refresh monthly
+            if info is not None and not info.get("country") and not info.get("countryChecked"):
+                try:
+                    info["country"] = stockanalysis_country(sym)
+                except Exception as e:  # noqa: BLE001
+                    print(f"    {sym}: no stockanalysis country ({e})")
+                info["countryChecked"] = dt.date.today().isoformat()
+                time.sleep(0.2)
             if info is None:
                 try:
                     p = nasdaq_profile(sym)
@@ -374,13 +402,16 @@ def classify_holdings(entry, cache):
 def etf_profile(sym):
     """Asset class and expense ratio from the fund's stockanalysis.com overview page."""
     page = get(f"https://stockanalysis.com/etf/{sym.lower()}/").decode("utf-8", "replace")
-    text = re.sub(r"\|+", "|", re.sub(r"<[^>]+>", "|", page))
+    text = pipe_text(page)
     out = {}
     m = re.search(r"\|Asset Class\|\s*([^|]{2,40}?)\s*\|", text)
     if m:
         out["assetClassName"] = html.unescape(m.group(1)).strip()
         low = out["assetClassName"].lower()
         out["assetClass"] = "bond" if ("fixed" in low or "bond" in low) else "equity" if "equity" in low else "real_estate" if "real estate" in low else "cash" if "cash" in low or "money" in low else "other"
+    if "assetClass" not in out:
+        i = text.find("Asset")
+        print(f"    {sym} asset class not found; near 'Asset': {text[max(0, i - 60):i + 100]!r}")
     m = re.search(r"\|Expense Ratio\|\s*([0-9.]+)%\s*\|", text)
     if m:
         out["expenseRatio"] = float(m.group(1))
