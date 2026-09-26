@@ -53,7 +53,38 @@ SECTORS = {
     "communication services": "communication", "communication": "communication", "communications": "communication", "telecommunications": "communication", "telecommunication services": "communication",
     "industrials": "industrials", "energy": "energy", "utilities": "utilities",
     "real estate": "real_estate", "materials": "materials", "basic materials": "materials",
+    "miscellaneous": "other",
 }
+# Listing-exchange prefixes used by stockanalysis.com for non-US holdings (e.g. "TPE: 2330").
+EXCHANGE_COUNTRY = {
+    "TPE": "Taiwan", "TWO": "Taiwan", "KRX": "Korea", "KOSDAQ": "Korea", "TYO": "Japan", "HKG": "Hong Kong", "SHA": "China", "SHE": "China",
+    "LON": "United Kingdom", "EPA": "France", "ETR": "Germany", "FRA": "Germany", "AMS": "Netherlands", "SWX": "Switzerland", "BIT": "Italy",
+    "BME": "Spain", "STO": "Sweden", "CPH": "Denmark", "HEL": "Finland", "OSL": "Norway", "EBR": "Belgium", "ELI": "Portugal", "VIE": "Austria",
+    "ISE": "Ireland", "TSX": "Canada", "TSXV": "Canada", "ASX": "Australia", "NZE": "New Zealand", "SGX": "Singapore", "NSE": "India", "BOM": "India",
+    "BVMF": "Brazil", "BMV": "Mexico", "JSE": "South Africa", "IDX": "Indonesia", "SET": "Thailand", "KLSE": "Malaysia", "TADAWUL": "Saudi Arabia",
+    "IST": "Turkey", "WSE": "Poland", "TLV": "Israel", "PSE": "Philippines", "QSE": "Qatar", "ADX": "United Arab Emirates", "DFM": "United Arab Emirates",
+    "SNSE": "Chile", "BVC": "Colombia", "ATH": "Greece", "BUD": "Hungary", "PRG": "Czech Republic", "KWSE": "Kuwait", "EGX": "Egypt", "BVL": "Peru",
+}
+SEC_UA = "StokkksTracker portfolio dashboard (github.com/AndrewReddish/StokkksTracker; contact via GitHub)"
+_sec_map = None
+
+
+def sec_country(sym):
+    """Country of a company's business address from its SEC filings."""
+    global _sec_map
+    if _sec_map is None:
+        j = json.loads(get("https://www.sec.gov/files/company_tickers.json", {"User-Agent": SEC_UA}))
+        _sec_map = {v["ticker"].upper(): int(v["cik_str"]) for v in j.values()}
+    cik = _sec_map.get(sym.upper().replace(".", "-")) or _sec_map.get(sym.upper())
+    if not cik:
+        raise ValueError("ticker not in SEC company list")
+    sub = json.loads(get(f"https://data.sec.gov/submissions/CIK{cik:010d}.json", {"User-Agent": SEC_UA}))
+    biz = (sub.get("addresses") or {}).get("business") or {}
+    time.sleep(0.15)  # SEC fair-access limit is 10 requests a second
+    if str(biz.get("isForeignLocation")) in ("1", "True", "true"):
+        c = (biz.get("stateOrCountryDescription") or "").strip()
+        return c.title() if c.isupper() else c or None
+    return "United States" if biz.get("stateOrCountry") else None
 
 
 def get(url, headers=None, tries=2):
@@ -147,12 +178,13 @@ def vanguard(sym):
         start = 1
         while True:
             url = f"https://investor.vanguard.com/investment-products/etfs/profile/api/{sym}/portfolio-holding/{kind}?start={start}&count=500"
+            raw = get(url, {"Accept": "application/json, text/plain, */*", "Referer": f"https://investor.vanguard.com/investment-products/etfs/profile/{sym.lower()}"})
             try:
-                j = json.loads(get(url, {"Accept": "application/json", "Referer": f"https://investor.vanguard.com/investment-products/etfs/profile/{sym.lower()}"}))
-            except Exception as e:  # noqa: BLE001
-                if kind == "bond":
+                j = json.loads(raw)
+            except ValueError:
+                if kind == "bond" and holdings:
                     break
-                raise
+                raise ValueError(f"not JSON; starts: {raw[:160]!r}")
             ents = (j.get("fund") or {}).get("entity") or []
             if start == 1 and ents:
                 print(f"    vanguard {kind} fields: {sorted(ents[0].keys())}")
@@ -168,7 +200,7 @@ def vanguard(sym):
 
 def ishares(sym, pid, slug):
     url = f"https://www.ishares.com/us/products/{pid}/{slug}/1467271812596.ajax?fileType=csv&fileName={sym}_holdings&dataType=fund"
-    text = get(url).decode("utf-8-sig", "replace")
+    text = get(url, {"Accept": "text/csv,application/octet-stream,*/*", "Referer": f"https://www.ishares.com/us/products/{pid}/{slug}"}).decode("utf-8-sig", "replace")
     rows = csv_rows(text, "Ticker,Name")
     hs = [{"symbol": pick(r, "ticker"), "name": pick(r, "name"), "weight": num(pick(r, "weight (%)")), "sector": pick(r, "sector"), "country": pick(r, "location")} for r in rows]
     return finish(hs, source="ishares")
@@ -200,6 +232,7 @@ def ssga(sym):
     rows = xlsx_rows(get(url))
     head_i = next(i for i, r in enumerate(rows) if any((v or "").strip().lower() == "ticker" for v in r.values()))
     head = {col: (v or "").strip().lower() for col, v in rows[head_i].items()}
+    print(f"    ssga {sym} columns: {sorted(head.values())}")
     col = {name: c for c, name in head.items()}
     hs = []
     for r in rows[head_i + 1:]:
@@ -211,6 +244,16 @@ def ssga(sym):
 
 
 def invesco(sym):
+    try:
+        j = json.loads(get(f"https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/{sym}/holdings/fund?idType=ticker&interval=monthly&productType=ETF", {"Accept": "application/json"}))
+        items = j.get("holdings") or []
+        if items:
+            print(f"    invesco fields: {sorted(items[0].keys())}")
+            hs = [{"symbol": h.get("ticker"), "name": h.get("issuerName") or h.get("name"), "weight": num(h.get("percentageOfTotalNetAssets") or h.get("weight")),
+                   "sector": h.get("gicsSectorDescription") or h.get("sector"), "country": h.get("countryOfRisk") or h.get("country")} for h in items]
+            return finish(hs, source="invesco")
+    except Exception as e:  # noqa: BLE001
+        print(f"    invesco api failed: {e}", file=sys.stderr)
     url = f"https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/0?audienceType=Investor&action=download&ticker={sym}"
     text = get(url).decode("utf-8-sig", "replace")
     rows = csv_rows(text, "Holding Ticker")
@@ -253,12 +296,60 @@ def nasdaq_profile(sym):
     if not d or not ((d.get("Sector") or {}).get("value")):
         raise ValueError(f"no sector in profile (not a stock?): {str(j)[:160]}")
     val = lambda k: ((d.get(k) or {}).get("value") or "").strip() or None  # noqa: E731
-    address = val("Address") or ""
-    country = address.replace("\r", "\n").split("\n")[-1].strip() if address else None
-    if country and (len(country) > 40 or any(ch.isdigit() for ch in country)):
-        country = None
-    return {"kind": "stock", "name": val("CompanyName"), "sector": sector_key(val("Sector")), "sectorName": val("Sector"),
-            "industry": val("Industry"), "country": country, "region": region_of(country), "regionName": val("Region"), "source": "nasdaq"}
+    country, country_src = None, None
+    try:
+        country, country_src = sec_country(sym), "sec"
+    except Exception as e:  # noqa: BLE001
+        print(f"    {sym}: no SEC country ({e})", file=sys.stderr)
+    return {"kind": "stock", "name": val("CompanyName"), "sector": sector_key(val("Sector")), "sectorName": val("Sector"), "sectorSource": "nasdaq",
+            "industry": val("Industry"), "country": country, "countrySource": country_src, "region": region_of(country), "source": "nasdaq" + (" + sec" if country_src else "")}
+
+
+def classify_holdings(entry, cache):
+    """Add sector/region weights from each top holding's own profile when the fund file had none."""
+    if entry.get("kind") != "etf":
+        return entry
+    need_sector = entry.get("sectorCoverage", 0) < 0.5
+    need_region = entry.get("regionCoverage", 0) < 0.5
+    if not (need_sector or need_region):
+        return entry
+    sectors, regions, sc, rc = {}, {}, 0.0, 0.0
+    for h in entry["holdings"][:60]:
+        sym = (h.get("symbol") or "").strip()
+        if not sym or sym.lower() == "n/a":
+            continue
+        info = None
+        if ":" in sym:  # foreign listing: country from the exchange, no sector lookup
+            country = EXCHANGE_COUNTRY.get(sym.split(":")[0].strip())
+            info = {"country": country, "sector": None}
+        elif re.fullmatch(r"[A-Z][A-Z0-9.\-]{0,6}", sym):
+            info = cache.get(sym)
+            if info is None:
+                try:
+                    p = nasdaq_profile(sym)
+                    info = {"sector": p.get("sector"), "country": p.get("country")}
+                except Exception as e:  # noqa: BLE001
+                    info = {"sector": None, "country": None, "error": str(e)[:120]}
+                cache[sym] = info
+                time.sleep(0.2)
+        if not info:
+            continue
+        if need_sector and info.get("sector"):
+            sectors[info["sector"]] = sectors.get(info["sector"], 0) + h["weight"]
+            sc += h["weight"]
+        r = region_of(info.get("country"))
+        if need_region and r:
+            regions[r] = regions.get(r, 0) + h["weight"]
+            rc += h["weight"]
+    if need_sector and sc > entry.get("sectorCoverage", 0):
+        entry["sectors"] = {k: round(v, 5) for k, v in sectors.items()}
+        entry["sectorCoverage"] = round(sc, 4)
+        entry["sectorSource"] = "holdings' Nasdaq profiles"
+    if need_region and rc > entry.get("regionCoverage", 0):
+        entry["regions"] = {k: round(v, 5) for k, v in regions.items()}
+        entry["regionCoverage"] = round(rc, 4)
+        entry["regionSource"] = "holdings' SEC addresses / listing exchanges"
+    return entry
 
 
 def fetch(sym, kind_hint):
@@ -294,11 +385,15 @@ def main():
     wanted = sys.argv[1:] or sorted(set(cfg["symbols"]) | {"SPY", "QQQ"})
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     ok = 0
+    holding_cache = {}
     for sym in wanted:
         prev = data["funds"].get(sym)
         hint = prev.get("kind") if prev else ("etf" if sym in ISSUERS else None)
         entry, attempts, errors = fetch(sym, hint)
         if entry:
+            entry.setdefault("sectorSource", entry.get("source") if entry.get("sectorCoverage") else None)
+            entry.setdefault("regionSource", entry.get("source") if entry.get("regionCoverage") else None)
+            entry = classify_holdings(entry, holding_cache)
             entry["asOf"] = now[:10]
             data["funds"][sym] = entry
             ok += 1
