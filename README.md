@@ -36,6 +36,10 @@ The second tab goes beyond reporting:
 
 Whatever is not covered appears as **Not classified**, and the **Data status** tab lists every gap, failed source and date.
 
+## Hide $
+
+The **Hide $** button in the top bar replaces every dollar amount with `$$$`. That covers values, prices, profits, chart axes and tooltips, findings, Data status notes, and dollar figures inside an AI review. Counts, quantities, dates and percentages stay visible, so you can share your screen or a screenshot without revealing amounts. The setting is remembered in your browser; click **Show $** to turn it off.
+
 ## Data status
 
 The third tab lists what loaded and what did not:

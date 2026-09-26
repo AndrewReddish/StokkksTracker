@@ -1,5 +1,6 @@
 // Insights tab: checkup findings, look-through exposure, fund overlap, rebalancing and the
 // optional Claude review. Receives a context object from app.js with state and helpers.
+import { moneyHidden, maskText } from './privacy.js';
 import { lookThrough, fundOverlaps, healthChecks, presetTargets, rebalancePlan, aiPayload, AI_SCHEMA, AI_SYSTEM, RULES } from './insights.js';
 
 const TARGETS_KEY = 'stokkks.rebalance.v1';
@@ -7,6 +8,7 @@ const GOALS_KEY = 'stokkks.goals.v1';
 const MODEL = 'claude-opus-5';
 let apiKey = ''; // held in memory only; never written to storage
 let ui = null;   // { look, overlaps, checks, plan, settings }
+let lastReview = null; // re-rendered when Hide $ is toggled
 
 const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
 const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } };
@@ -30,6 +32,7 @@ export function renderInsights(ctx) {
   renderOverlap(ctx);
   renderRebalance(ctx);
   renderAiPanel(ctx);
+  if (lastReview) renderReview(ctx, lastReview.r, lastReview.msg);
 }
 
 export function renderInsightsCharts(ctx) {
@@ -221,12 +224,12 @@ function payload(ctx) {
 function renderAiPanel(ctx) {
   const { $ } = ctx;
   $('#ai-goals').value = load(GOALS_KEY, '');
-  $('#ai-payload').textContent = JSON.stringify(payload(ctx), null, 1);
+  $('#ai-payload').textContent = moneyHidden() ? 'Hidden while dollar amounts are hidden. Click Show $ to see it.' : JSON.stringify(payload(ctx), null, 1);
 }
 export function initAiControls(ctx) {
   const { $ } = ctx;
   $('#ai-key').addEventListener('input', e => { apiKey = e.target.value.trim(); });
-  $('#ai-goals').addEventListener('change', e => { save(GOALS_KEY, e.target.value); if (ui) $('#ai-payload').textContent = JSON.stringify(payload(ctx), null, 1); });
+  $('#ai-goals').addEventListener('change', e => { save(GOALS_KEY, e.target.value); if (ui) renderAiPanel(ctx); });
   $('#ai-form').addEventListener('submit', e => { e.preventDefault(); runReview(ctx); });
   $('#ai-copy').addEventListener('click', async () => {
     if (!ui) return;
@@ -276,7 +279,9 @@ async function runReview(ctx) {
     btn.disabled = false; btn.textContent = 'Run AI review';
   }
 }
-function renderReview({ $, esc }, r, msg) {
+function renderReview({ $, esc: escRaw }, r, msg) {
+  lastReview = { r, msg };
+  const esc = x => escRaw(maskText(x)); // free text from Claude: mask $ figures when hidden
   const sev = { high: 'Act', medium: 'Review', low: 'Note' };
   const act = { buy: 'Buy', add: 'Add', hold: 'Hold', trim: 'Trim', sell: 'Sell', replace: 'Replace', consolidate: 'Consolidate', other: 'Other' };
   const u = msg.usage || {};

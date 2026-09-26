@@ -1,6 +1,8 @@
 // Look-through exposure, fund overlap, rule-based health checks and rebalancing.
 // Pure functions: they take the analysed portfolio plus data/funds.json and return plain objects.
 
+import { usd } from './privacy.js';
+
 export const SECTOR_LABELS = {
   technology: 'Technology', communication: 'Communication', consumer_discretionary: 'Consumer discretionary',
   consumer_staples: 'Consumer staples', financials: 'Financials', healthcare: 'Healthcare', industrials: 'Industrials',
@@ -218,8 +220,8 @@ export function healthChecks({ kpis, ledger, look, overlaps, bench }) {
   if (buys.length) {
     const avgBuy = buys.reduce((a, t) => a + t.amount, 0) / buys.length;
     const costPct = buys.reduce((a, t) => a - t.comm, 0) / buys.reduce((a, t) => a + t.amount, 0);
-    if (avgBuy < RULES.smallTrade) add('medium', 'trade-size', `Average buy is $${Math.round(avgBuy)}; commissions took ${(costPct * 100).toFixed(2)}% of it`, 'From your statements. Fewer, larger orders spread the per-order minimum over more money.');
-    else add('good', 'trade-size', `Commissions were ${(costPct * 100).toFixed(2)}% of the amount bought`, `From your statements; average buy $${Math.round(avgBuy)}.`);
+    if (avgBuy < RULES.smallTrade) add('medium', 'trade-size', `Average buy is ${usd(avgBuy)}; commissions took ${(costPct * 100).toFixed(2)}% of it`, 'From your statements. Fewer, larger orders spread the per-order minimum over more money.');
+    else add('good', 'trade-size', `Commissions were ${(costPct * 100).toFixed(2)}% of the amount bought`, `From your statements; average buy ${usd(avgBuy)}.`);
   }
   const quick = ledger.positions.filter(p => !p.open && p.holdingDays < 90).length;
   if (quick >= 3) add('low', 'churn', `${quick} positions were bought and fully sold within 90 days`, 'Short holding periods raise costs and, in most countries, taxes on gains.');
@@ -228,11 +230,11 @@ export function healthChecks({ kpis, ledger, look, overlaps, bench }) {
   if (cashW > RULES.cashDrag) add('low', 'cash', `${pct(cashW)} sits in uninvested cash`, 'Invest it, or hold it in a T-bill fund if it is a deliberate reserve.');
 
   for (const p of open.filter(p => p.costBasis && p.unrealized / p.costBasis <= RULES.loser)) {
-    add('low', 'loser-' + p.symbol, `${p.symbol} is ${pct(-p.unrealized / p.costBasis)} below cost`, `Unrealized ${Math.round(p.unrealized)} USD. Re-check the reason for owning it rather than anchoring on the purchase price.`);
+    add('low', 'loser-' + p.symbol, `${p.symbol} is ${pct(-p.unrealized / p.costBasis)} below cost`, `Unrealized ${usd(p.unrealized)}. Re-check the reason for owning it rather than anchoring on the purchase price.`);
   }
   if (bench && isFinite(bench.diff)) {
-    add(bench.diff >= 0 ? 'good' : 'medium', 'vs-index', bench.diff >= 0 ? `Ahead of the S&P 500 by $${Math.round(bench.diff)}` : `Behind the S&P 500 by $${Math.round(-bench.diff)}`,
-      `The same deposits on the same days into SPY would be worth $${Math.round(bench.value)} (SPY price only, dividends excluded).`);
+    add(bench.diff >= 0 ? 'good' : 'medium', 'vs-index', bench.diff >= 0 ? `Ahead of the S&P 500 by ${usd(bench.diff)}` : `Behind the S&P 500 by ${usd(-bench.diff)}`,
+      `The same deposits on the same days into SPY would be worth ${usd(bench.value)} (SPY price only, dividends excluded).`);
   }
   if (look.missing.length) add('low', 'unclassified', `No classification data for ${look.missing.join(', ')}`, 'They count as "Not classified" in every breakdown. See Data status.');
   const order = { high: 0, medium: 1, low: 2, good: 3 };

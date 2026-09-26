@@ -6,6 +6,7 @@ import { addDays } from './ledger.js';
 import { loadFunds } from './insights.js';
 import { renderInsights, renderInsightsCharts, initRebalanceControls, initAiControls } from './insights-ui.js';
 import { renderStatus } from './status-ui.js';
+import { MASK, moneyHidden, setMoneyHidden } from './privacy.js';
 
 const $ = sel => document.querySelector(sel);
 const STORE_KEY = 'stokkks.files.v1';
@@ -26,8 +27,8 @@ let tab = 'report';
 /* ---------- formatting ---------- */
 const nf0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const nf2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const money = (v, d = 0) => !isFinite(v) ? '—' : (v < 0 ? '−$' : '$') + (d ? nf2 : nf0).format(Math.abs(v));
-const signed = (v, d = 0) => !isFinite(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + '$' + (d ? nf2 : nf0).format(Math.abs(v));
+const money = (v, d = 0) => !isFinite(v) ? '—' : moneyHidden() ? MASK : (v < 0 ? '−$' : '$') + (d ? nf2 : nf0).format(Math.abs(v));
+const signed = (v, d = 0) => !isFinite(v) ? '—' : moneyHidden() ? MASK : (v > 0 ? '+' : v < 0 ? '−' : '') + '$' + (d ? nf2 : nf0).format(Math.abs(v));
 const pct = (v, d = 1) => !isFinite(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v * 100).toFixed(d) + '%';
 const qtyFmt = q => !isFinite(q) ? '—' : Math.abs(q - Math.round(q)) < 1e-9 ? nf0.format(q) : q.toFixed(4).replace(/0+$/, '');
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
@@ -44,6 +45,16 @@ function tokens() {
     s1: g('--s1'), s2: g('--s2'), s3: g('--s3'), s4: g('--s4'), s5: g('--s5'), s6: g('--s6'), s7: g('--s7'), other: g('--other'),
     gain: g('--gain'), loss: g('--loss'), deposit: g('--deposit'), accent: g('--accent'), sans: g('--sans'), mono: g('--mono'),
   };
+}
+function initPrivacy() {
+  const b = $('#btn-privacy');
+  const sync = () => { b.setAttribute('aria-pressed', String(moneyHidden())); b.textContent = moneyHidden() ? 'Show $' : 'Hide $'; };
+  sync();
+  b.addEventListener('click', () => {
+    setMoneyHidden(!moneyHidden());
+    sync();
+    if (state) renderAll();
+  });
 }
 function initTheme() {
   try { const t = localStorage.getItem(THEME_KEY); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -425,7 +436,7 @@ const valAxis = (T, fmt) => ({
   axisLabel: { color: T.muted, fontSize: 11, formatter: fmt },
   splitLine: { lineStyle: { color: T.hair, width: 1 } },
 });
-const kfmt = v => (v < 0 ? '−' : '') + '$' + (Math.abs(v) >= 1000 ? (Math.abs(v) / 1000).toFixed(Math.abs(v) >= 10000 ? 0 : 1) + 'k' : nf0.format(Math.abs(v)));
+const kfmt = v => moneyHidden() ? MASK : (v < 0 ? '−' : '') + '$' + (Math.abs(v) >= 1000 ? (Math.abs(v) / 1000).toFixed(Math.abs(v) >= 10000 ? 0 : 1) + 'k' : nf0.format(Math.abs(v)));
 const pfmt = v => (v > 0 ? '+' : '') + Math.round(v * 100) + '%';
 const legend = (id, items) => { $(id).innerHTML = items.map(([c, t, shape = '']) => `<span><i class="${shape}" style="background:${c};color:${c}"></i>${t}</span>`).join(''); };
 const ttRow = (c, name, val) => `<div style="display:flex;gap:10px;justify-content:space-between;align-items:center"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:6px"></span>${name}</span><b style="font-variant-numeric:tabular-nums">${val}</b></div>`;
@@ -568,7 +579,7 @@ function renderDetailCharts(T = tokens()) {
     ${ttRow(t.side === 'BUY' ? T.s1 : T.s2, 'Quantity', qtyFmt(Math.abs(t.qty)))}${ttRow(T.ink2, 'Price', money(t.price, 2))}${ttRow(T.ink2, 'Amount', money(t.amount, 2))}
     ${t.side === 'SELL' ? ttRow(t.realizedBase >= 0 ? T.gain : T.loss, 'Realized', signed(t.realizedBase, 2)) : ''}${ttRow(T.muted, 'Position after', qtyFmt(t.qtyAfter))}`;
   chart('ch-price').setOption(base(T, {
-    xAxis: timeAxis(T), yAxis: valAxis(T, v => '$' + nf0.format(v)),
+    xAxis: timeAxis(T), yAxis: valAxis(T, v => moneyHidden() ? MASK : '$' + nf0.format(v)),
     tooltip: { ...base(T).tooltip, formatter: ps => {
       const arr = Array.isArray(ps) ? ps : [ps];
       const tr = arr.find(x => x.data?.t);
@@ -603,7 +614,7 @@ function renderDivChart(T) {
   const label = p => new Date(p + '-01T00:00:00Z').toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' });
   chart('ch-divs').setOption(base(T, {
     xAxis: { type: 'category', data: m.map(x => label(x[0])), axisLine: { lineStyle: { color: T.axis } }, axisTick: { show: false }, axisLabel: { color: T.muted, fontSize: 11, hideOverlap: true } },
-    yAxis: { ...valAxis(T, v => '$' + nf0.format(v)), scale: false },
+    yAxis: { ...valAxis(T, v => moneyHidden() ? MASK : '$' + nf0.format(v)), scale: false },
     tooltip: { ...base(T).tooltip, trigger: 'item', formatter: p => `<b>${p.name}</b><br>${money(p.value, 2)} net` },
     series: [{ type: 'bar', barMaxWidth: 22, data: m.map(x => x[1]), itemStyle: { color: T.s1, borderRadius: [4, 4, 0, 0] } }],
   }));
@@ -644,6 +655,7 @@ let rt;
 window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => Object.values(charts).forEach(c => c.resize()), 120); });
 
 initTheme();
+initPrivacy();
 initIntake();
 initRange();
 initTabs();

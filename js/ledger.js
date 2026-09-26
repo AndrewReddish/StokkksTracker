@@ -77,7 +77,7 @@ export function runLedger(model, book, { endDate } = {}) {
     }
     cash[base] = isFinite(first.cash['Starting Cash']) ? first.cash['Starting Cash'] : 0;
     opening = first.nav.start;
-    warnings.push({ level: 'warn', area: 'History', text: `The earliest statement starts on ${first.periodStart} with ${Math.round(first.nav.start)} ${base} already in the account. Add the statements before it for exact cost basis; until then, positions held on that date use that day's close as their cost, and the opening value counts as the first deposit.` });
+    warnings.push({ level: 'warn', area: 'History', text: `The earliest statement starts on ${first.periodStart} with money already in the account. Add the statements before it for exact cost basis; until then, positions held on that date use that day's close as their cost, and the opening value counts as the first deposit.` });
   }
 
   const lastDate = endDate || model.periodEnd;

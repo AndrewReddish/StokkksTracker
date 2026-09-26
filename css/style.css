@@ -290,3 +290,8 @@ input.num { width: 76px; height: 30px; text-align: right; font-variant-numeric: 
 td.wrap { white-space: normal; min-width: 280px; }
 #tab-status code { font: 12px var(--mono); background: var(--surface); padding: 1px 5px; border-radius: 4px; }
 .banner #btn-go-status { margin-left: 8px; vertical-align: middle; }
+@media (max-width: 600px) {
+  .masthead-actions { gap: 6px; }
+  .masthead-actions .btn { padding: 0 9px; font-size: 12.5px; }
+  .masthead-actions .icon-btn { width: 34px; padding: 0; }
+}

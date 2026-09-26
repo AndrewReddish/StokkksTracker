@@ -1,6 +1,8 @@
 // Data status tab: what loaded, from where, as of when, and every place the report is
 // missing data. Nothing here is inferred; each line points at the file or source involved.
 
+import { usd } from './privacy.js';
+
 const DAY = 864e5;
 const daysBetween = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / DAY);
 
@@ -33,12 +35,12 @@ export function collectWarnings({ state, fundsDb }) {
   }
   for (const n of ledger.fxNotes) {
     if (n.scale != null && Math.abs(n.scale - 1) > 0.0005) {
-      add('info', 'FX', `${n.ccy} deposits ${n.period}: valued at each day's ${n.ccy}/${model.baseCcy} close, then multiplied by ${n.scale.toFixed(4)} so they add up to IBKR's "Total in ${model.baseCcy}" (${n.base.toFixed(2)}).`);
+      add('info', 'FX', `${n.ccy} deposits ${n.period}: valued at each day's ${n.ccy}/${model.baseCcy} close, then multiplied by ${n.scale.toFixed(4)} so they add up to IBKR's "Total in ${model.baseCcy}" (${usd(n.base, 2)}).`);
     }
   }
   for (const r of kpis.recon) {
-    if (Math.abs(r.diff) > 1) add('warn', 'Reconciliation', `${r.period}: rebuilt value differs from IBKR's by ${r.diff.toFixed(2)} ${model.baseCcy}.`);
-    if (r.accruals) add('info', 'Reconciliation', `${r.period}: IBKR's ending value includes ${r.accruals.toFixed(2)} ${model.baseCcy} of dividends declared but not yet paid; the report counts dividends when they are paid.`);
+    if (Math.abs(r.diff) > 1) add('warn', 'Reconciliation', `${r.period}: rebuilt value differs from IBKR's by ${usd(Math.abs(r.diff), 2)}.`);
+    if (r.accruals) add('info', 'Reconciliation', `${r.period}: IBKR's ending value includes ${usd(r.accruals, 2)} of dividends declared but not yet paid; the report counts dividends when they are paid.`);
   }
 
   if (fundsDb.loadError) add('error', 'Fund data', `data/funds.json did not load: ${fundsDb.loadError}. Look-through, overlap and sector checks are empty.`);
