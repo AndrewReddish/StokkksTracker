@@ -36,7 +36,11 @@
       <p class="eyebrow">Interactive Brokers · Activity Statement CSV</p>
       <h1>Drop your statements here</h1>
       <p class="lede">Add one or more yearly or monthly statements. Overlapping periods are de-duplicated. The files are read in this browser tab and never leave your device.</p>
-      <label class="btn btn-primary btn-lg" for="file-input">Choose CSV files</label>
+      <div class="drop-actions">
+        <label class="btn btn-primary btn-lg" for="file-input">Choose CSV files</label>
+        <button class="btn btn-lg" id="btn-demo" type="button">Show demo report</button>
+      </div>
+      <p class="hint">No statement at hand? The demo uses a fictional 2026 account with real market prices. <a href="demo/demo-statement-2026.csv" download>Download the sample CSV</a> to see the expected format.</p>
       <p class="hint">In IBKR: Performance &amp; Reports → Statements → Activity → Period (Annual / Custom) → Format <b>CSV</b>.</p>
     </div>
   </section>
