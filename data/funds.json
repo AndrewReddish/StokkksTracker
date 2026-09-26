@@ -1,0 +1,871 @@
+{
+ "note": "Approximate classification and top holdings. Curated entries are refreshed by scripts/fetch_funds.py when Yahoo Finance is reachable; region splits are curated.",
+ "aliases": {
+  "GOOGL": "GOOG",
+  "BRK-B": "BRK.B"
+ },
+ "funds": {
+  "AMZN": {
+   "kind": "stock",
+   "name": "Amazon.com",
+   "assetClass": "equity",
+   "sector": "consumer_cyclical",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "ASML": {
+   "kind": "stock",
+   "name": "ASML Holding",
+   "assetClass": "equity",
+   "sector": "technology",
+   "country": "Netherlands",
+   "region": {
+    "developed": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "AVUV": {
+   "kind": "etf",
+   "name": "Avantis US Small Cap Value ETF",
+   "index": "Active (small-cap value)",
+   "style": "US small value",
+   "assetClass": "equity",
+   "expenseRatio": 0.25,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "financial_services": 0.28,
+    "consumer_cyclical": 0.18,
+    "industrials": 0.17,
+    "energy": 0.16,
+    "basic_materials": 0.07,
+    "technology": 0.06,
+    "consumer_defensive": 0.04,
+    "healthcare": 0.02,
+    "communication_services": 0.02
+   },
+   "holdings": [
+    {
+     "symbol": "MTH",
+     "name": "Meritage Homes",
+     "weight": 0.009
+    },
+    {
+     "symbol": "ALK",
+     "name": "Alaska Air",
+     "weight": 0.009
+    },
+    {
+     "symbol": "RDN",
+     "name": "Radian Group",
+     "weight": 0.008
+    },
+    {
+     "symbol": "AL",
+     "name": "Air Lease",
+     "weight": 0.008
+    },
+    {
+     "symbol": "GATX",
+     "name": "GATX",
+     "weight": 0.008
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "BND": {
+   "kind": "etf",
+   "name": "Vanguard Total Bond Market ETF",
+   "index": "Bloomberg US Aggregate Float Adjusted",
+   "style": "US investment-grade bonds",
+   "assetClass": "bond",
+   "expenseRatio": 0.03,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {},
+   "holdings": [],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "DUOL": {
+   "kind": "stock",
+   "name": "Duolingo",
+   "assetClass": "equity",
+   "sector": "technology",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "FICO": {
+   "kind": "stock",
+   "name": "Fair Isaac",
+   "assetClass": "equity",
+   "sector": "technology",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "GOOG": {
+   "kind": "stock",
+   "name": "Alphabet",
+   "assetClass": "equity",
+   "sector": "communication_services",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "IWM": {
+   "kind": "etf",
+   "name": "iShares Russell 2000 ETF",
+   "index": "Russell 2000",
+   "style": "US small blend",
+   "assetClass": "equity",
+   "expenseRatio": 0.19,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "industrials": 0.18,
+    "financial_services": 0.17,
+    "healthcare": 0.16,
+    "technology": 0.14,
+    "consumer_cyclical": 0.1,
+    "realestate": 0.06,
+    "energy": 0.05,
+    "basic_materials": 0.045,
+    "utilities": 0.03,
+    "consumer_defensive": 0.03,
+    "communication_services": 0.025
+   },
+   "holdings": [
+    {
+     "symbol": "CRDO",
+     "name": "Credo Technology",
+     "weight": 0.006
+    },
+    {
+     "symbol": "FN",
+     "name": "Fabrinet",
+     "weight": 0.005
+    },
+    {
+     "symbol": "IONQ",
+     "name": "IonQ",
+     "weight": 0.005
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "JNJ": {
+   "kind": "stock",
+   "name": "Johnson & Johnson",
+   "assetClass": "equity",
+   "sector": "healthcare",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "MMM": {
+   "kind": "stock",
+   "name": "3M",
+   "assetClass": "equity",
+   "sector": "industrials",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "MSFT": {
+   "kind": "stock",
+   "name": "Microsoft",
+   "assetClass": "equity",
+   "sector": "technology",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "MU": {
+   "kind": "stock",
+   "name": "Micron Technology",
+   "assetClass": "equity",
+   "sector": "technology",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "NDAQ": {
+   "kind": "stock",
+   "name": "Nasdaq Inc",
+   "assetClass": "equity",
+   "sector": "financial_services",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "NVDA": {
+   "kind": "stock",
+   "name": "NVIDIA",
+   "assetClass": "equity",
+   "sector": "technology",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "NVO": {
+   "kind": "stock",
+   "name": "Novo Nordisk",
+   "assetClass": "equity",
+   "sector": "healthcare",
+   "country": "Denmark",
+   "region": {
+    "developed": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "O": {
+   "kind": "stock",
+   "name": "Realty Income",
+   "assetClass": "equity",
+   "sector": "realestate",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "QQQ": {
+   "kind": "etf",
+   "name": "Invesco QQQ Trust",
+   "index": "Nasdaq-100",
+   "style": "US large growth",
+   "assetClass": "equity",
+   "expenseRatio": 0.2,
+   "region": {
+    "us": 0.97,
+    "developed": 0.03
+   },
+   "sectors": {
+    "technology": 0.52,
+    "communication_services": 0.16,
+    "consumer_cyclical": 0.13,
+    "consumer_defensive": 0.05,
+    "healthcare": 0.05,
+    "industrials": 0.04,
+    "utilities": 0.014,
+    "basic_materials": 0.012,
+    "energy": 0.005,
+    "financial_services": 0.005,
+    "realestate": 0.002
+   },
+   "holdings": [
+    {
+     "symbol": "NVDA",
+     "name": "NVIDIA",
+     "weight": 0.095
+    },
+    {
+     "symbol": "MSFT",
+     "name": "Microsoft",
+     "weight": 0.085
+    },
+    {
+     "symbol": "AAPL",
+     "name": "Apple",
+     "weight": 0.075
+    },
+    {
+     "symbol": "AMZN",
+     "name": "Amazon",
+     "weight": 0.055
+    },
+    {
+     "symbol": "AVGO",
+     "name": "Broadcom",
+     "weight": 0.05
+    },
+    {
+     "symbol": "META",
+     "name": "Meta Platforms",
+     "weight": 0.037
+    },
+    {
+     "symbol": "GOOG",
+     "name": "Alphabet",
+     "weight": 0.049
+    },
+    {
+     "symbol": "TSLA",
+     "name": "Tesla",
+     "weight": 0.03
+    },
+    {
+     "symbol": "NFLX",
+     "name": "Netflix",
+     "weight": 0.027
+    },
+    {
+     "symbol": "COST",
+     "name": "Costco",
+     "weight": 0.025
+    },
+    {
+     "symbol": "PLTR",
+     "name": "Palantir",
+     "weight": 0.02
+    },
+    {
+     "symbol": "AMD",
+     "name": "AMD",
+     "weight": 0.017
+    },
+    {
+     "symbol": "ASML",
+     "name": "ASML",
+     "weight": 0.008
+    },
+    {
+     "symbol": "MU",
+     "name": "Micron",
+     "weight": 0.006
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "SCHD": {
+   "kind": "etf",
+   "name": "Schwab US Dividend Equity ETF",
+   "index": "Dow Jones US Dividend 100",
+   "style": "US dividend value",
+   "assetClass": "equity",
+   "expenseRatio": 0.06,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "energy": 0.2,
+    "consumer_defensive": 0.19,
+    "healthcare": 0.16,
+    "industrials": 0.12,
+    "financial_services": 0.09,
+    "technology": 0.08,
+    "consumer_cyclical": 0.08,
+    "communication_services": 0.045,
+    "basic_materials": 0.03,
+    "utilities": 0.005
+   },
+   "holdings": [
+    {
+     "symbol": "CVX",
+     "name": "Chevron",
+     "weight": 0.042
+    },
+    {
+     "symbol": "COP",
+     "name": "ConocoPhillips",
+     "weight": 0.041
+    },
+    {
+     "symbol": "ABBV",
+     "name": "AbbVie",
+     "weight": 0.041
+    },
+    {
+     "symbol": "KO",
+     "name": "Coca-Cola",
+     "weight": 0.04
+    },
+    {
+     "symbol": "MO",
+     "name": "Altria",
+     "weight": 0.04
+    },
+    {
+     "symbol": "HD",
+     "name": "Home Depot",
+     "weight": 0.04
+    },
+    {
+     "symbol": "PEP",
+     "name": "PepsiCo",
+     "weight": 0.039
+    },
+    {
+     "symbol": "AMGN",
+     "name": "Amgen",
+     "weight": 0.038
+    },
+    {
+     "symbol": "VZ",
+     "name": "Verizon",
+     "weight": 0.038
+    },
+    {
+     "symbol": "CSCO",
+     "name": "Cisco",
+     "weight": 0.037
+    },
+    {
+     "symbol": "BMY",
+     "name": "Bristol-Myers Squibb",
+     "weight": 0.036
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "SGOV": {
+   "kind": "etf",
+   "name": "iShares 0-3 Month Treasury Bond ETF",
+   "index": "ICE 0-3 Month US Treasury",
+   "style": "US T-bills (cash-like)",
+   "assetClass": "cash",
+   "expenseRatio": 0.09,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {},
+   "holdings": [],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "SPY": {
+   "kind": "etf",
+   "name": "SPDR S&P 500 ETF Trust",
+   "index": "S&P 500",
+   "style": "US large blend",
+   "assetClass": "equity",
+   "expenseRatio": 0.0945,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "technology": 0.33,
+    "financial_services": 0.13,
+    "consumer_cyclical": 0.1,
+    "communication_services": 0.1,
+    "healthcare": 0.09,
+    "industrials": 0.08,
+    "consumer_defensive": 0.055,
+    "energy": 0.03,
+    "utilities": 0.025,
+    "realestate": 0.02,
+    "basic_materials": 0.02
+   },
+   "holdings": [
+    {
+     "symbol": "NVDA",
+     "name": "NVIDIA",
+     "weight": 0.075
+    },
+    {
+     "symbol": "MSFT",
+     "name": "Microsoft",
+     "weight": 0.068
+    },
+    {
+     "symbol": "AAPL",
+     "name": "Apple",
+     "weight": 0.062
+    },
+    {
+     "symbol": "AMZN",
+     "name": "Amazon",
+     "weight": 0.04
+    },
+    {
+     "symbol": "META",
+     "name": "Meta Platforms",
+     "weight": 0.03
+    },
+    {
+     "symbol": "AVGO",
+     "name": "Broadcom",
+     "weight": 0.027
+    },
+    {
+     "symbol": "GOOG",
+     "name": "Alphabet",
+     "weight": 0.038
+    },
+    {
+     "symbol": "TSLA",
+     "name": "Tesla",
+     "weight": 0.02
+    },
+    {
+     "symbol": "BRK.B",
+     "name": "Berkshire Hathaway",
+     "weight": 0.016
+    },
+    {
+     "symbol": "JPM",
+     "name": "JPMorgan Chase",
+     "weight": 0.015
+    },
+    {
+     "symbol": "V",
+     "name": "Visa",
+     "weight": 0.01
+    },
+    {
+     "symbol": "LLY",
+     "name": "Eli Lilly",
+     "weight": 0.012
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "V": {
+   "kind": "stock",
+   "name": "Visa",
+   "assetClass": "equity",
+   "sector": "financial_services",
+   "country": "United States",
+   "region": {
+    "us": 1.0
+   },
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "VNQ": {
+   "kind": "etf",
+   "name": "Vanguard Real Estate ETF",
+   "index": "MSCI US IMI Real Estate 25/50",
+   "style": "US REITs",
+   "assetClass": "equity",
+   "expenseRatio": 0.13,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "realestate": 1.0
+   },
+   "holdings": [
+    {
+     "symbol": "PLD",
+     "name": "Prologis",
+     "weight": 0.07
+    },
+    {
+     "symbol": "AMT",
+     "name": "American Tower",
+     "weight": 0.055
+    },
+    {
+     "symbol": "EQIX",
+     "name": "Equinix",
+     "weight": 0.05
+    },
+    {
+     "symbol": "WELL",
+     "name": "Welltower",
+     "weight": 0.05
+    },
+    {
+     "symbol": "SPG",
+     "name": "Simon Property",
+     "weight": 0.035
+    },
+    {
+     "symbol": "O",
+     "name": "Realty Income",
+     "weight": 0.03
+    },
+    {
+     "symbol": "PSA",
+     "name": "Public Storage",
+     "weight": 0.03
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "VOO": {
+   "kind": "etf",
+   "name": "Vanguard S&P 500 ETF",
+   "index": "S&P 500",
+   "style": "US large blend",
+   "assetClass": "equity",
+   "expenseRatio": 0.03,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "technology": 0.33,
+    "financial_services": 0.13,
+    "consumer_cyclical": 0.1,
+    "communication_services": 0.1,
+    "healthcare": 0.09,
+    "industrials": 0.08,
+    "consumer_defensive": 0.055,
+    "energy": 0.03,
+    "utilities": 0.025,
+    "realestate": 0.02,
+    "basic_materials": 0.02
+   },
+   "holdings": [
+    {
+     "symbol": "NVDA",
+     "name": "NVIDIA",
+     "weight": 0.075
+    },
+    {
+     "symbol": "MSFT",
+     "name": "Microsoft",
+     "weight": 0.068
+    },
+    {
+     "symbol": "AAPL",
+     "name": "Apple",
+     "weight": 0.062
+    },
+    {
+     "symbol": "AMZN",
+     "name": "Amazon",
+     "weight": 0.04
+    },
+    {
+     "symbol": "META",
+     "name": "Meta Platforms",
+     "weight": 0.03
+    },
+    {
+     "symbol": "AVGO",
+     "name": "Broadcom",
+     "weight": 0.027
+    },
+    {
+     "symbol": "GOOG",
+     "name": "Alphabet",
+     "weight": 0.038
+    },
+    {
+     "symbol": "TSLA",
+     "name": "Tesla",
+     "weight": 0.02
+    },
+    {
+     "symbol": "BRK.B",
+     "name": "Berkshire Hathaway",
+     "weight": 0.016
+    },
+    {
+     "symbol": "JPM",
+     "name": "JPMorgan Chase",
+     "weight": 0.015
+    },
+    {
+     "symbol": "V",
+     "name": "Visa",
+     "weight": 0.01
+    },
+    {
+     "symbol": "LLY",
+     "name": "Eli Lilly",
+     "weight": 0.012
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "VXUS": {
+   "kind": "etf",
+   "name": "Vanguard Total International Stock ETF",
+   "index": "FTSE Global All Cap ex US",
+   "style": "International developed + emerging",
+   "assetClass": "equity",
+   "expenseRatio": 0.05,
+   "region": {
+    "developed": 0.73,
+    "emerging": 0.26,
+    "us": 0.01
+   },
+   "sectors": {
+    "financial_services": 0.22,
+    "industrials": 0.15,
+    "technology": 0.14,
+    "consumer_cyclical": 0.1,
+    "healthcare": 0.08,
+    "basic_materials": 0.07,
+    "consumer_defensive": 0.065,
+    "communication_services": 0.06,
+    "energy": 0.045,
+    "utilities": 0.03,
+    "realestate": 0.03
+   },
+   "holdings": [
+    {
+     "symbol": "TSM",
+     "name": "Taiwan Semiconductor",
+     "weight": 0.028
+    },
+    {
+     "symbol": "TCEHY",
+     "name": "Tencent",
+     "weight": 0.013
+    },
+    {
+     "symbol": "ASML",
+     "name": "ASML",
+     "weight": 0.01
+    },
+    {
+     "symbol": "SAP",
+     "name": "SAP",
+     "weight": 0.009
+    },
+    {
+     "symbol": "NSRGY",
+     "name": "Nestle",
+     "weight": 0.007
+    },
+    {
+     "symbol": "SSNLF",
+     "name": "Samsung Electronics",
+     "weight": 0.007
+    },
+    {
+     "symbol": "NVO",
+     "name": "Novo Nordisk",
+     "weight": 0.006
+    },
+    {
+     "symbol": "AZN",
+     "name": "AstraZeneca",
+     "weight": 0.006
+    },
+    {
+     "symbol": "TM",
+     "name": "Toyota",
+     "weight": 0.006
+    },
+    {
+     "symbol": "HSBC",
+     "name": "HSBC",
+     "weight": 0.006
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "XBI": {
+   "kind": "etf",
+   "name": "SPDR S&P Biotech ETF",
+   "index": "S&P Biotechnology Select Industry",
+   "style": "US sector: biotech (equal weight)",
+   "assetClass": "equity",
+   "expenseRatio": 0.35,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "healthcare": 1.0
+   },
+   "holdings": [],
+   "source": "curated",
+   "asOf": "2026-06"
+  },
+  "XLP": {
+   "kind": "etf",
+   "name": "Consumer Staples Select Sector SPDR",
+   "index": "S&P 500 Consumer Staples",
+   "style": "US sector: consumer staples",
+   "assetClass": "equity",
+   "expenseRatio": 0.08,
+   "region": {
+    "us": 1.0
+   },
+   "sectors": {
+    "consumer_defensive": 1.0
+   },
+   "holdings": [
+    {
+     "symbol": "WMT",
+     "name": "Walmart",
+     "weight": 0.1
+    },
+    {
+     "symbol": "COST",
+     "name": "Costco",
+     "weight": 0.1
+    },
+    {
+     "symbol": "PG",
+     "name": "Procter & Gamble",
+     "weight": 0.09
+    },
+    {
+     "symbol": "KO",
+     "name": "Coca-Cola",
+     "weight": 0.065
+    },
+    {
+     "symbol": "PM",
+     "name": "Philip Morris",
+     "weight": 0.06
+    },
+    {
+     "symbol": "PEP",
+     "name": "PepsiCo",
+     "weight": 0.045
+    },
+    {
+     "symbol": "MO",
+     "name": "Altria",
+     "weight": 0.045
+    },
+    {
+     "symbol": "MDLZ",
+     "name": "Mondelez",
+     "weight": 0.04
+    },
+    {
+     "symbol": "CL",
+     "name": "Colgate-Palmolive",
+     "weight": 0.035
+    }
+   ],
+   "source": "curated",
+   "asOf": "2026-06"
+  }
+ }
+}

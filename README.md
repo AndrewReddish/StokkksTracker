@@ -18,6 +18,17 @@ What you get:
 
 > Statements contain personal data. `.gitignore` blocks `*.csv` everywhere except `demo/`, so never commit your own.
 
+## Insights & rebalance
+
+The second tab goes beyond reporting:
+
+- **Checkup:** rule-based findings, each tagged Act, Review, Note or Fine. It covers single-stock and sector concentration, look-through company exposure, funds that duplicate each other, regional and bond balance, fund fees, order sizes versus commissions, short holding periods, idle cash, positions below cost, and whether you are ahead of or behind the S&P 500 given your deposit timing. The thresholds are in `RULES` in `js/insights.js`.
+- **Look-through exposure:** each fund is split into its sectors, regions and top holdings from `data/funds.json`. You see the real sector mix against the S&P 500, your largest underlying companies (direct plus via funds), and a fund-overlap matrix.
+- **Rebalance:** start from current weights, equal weight or *Consolidate* (drop positions under 2%, cap each at 20%), or type your own targets. Add new money, a cash reserve, a minimum order size and whole or fractional shares. You get the exact buy and sell orders with estimated commissions and realized gains, and **Copy orders** puts them on the clipboard. Targets are saved in your browser.
+- **AI review (optional):** paste an Anthropic API key and Claude Opus 5 writes a critique with concrete actions, based on a summary of the page. It never sees your name, account number or trade history, and **See exactly what is sent** shows the payload. The key lives only in the tab's memory: it is never stored and never committed. Without a key, **Copy prompt for claude.ai** gives you the same analysis prompt to paste into claude.ai.
+
+`data/funds.json` holds approximate, dated fund data. The price workflow refreshes top holdings, sector weights, expense ratios and stock sectors from Yahoo Finance (`scripts/fetch_funds.py`) and keeps the curated entry when a lookup fails. Fund region splits are curated by hand.
+
 ## Demo
 
 Click **Show demo report** on the start screen, or open the site with `#demo` at the end of the URL, to see the full report for a fictional 2026 account. It uses the same tickers as a real portfolio, made-up deposits and trades, and real daily closes. The demo is never saved, and **Exit demo** returns you to your own data. You can download the sample file (`demo/demo-statement-2026.csv`) to see the expected CSV format.

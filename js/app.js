@@ -3,12 +3,15 @@ import { parseFiles, analyze, neededSymbols } from './engine.js';
 import { loadPriceCache } from './prices.js';
 import { twrIndex, drawdown, periodReturns, benchmarkSameFlows, priceIndex } from './metrics.js';
 import { addDays } from './ledger.js';
+import { loadFunds } from './insights.js';
+import { renderInsights, renderInsightsCharts, initRebalanceControls, initAiControls } from './insights-ui.js';
 
 const $ = sel => document.querySelector(sel);
 const STORE_KEY = 'stokkks.files.v1';
 const THEME_KEY = 'stokkks.theme';
 const EMBED = window.STOKKKS_EMBED || null; // set by the single-file preview build
 const DEMO_URL = 'demo/demo-statement-2026.csv';
+const TAB_KEY = 'stokkks.tab';
 
 let files = [];
 let state = null;          // { model, book, ledger, kpis, extras }
@@ -16,6 +19,8 @@ let charts = {};
 let selected = null;
 let range = 'ALL';
 let demo = false;           // showing the bundled fictional statement
+let fundsDb = null;         // data/funds.json: fund holdings and classifications
+let tab = 'report';
 
 /* ---------- formatting ---------- */
 const nf0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -133,6 +138,7 @@ async function run() {
   const cache = EMBED?.prices || await loadPriceCache([...need.symbols, ...need.benchmarks, ...need.fx]);
   state = analyze(model, cache);
   state.cache = cache;
+  fundsDb ||= EMBED?.funds || await loadFunds();
   state.extras = buildExtras(state);
   if (!selected || !state.ledger.positions.find(p => p.symbol === selected)) selected = state.ledger.positions[0]?.symbol;
   $('#empty').hidden = true; $('#report').hidden = false; $('#btn-clear').hidden = !!EMBED || demo;
@@ -175,7 +181,34 @@ function renderAll() {
   renderTradeFilter();
   renderTrades();
   renderFoot();
+  try { renderInsights(insightsCtx()); }
+  catch (err) { console.error('Insights failed', err); }
   renderCharts();
+}
+function insightsCtx() {
+  // Getters so event handlers bound at start-up always see the latest analysis.
+  return { get state() { return state; }, get fundsDb() { return fundsDb; }, get demo() { return demo; }, $, esc, money, signed, pct, qtyFmt, cls, tokens, chart, base, legend };
+}
+function initTabs() {
+  try { tab = localStorage.getItem(TAB_KEY) === 'insights' ? 'insights' : 'report'; } catch {}
+  const show = (t, fromClick) => {
+    tab = t;
+    document.querySelectorAll('.tabs [role=tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+    $('#tab-report').hidden = t !== 'report';
+    $('#tab-insights').hidden = t !== 'insights';
+    try { localStorage.setItem(TAB_KEY, t); } catch {}
+    if (state) renderCharts();
+    if (fromClick) $('.tabs').scrollIntoView({ block: 'nearest' });
+  };
+  document.querySelectorAll('.tabs [role=tab]').forEach(b => {
+    b.addEventListener('click', () => show(b.dataset.tab, true));
+    b.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = b.dataset.tab === 'report' ? 'insights' : 'report';
+      show(next, false); $(`#tabbtn-${next}`).focus();
+    });
+  });
+  show(tab, false);
 }
 
 function renderBanners() {
@@ -405,6 +438,8 @@ function rangeStart() {
 
 function renderCharts() {
   const T = tokens();
+  // Charts only render into the visible tab; hidden containers have no size.
+  if (tab === 'insights') { renderInsightsCharts(insightsCtx()); return; }
   renderValueChart(T);
   renderTwrChart(T);
   renderMonthly(T);
@@ -601,6 +636,9 @@ window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() =
 initTheme();
 initIntake();
 initRange();
+initTabs();
+initRebalanceControls(insightsCtx());
+initAiControls(insightsCtx());
 files = EMBED?.files || loadStoredFiles();
 if (!EMBED && location.hash === '#demo') loadDemo();
 else if (files.length) run();
