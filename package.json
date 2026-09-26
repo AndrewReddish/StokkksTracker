@@ -1,0 +1,10 @@
+{
+  "name": "stokkks-tracker",
+  "private": true,
+  "type": "module",
+  "description": "Private portfolio analytics for Interactive Brokers activity statements",
+  "scripts": {
+    "serve": "python3 -m http.server 8000",
+    "analyze": "node tools/analyze.mjs"
+  }
+}

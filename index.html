@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stokkks Tracker</title>
+<meta name="description" content="Private portfolio analytics for Interactive Brokers activity statements. Files are parsed in your browser and never uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!--APP-->
+<div class="shell">
+  <header class="masthead">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <div class="brand-name">Stokkks</div>
+        <div class="brand-sub" id="acct-line">Portfolio report</div>
+      </div>
+    </div>
+    <div class="masthead-actions">
+      <label class="btn btn-primary" for="file-input">Add statements</label>
+      <input id="file-input" type="file" accept=".csv,text/csv" multiple hidden>
+      <button class="btn btn-ghost" id="btn-clear" type="button" hidden>Forget data</button>
+      <button class="btn btn-ghost icon-btn" id="btn-theme" type="button" aria-label="Switch theme" title="Switch theme">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section id="empty" class="empty">
+    <div class="drop" id="drop">
+      <p class="eyebrow">Interactive Brokers · Activity Statement CSV</p>
+      <h1>Drop your statements here</h1>
+      <p class="lede">Add one or more yearly or monthly statements. Overlapping periods are de-duplicated. The files are read in this browser tab and never leave your device.</p>
+      <label class="btn btn-primary btn-lg" for="file-input">Choose CSV files</label>
+      <p class="hint">In IBKR: Performance &amp; Reports → Statements → Activity → Period (Annual / Custom) → Format <b>CSV</b>.</p>
+    </div>
+  </section>
+
+  <main id="report" hidden>
+    <div id="banners"></div>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow" id="hero-period"></p>
+        <h1 class="hero-line" id="hero-line"></h1>
+      </div>
+      <dl class="kpis" id="kpis"></dl>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <h2>Value against money deposited</h2>
+          <p class="sub">The gap between the two lines is what the portfolio has earned. Dots mark deposits.</p>
+        </div>
+        <div class="seg" id="range" role="group" aria-label="Time range">
+          <button type="button" data-range="3M">3M</button>
+          <button type="button" data-range="6M">6M</button>
+          <button type="button" data-range="YTD">YTD</button>
+          <button type="button" data-range="1Y">1Y</button>
+          <button type="button" data-range="ALL" class="on">All</button>
+        </div>
+      </div>
+      <div class="legend" id="legend-value"></div>
+      <div class="chart chart-lg" id="ch-value"></div>
+    </section>
+
+    <section class="grid-2">
+      <div class="block">
+        <div class="block-head"><div><h2>Time-weighted return</h2><p class="sub">Deposit timing removed, so it compares directly with an index.</p></div></div>
+        <div class="legend" id="legend-twr"></div>
+        <div class="chart" id="ch-twr"></div>
+        <div class="chart chart-xs" id="ch-dd"></div>
+      </div>
+      <div class="block">
+        <div class="block-head"><div><h2>Monthly returns</h2><p class="sub">Time-weighted, per calendar month.</p></div></div>
+        <div class="chart" id="ch-monthly"></div>
+        <div class="table-wrap"><table class="mini" id="tbl-years"></table></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div><h2>Holdings</h2><p class="sub">Current positions. Select a row to see its full history.</p></div>
+      </div>
+      <div class="grid-alloc">
+        <div class="chart chart-alloc" id="ch-alloc"></div>
+        <div class="table-wrap"><table class="data" id="tbl-open"></table></div>
+      </div>
+    </section>
+
+    <section class="block" id="detail">
+      <div class="block-head">
+        <div><h2 id="detail-title">Position</h2><p class="sub" id="detail-sub"></p></div>
+        <label class="select"><span class="visually-hidden">Position</span><select id="detail-select"></select></label>
+      </div>
+      <dl class="kpis kpis-sm" id="detail-kpis"></dl>
+      <div class="legend" id="legend-price"></div>
+      <div class="chart chart-lg" id="ch-price"></div>
+      <h3 class="h3">Position value and cost</h3>
+      <div class="legend" id="legend-posval"></div>
+      <div class="chart" id="ch-posval"></div>
+      <div class="table-wrap"><table class="data" id="tbl-detail-trades"></table></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><div><h2>Closed positions</h2><p class="sub">Fully sold. Total includes dividends received while held.</p></div></div>
+      <div class="table-wrap"><table class="data" id="tbl-closed"></table></div>
+    </section>
+
+    <section class="grid-2">
+      <div class="block">
+        <div class="block-head"><div><h2>Dividend income</h2><p class="sub">Per month, after withholding tax.</p></div></div>
+        <div class="chart" id="ch-divs"></div>
+        <div class="table-wrap"><table class="mini" id="tbl-divs"></table></div>
+      </div>
+      <div class="block">
+        <div class="block-head"><div><h2>Where the gain came from</h2><p class="sub">All figures in USD over the full period.</p></div></div>
+        <div class="chart" id="ch-bridge"></div>
+        <div class="table-wrap"><table class="mini" id="tbl-recon"></table></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div><h2>Trade log</h2><p class="sub" id="trades-sub"></p></div>
+        <label class="select"><span class="visually-hidden">Filter by symbol</span><select id="trades-filter"></select></label>
+      </div>
+      <div class="table-wrap tall"><table class="data" id="tbl-trades"></table></div>
+    </section>
+
+    <footer class="foot" id="foot"></footer>
+  </main>
+</div>
+<div class="dropveil" id="dropveil" hidden><div>Release to add statements</div></div>
+<div class="tip" id="tip" hidden></div>
+<!--/APP-->
+<script src="js/vendor/echarts.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
