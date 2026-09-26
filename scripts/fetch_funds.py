@@ -32,11 +32,24 @@ def get(url):
 
 
 def crumb():
-    try:
-        get("https://fc.yahoo.com")
-    except Exception:  # noqa: BLE001 - this endpoint answers 404 but still sets the cookie
-        pass
-    return get("https://query2.finance.yahoo.com/v1/test/getcrumb").decode().strip()
+    """Yahoo needs a session cookie plus a matching crumb. The crumb endpoint often answers
+    429 to cloud IPs, so try both hosts with backoff after priming cookies from two pages."""
+    for url in ("https://fc.yahoo.com", "https://finance.yahoo.com/quote/SPY/"):
+        try:
+            get(url)
+        except Exception:  # noqa: BLE001 - fc.yahoo.com answers 404 but still sets the cookie
+            pass
+    last = None
+    for attempt in range(4):
+        for host in ("query1", "query2"):
+            try:
+                c = get(f"https://{host}.finance.yahoo.com/v1/test/getcrumb").decode().strip()
+                if c and "<" not in c:
+                    return c
+            except Exception as e:  # noqa: BLE001
+                last = e
+        time.sleep(5 * 2 ** attempt)
+    raise RuntimeError(f"no crumb after retries ({last})")
 
 
 def summary(sym, c):
