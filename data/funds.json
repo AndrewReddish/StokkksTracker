@@ -12,10 +12,10 @@
    "sectorName": "Consumer Discretionary",
    "sectorSource": "nasdaq",
    "industry": "Catalog/Specialty Distribution",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -26,10 +26,10 @@
    "sectorName": "Technology",
    "sectorSource": "nasdaq",
    "industry": "Industrial Machinery/Components",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "Netherlands",
+   "countrySource": "stockanalysis",
+   "region": "developed",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -178,10 +178,14 @@
     "utilities": 0.0057
    },
    "sectorCoverage": 0.1735,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.1735
+   },
+   "regionCoverage": 0.1735,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.25,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -326,6 +330,8 @@
    "regionCoverage": 0.0,
    "sectorSource": null,
    "regionSource": null,
+   "assetClassName": "Fixed Income",
+   "assetClass": "bond",
    "expenseRatio": 0.03,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -337,10 +343,10 @@
    "sectorName": "Technology",
    "sectorSource": "nasdaq",
    "industry": "Computer Software: Prepackaged Software",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -351,10 +357,10 @@
    "sectorName": "Consumer Discretionary",
    "sectorSource": "nasdaq",
    "industry": "Business Services",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -365,10 +371,10 @@
    "sectorName": "Technology",
    "sectorSource": "nasdaq",
    "industry": "Computer Software: Programming, Data Processing",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -517,10 +523,14 @@
     "energy": 0.0028
    },
    "sectorCoverage": 0.0662,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.0662
+   },
+   "regionCoverage": 0.0662,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.19,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -532,10 +542,10 @@
    "sectorName": "Health Care",
    "sectorSource": "nasdaq",
    "industry": "Biotechnology: Pharmaceutical Preparations",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -546,10 +556,10 @@
    "sectorName": "Health Care",
    "sectorSource": "nasdaq",
    "industry": "Medical/Dental Instruments",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -560,10 +570,10 @@
    "sectorName": "Technology",
    "sectorSource": "nasdaq",
    "industry": "Computer Software: Prepackaged Software",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -574,10 +584,10 @@
    "sectorName": "Technology",
    "sectorSource": "nasdaq",
    "industry": "Semiconductors",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -588,10 +598,10 @@
    "sectorName": "Finance",
    "sectorSource": "nasdaq",
    "industry": "Investment Bankers/Brokers/Service",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -602,10 +612,10 @@
    "sectorName": "Technology",
    "sectorSource": "nasdaq",
    "industry": "Semiconductors",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -616,10 +626,10 @@
    "sectorName": "Health Care",
    "sectorSource": "nasdaq",
    "industry": "Biotechnology: Pharmaceutical Preparations",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "Denmark",
+   "countrySource": "stockanalysis",
+   "region": "developed",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -630,10 +640,10 @@
    "sectorName": "Real Estate",
    "sectorSource": "nasdaq",
    "industry": "Real Estate Investment Trusts",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -1176,10 +1186,15 @@
     "consumer_staples": 0.00738
    },
    "sectorCoverage": 0.8368,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.79956,
+    "developed": 0.03723
+   },
+   "regionCoverage": 0.8368,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.18,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -1329,10 +1344,15 @@
     "financials": 0.0225
    },
    "sectorCoverage": 0.7979,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.7697,
+    "developed": 0.0282
+   },
+   "regionCoverage": 0.7979,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.06,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -1467,6 +1487,8 @@
    "regionCoverage": 0.0,
    "sectorSource": null,
    "regionSource": null,
+   "assetClassName": "Fixed Income",
+   "assetClass": "bond",
    "expenseRatio": 0.09,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -4016,10 +4038,14 @@
     "consumer_staples": 0.00514
    },
    "sectorCoverage": 0.591,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.60519
+   },
+   "regionCoverage": 0.6052,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.09,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -4031,10 +4057,10 @@
    "sectorName": "Consumer Discretionary",
    "sectorSource": "nasdaq",
    "industry": "Business Services",
-   "country": null,
-   "countrySource": null,
-   "region": null,
-   "source": "nasdaq",
+   "country": "United States",
+   "countrySource": "stockanalysis",
+   "region": "us",
+   "source": "nasdaq + stockanalysis",
    "regionSource": null,
    "asOf": "2026-09-26"
   },
@@ -4177,10 +4203,14 @@
     "financials": 0.0398
    },
    "sectorCoverage": 0.5994,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.5994
+   },
+   "regionCoverage": 0.5994,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.13,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -4329,10 +4359,14 @@
     "communication": 0.0066
    },
    "sectorCoverage": 0.5001,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.5141
+   },
+   "regionCoverage": 0.5141,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.03,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -4480,6 +4514,8 @@
    "regionCoverage": 0.1912,
    "sectorSource": null,
    "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.05,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -5322,10 +5358,15 @@
     "healthcare": 0.56188
    },
    "sectorCoverage": 0.5619,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.52146,
+    "developed": 0.04042
+   },
+   "regionCoverage": 0.5619,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.35,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -5520,10 +5561,14 @@
     "healthcare": 0.11305
    },
    "sectorCoverage": 0.9939,
-   "regions": {},
-   "regionCoverage": 0.0,
+   "regions": {
+    "us": 0.99689
+   },
+   "regionCoverage": 0.9969,
    "sectorSource": "holdings' Nasdaq profiles",
-   "regionSource": null,
+   "regionSource": "holdings' SEC addresses / listing exchanges",
+   "assetClassName": "Equity",
+   "assetClass": "equity",
    "expenseRatio": 0.08,
    "profileSource": "stockanalysis",
    "asOf": "2026-09-26"
@@ -5532,27 +5577,27 @@
  "status": {
   "AMZN": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "ASML": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "AVUV": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "stockanalysis"
    ],
@@ -5562,7 +5607,7 @@
   },
   "BND": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5575,37 +5620,37 @@
   },
   "DUOL": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "FICO": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "GOOG": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "IWM": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "ishares",
     "stockanalysis"
@@ -5618,87 +5663,87 @@
   },
   "JNJ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "MMM": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "MSFT": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "MU": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "NDAQ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "NVDA": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "NVO": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "O": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "QQQ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "invesco"
    ],
@@ -5708,7 +5753,7 @@
   },
   "SCHD": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "schwab",
     "stockanalysis"
@@ -5721,7 +5766,7 @@
   },
   "SGOV": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "ishares",
     "stockanalysis"
@@ -5734,7 +5779,7 @@
   },
   "SPY": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "ssga"
    ],
@@ -5744,17 +5789,17 @@
   },
   "V": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
-   "source": "nasdaq",
+   "source": "nasdaq + stockanalysis",
    "dataAsOf": "2026-09-26"
   },
   "VNQ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5767,7 +5812,7 @@
   },
   "VOO": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5780,7 +5825,7 @@
   },
   "VXUS": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5793,7 +5838,7 @@
   },
   "XBI": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "ssga"
    ],
@@ -5803,7 +5848,7 @@
   },
   "XLP": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:16:06+00:00",
+   "checkedAt": "2026-09-26T09:27:08+00:00",
    "attempts": [
     "ssga"
    ],
@@ -5812,1017 +5857,1218 @@
    "dataAsOf": "2026-09-26"
   }
  },
- "updated": "2026-09-26T09:16:06+00:00",
+ "updated": "2026-09-26T09:27:08+00:00",
  "holdingProfiles": {
   "MATX": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GATX": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "LNTH": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SM": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VSAT": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ANF": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SKYW": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "M": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "RUSHA": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CBT": {
    "sector": "industrials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "LEA": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "INSW": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CAKE": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MUR": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CROX": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TPC": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "IRDM": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "URBN": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SNEX": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MGY": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TDS": {
    "sector": "communication",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ATKR": {
    "sector": "other",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AROC": {
    "sector": "utilities",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "OII": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "NE": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TWST": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MOG.A": {
    "sector": null,
    "country": null,
    "error": "no sector in profile (not a stock?): {'data': {'ModuleTitle': {'label': 'Module Title', 'value': 'Company Description'},",
-   "checked": "2026-09-26"
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "HUT": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "FROG": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "UMBF": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TXG": {
    "sector": "industrials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BTSG": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KRYS": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "EAT": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CTRE": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GKOS": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CYTK": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ONB": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "FCFS": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "IDCC": {
    "sector": "other",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PTGX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "RIOT": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TGTX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "RHP": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "JXN": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "XTSLA": {
    "sector": null,
    "country": null,
    "error": "no sector in profile (not a stock?): {'data': None, 'message': None, 'status': {'rCode': 400, 'bCodeMessage': [{'code': ",
-   "checked": "2026-09-26"
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SSRM.NE": {
    "sector": null,
    "country": null,
    "error": "no sector in profile (not a stock?): {'data': None, 'message': None, 'status': {'rCode': 400, 'bCodeMessage': [{'code': ",
-   "checked": "2026-09-26"
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "NVDA": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AAPL": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MSFT": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MU": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AMD": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AMZN": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "META": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GOOGL": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TSLA": {
    "sector": "industrials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GOOG": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "INTC": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SPCX": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AVGO": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "WMT": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PLTR": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CSCO": {
    "sector": "communication",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "COST": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "LRCX": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AMAT": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PANW": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "NFLX": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CRWD": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SNDK": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TXN": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KLAC": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MRVL": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AMGN": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "LIN": {
    "sector": "materials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United Kingdom",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "STX": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "Singapore",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "QCOM": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GILD": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ADI": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TMUS": {
    "sector": "communication",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PEP": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SHOP": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "Canada",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "WDC": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ASML": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "Netherlands",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ISRG": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ARM": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United Kingdom",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VRTX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KO": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PG": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MRK": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CVX": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ABT": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "COP": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "HD": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "UNH": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VZ": {
    "sector": "communication",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BMY": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MO": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ACN": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "Ireland",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "LMT": {
    "sector": "industrials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ADP": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BX": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CMCSA": {
    "sector": "communication",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SLB": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "EOG": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "UPS": {
    "sector": "industrials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TGT": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "FAST": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "LLY": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BRK.B": {
    "sector": null,
-   "country": null,
+   "country": "United States",
    "error": "no sector in profile (not a stock?): {'data': {'ModuleTitle': {'label': 'Module Title', 'value': 'Company Description'},",
-   "checked": "2026-09-26"
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "JPM": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "XOM": {
    "sector": "energy",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "JNJ": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "V": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ABBV": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MA": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CAT": {
    "sector": "industrials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BAC": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GE": {
    "sector": "technology",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PM": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GS": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "WELL": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PLD": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "EQIX": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "AMT": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SPG": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "DLR": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "O": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PSA": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VMRK": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VTR": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CBRE": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "IRM": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CCI": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "EXR": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VICI": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SBAC": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ESS": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "JLL": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "WY": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KIM": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "WPC": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "INVH": {
    "sector": "financials",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "HST": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MAA": {
    "sector": "real_estate",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MRNA": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "NTRA": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BIIB": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "HALO": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CRSP": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "Switzerland",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SYRE": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "EXEL": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "INCY": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "REGN": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ALNY": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "RVMD": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BMRN": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "INSM": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MDGL": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ORKA": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "UTHR": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PTCT": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TVTX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ALKS": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "Ireland",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "NBIX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BBIO": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ROIV": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United Kingdom",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "VKTX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "DNTH": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KYMR": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GRAL": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "COGT": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ERAS": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "IOVA": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "PRAX": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ARWR": {
    "sector": "healthcare",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MDLZ": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CL": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MNST": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KDP": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "ADM": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SYY": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KVUE": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KR": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KMB": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "DG": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "HSY": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "EL": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CHD": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CASY": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "DLTR": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "KHC": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "GIS": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BG": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "STZ": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "TSN": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "SJM": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "MKC": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "CLX": {
    "sector": "consumer_discretionary",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "HRL": {
    "sector": "consumer_staples",
-   "country": null,
-   "checked": "2026-09-26"
+   "country": "United States",
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   },
   "BF.B": {
    "sector": null,
-   "country": null,
+   "country": "United States",
    "error": "no sector in profile (not a stock?): {'data': {'ModuleTitle': {'label': 'Module Title', 'value': 'Company Description'},",
-   "checked": "2026-09-26"
+   "checked": "2026-09-26",
+   "countryChecked": "2026-09-26"
   }
  }
 }
