@@ -5,6 +5,7 @@ import { twrIndex, drawdown, periodReturns, benchmarkSameFlows, priceIndex } fro
 import { addDays } from './ledger.js';
 import { loadFunds } from './insights.js';
 import { renderInsights, renderInsightsCharts, initRebalanceControls, initAiControls } from './insights-ui.js';
+import { renderStatus } from './status-ui.js';
 
 const $ = sel => document.querySelector(sel);
 const STORE_KEY = 'stokkks.files.v1';
@@ -135,9 +136,13 @@ async function run() {
     return;
   }
   const need = neededSymbols(model);
-  const cache = EMBED?.prices || await loadPriceCache([...need.symbols, ...need.benchmarks, ...need.fx]);
+  const loaded = EMBED ? { prices: EMBED.prices, status: Object.fromEntries(Object.keys(EMBED.prices).map(k => [k, { state: 'loaded' }])) }
+    : await loadPriceCache([...need.symbols, ...need.benchmarks, ...need.fx]);
+  const cache = loaded.prices;
   state = analyze(model, cache);
   state.cache = cache;
+  state.priceStatus = loaded.status;
+  state.need = need;
   fundsDb ||= EMBED?.funds || await loadFunds();
   state.extras = buildExtras(state);
   if (!selected || !state.ledger.positions.find(p => p.symbol === selected)) selected = state.ledger.positions[0]?.symbol;
@@ -169,7 +174,6 @@ function renderAll() {
   const { model, kpis, ledger } = state;
   const acct = model.accounts.join(', ');
   $('#acct-line').textContent = `${model.name || 'Account'} · ${acct} · ${model.baseCcy}`;
-  renderBanners();
   renderHero();
   renderOpenTable();
   renderClosedTable();
@@ -183,6 +187,9 @@ function renderAll() {
   renderFoot();
   try { renderInsights(insightsCtx()); }
   catch (err) { console.error('Insights failed', err); }
+  try { state.dataWarnings = renderStatus(insightsCtx()); }
+  catch (err) { console.error('Data status failed', err); }
+  renderBanners();
   renderCharts();
 }
 function insightsCtx() {
@@ -190,12 +197,12 @@ function insightsCtx() {
   return { get state() { return state; }, get fundsDb() { return fundsDb; }, get demo() { return demo; }, $, esc, money, signed, pct, qtyFmt, cls, tokens, chart, base, legend };
 }
 function initTabs() {
-  try { tab = localStorage.getItem(TAB_KEY) === 'insights' ? 'insights' : 'report'; } catch {}
+  const TABS = ['report', 'insights', 'status'];
+  try { const t = localStorage.getItem(TAB_KEY); tab = TABS.includes(t) ? t : 'report'; } catch {}
   const show = (t, fromClick) => {
     tab = t;
     document.querySelectorAll('.tabs [role=tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
-    $('#tab-report').hidden = t !== 'report';
-    $('#tab-insights').hidden = t !== 'insights';
+    for (const x of TABS) $(`#tab-${x}`).hidden = t !== x;
     try { localStorage.setItem(TAB_KEY, t); } catch {}
     if (state) renderCharts();
     if (fromClick) $('.tabs').scrollIntoView({ block: 'nearest' });
@@ -204,7 +211,8 @@ function initTabs() {
     b.addEventListener('click', () => show(b.dataset.tab, true));
     b.addEventListener('keydown', e => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      const next = b.dataset.tab === 'report' ? 'insights' : 'report';
+      const i = TABS.indexOf(b.dataset.tab);
+      const next = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length];
       show(next, false); $(`#tabbtn-${next}`).focus();
     });
   });
@@ -212,17 +220,14 @@ function initTabs() {
 }
 
 function renderBanners() {
-  const { model, ledger, book } = state;
   const out = [];
   if (demo) out.push('<b>You are viewing a demo portfolio.</b> The account, deposits and trades are fictional; prices are real daily closes. Add your own statements to replace it.<button class="btn btn-sm" id="btn-exit-demo" type="button">Exit demo</button>');
-  const stmtOnly = ledger.positions.filter(p => p.priceSource !== 'market').map(p => p.symbol);
-  if (stmtOnly.length) {
-    out.push(`<b>${stmtOnly.length} of ${ledger.positions.length} symbols have no daily price file yet</b>, so their charts join the prices found in your statements (trade-day closes and period-end marks) with straight lines. Totals are exact; the lines between trades are approximate. To get daily prices, add ${stmtOnly.slice(0, 8).map(s => `<code>${esc(s)}</code>`).join(' ')}${stmtOnly.length > 8 ? ' …' : ''} to <code>data/tickers.json</code> in the repository; the price workflow fetches them.`);
-  }
-  if (!book.SPY || book.SPY.source !== 'market') out.push('Index comparisons (S&amp;P 500, Nasdaq-100) appear once the price cache includes <code>SPY</code> and <code>QQQ</code>.');
-  for (const w of model.warnings) out.push(esc(w));
+  const w = state.dataWarnings || [];
+  const errs = w.filter(x => x.level === 'error').length, warns = w.filter(x => x.level === 'warn').length;
+  if (errs || warns) out.push(`<b>${[errs && `${errs} data error${errs > 1 ? 's' : ''}`, warns && `${warns} warning${warns > 1 ? 's' : ''}`].filter(Boolean).join(' and ')}.</b> Some data did not load, so parts of the report are incomplete. <button class="btn btn-sm" id="btn-go-status" type="button">Open Data status</button>`);
   $('#banners').innerHTML = out.map((t, i) => `<div class="banner${demo && i === 0 ? ' banner-demo' : ''}" role="note"><span class="ico">i</span><div>${t}</div></div>`).join('');
   $('#btn-exit-demo')?.addEventListener('click', exitDemo);
+  $('#btn-go-status')?.addEventListener('click', () => $('#tabbtn-status').click());
 }
 
 function renderHero() {
@@ -298,7 +303,7 @@ function renderDetailSelect() {
 function renderDetailText() {
   const p = state.ledger.positions.find(x => x.symbol === selected);
   if (!p) return;
-  const src = p.priceSource === 'market' ? 'daily closes' : 'statement prices joined by straight lines';
+  const src = p.priceSource === 'market' ? 'daily closes' : 'only the prices printed in your statements (no daily price file; see Data status)';
   $('#detail-title').textContent = `${p.symbol} · ${p.name}`;
   $('#detail-sub').textContent = `${p.type ? p.type + ' · ' : ''}${p.open ? 'Open' : 'Closed'} · first bought ${fmtDate(p.firstDate)} · price line from ${src}`;
   const items = p.open ? [
@@ -440,6 +445,7 @@ function renderCharts() {
   const T = tokens();
   // Charts only render into the visible tab; hidden containers have no size.
   if (tab === 'insights') { renderInsightsCharts(insightsCtx()); return; }
+  if (tab === 'status') return;
   renderValueChart(T);
   renderTwrChart(T);
   renderMonthly(T);
@@ -547,14 +553,17 @@ function renderDetailCharts(T = tokens()) {
   const from = addDays(p.firstDate, -21) < s.dates[0] ? s.dates[0] : addDays(p.firstDate, -21);
   const to = p.open ? end : (addDays(p.lastDate, 30) > end ? end : addDays(p.lastDate, 30));
   const days = s.dates.filter(d => d >= from && d <= to);
-  const price = days.map(d => [d, book ? +book.at(d).toFixed(4) : null]);
+  // Daily closes when loaded; otherwise only the observed statement prices, drawn as points.
+  const market = book?.source === 'market';
+  const price = market ? days.filter(d => book.cached && d >= book.cached.first).map(d => [d, +book.at(d).toFixed(4)])
+    : (book?.points.dates || []).map((d, i) => [d, book.points.prices[i]]).filter(([d]) => d >= from && d <= to);
   const idx0 = s.dates.indexOf(days[0]);
   const avg = days.map((d, k) => { const q = s.qty[idx0 + k][p.symbol]; return [d, q ? s.costs[idx0 + k][p.symbol] / q : null]; });
   const amounts = p.trades.map(t => t.amount);
   const maxAmt = Math.max(...amounts, 1);
   const size = a => 9 + 13 * Math.sqrt(a / maxAmt);
   const mk = side => p.trades.filter(t => t.side === side).map(t => ({ value: [t.date, t.price], t, symbolSize: size(t.amount) }));
-  legend('#legend-price', [[T.ink2, book?.source === 'market' ? 'Daily close' : 'Price (from statements)'], [T.muted, 'Average cost', 'dash'], [T.s1, 'Buy', 'tri-up'], [T.s2, 'Sell', 'tri-down']]);
+  legend('#legend-price', [[T.ink2, market ? 'Daily close' : 'Statement price (observed points only)', market ? '' : 'dot'], [T.muted, 'Average cost', 'dash'], [T.s1, 'Buy', 'tri-up'], [T.s2, 'Sell', 'tri-down']]);
   const tradeTip = t => `<div style="font-weight:600;margin-bottom:4px">${t.side === 'BUY' ? 'Bought' : 'Sold'} ${esc(t.symbol)} · ${fmtDate(t.date)}</div>
     ${ttRow(t.side === 'BUY' ? T.s1 : T.s2, 'Quantity', qtyFmt(Math.abs(t.qty)))}${ttRow(T.ink2, 'Price', money(t.price, 2))}${ttRow(T.ink2, 'Amount', money(t.amount, 2))}
     ${t.side === 'SELL' ? ttRow(t.realizedBase >= 0 ? T.gain : T.loss, 'Realized', signed(t.realizedBase, 2)) : ''}${ttRow(T.muted, 'Position after', qtyFmt(t.qtyAfter))}`;
@@ -569,7 +578,8 @@ function renderDetailCharts(T = tokens()) {
       return `<div style="font-weight:600;margin-bottom:4px">${fmtDate(d)}</div>${pr ? ttRow(T.ink2, 'Price', money(pr.value[1], 2)) : ''}${ac && ac.value[1] ? ttRow(T.muted, 'Average cost', money(ac.value[1], 2)) : ''}`;
     } },
     series: [
-      { name: 'Price', type: 'line', data: price, showSymbol: false, lineStyle: { width: 1.5, color: T.ink2 }, itemStyle: { color: T.ink2 }, z: 2 },
+      market ? { name: 'Price', type: 'line', data: price, showSymbol: false, lineStyle: { width: 1.5, color: T.ink2 }, itemStyle: { color: T.ink2 }, z: 2 }
+        : { name: 'Price', type: 'scatter', data: price, symbolSize: 6, itemStyle: { color: T.ink2 }, z: 2 },
       { name: 'Average cost', type: 'line', step: 'end', data: avg, showSymbol: false, connectNulls: false, lineStyle: { width: 1.5, color: T.muted, type: [5, 4] }, itemStyle: { color: T.muted }, z: 1 },
       { name: 'Buy', type: 'scatter', data: mk('BUY'), symbol: 'triangle', itemStyle: { color: T.s1, borderColor: T.surface, borderWidth: 2 }, z: 5, tooltip: { trigger: 'item' } },
       { name: 'Sell', type: 'scatter', data: mk('SELL'), symbol: 'triangle', symbolRotate: 180, itemStyle: { color: T.s2, borderColor: T.surface, borderWidth: 2 }, z: 5, tooltip: { trigger: 'item' } },

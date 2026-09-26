@@ -51,6 +51,7 @@
     <nav class="tabs" role="tablist" aria-label="Report sections">
       <button type="button" role="tab" id="tabbtn-report" data-tab="report" aria-selected="true" aria-controls="tab-report">Performance</button>
       <button type="button" role="tab" id="tabbtn-insights" data-tab="insights" aria-selected="false" aria-controls="tab-insights">Insights &amp; rebalance</button>
+      <button type="button" role="tab" id="tabbtn-status" data-tab="status" aria-selected="false" aria-controls="tab-status">Data status</button>
     </nav>
 
     <div id="tab-report" role="tabpanel" aria-labelledby="tabbtn-report">
@@ -163,7 +164,7 @@
 
       <section class="grid-2">
         <div class="block">
-          <div class="block-head"><div><h2>Sector exposure</h2><p class="sub">Funds are split into what they hold, then compared with the S&amp;P 500.</p></div></div>
+          <div class="block-head"><div><h2>Sector exposure</h2><p class="sub">Share of your stock holdings by sector, with funds split into their loaded holdings.</p></div></div>
           <div class="legend" id="legend-sectors"></div>
           <div class="chart chart-sectors" id="ch-sectors"></div>
         </div>
@@ -178,7 +179,7 @@
 
       <section class="grid-2">
         <div class="block">
-          <div class="block-head"><div><h2>Largest underlying companies</h2><p class="sub">Direct holdings plus each fund's disclosed top holdings, as a share of the whole portfolio.</p></div></div>
+          <div class="block-head"><div><h2>Largest underlying companies</h2><p class="sub">Direct holdings plus each fund's loaded holdings, as a share of the whole portfolio.</p></div></div>
           <div class="table-wrap"><table class="mini" id="tbl-companies"></table></div>
         </div>
         <div class="block">
@@ -215,7 +216,7 @@
         <dl class="kpis kpis-sm" id="reb-summary"></dl>
         <div class="block-head orders-head"><h3 class="h3">Orders</h3><button class="btn btn-sm" id="reb-copy" type="button">Copy orders</button></div>
         <div class="table-wrap"><table class="data" id="tbl-orders"></table></div>
-        <p class="sub">Prices are the last daily close; commissions use IBKR's fixed schedule ($0.005 a share, $1 minimum). Gains are estimated from the average cost; check your tax rules before selling.</p>
+        <p class="sub">Quantities and values use the last daily close. Commissions, spreads and taxes are not included; your broker shows them before you confirm an order.</p>
       </section>
 
       <section class="block" id="ai">
@@ -230,9 +231,28 @@
             <button class="btn" id="ai-copy" type="button">Copy prompt for claude.ai</button>
           </div>
         </form>
-        <p class="sub">The key stays in this tab's memory: it is never saved, never committed, and only sent to api.anthropic.com. Get one at console.anthropic.com; a review with Claude Opus 5 costs roughly $0.05–0.20. No key? Copy the prompt and paste it into claude.ai.</p>
+        <p class="sub">The key stays in this tab's memory: it is never saved, never committed, and only sent to api.anthropic.com. Get one at console.anthropic.com; each review is billed to that key at Claude Opus 5 API rates, and the token count is shown with the result. No key? Copy the prompt and paste it into claude.ai.</p>
         <details class="payload"><summary>See exactly what is sent</summary><pre id="ai-payload"></pre></details>
         <div id="ai-out" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <div id="tab-status" role="tabpanel" aria-labelledby="tabbtn-status" hidden>
+      <section class="hero hero-sm">
+        <div>
+          <p class="eyebrow">Data status</p>
+          <h1 class="hero-line">What loaded, from where, and what is missing.</h1>
+        </div>
+        <dl class="kpis" id="st-summary"></dl>
+      </section>
+      <section class="block">
+        <div class="block-head"><div><h2>Warnings</h2><p class="sub">Nothing in the report is estimated. Where data is missing it is left out or shown as "Not classified", and listed here.</p></div></div>
+        <div class="findings" id="st-warnings"></div>
+      </section>
+      <section class="block">
+        <div class="block-head"><div><h2>Tickers</h2><p class="sub" id="st-sources"></p></div></div>
+        <div class="table-wrap"><table class="data" id="tbl-status"></table></div>
+        <p class="sub">Daily prices: <code>data/prices/</code>, fetched by the "Refresh price cache" workflow for the tickers in <code>data/tickers.json</code>. Classification and holdings: <code>data/funds.json</code>, fetched by <code>scripts/fetch_funds.py</code> from fund issuers, stockanalysis.com, Nasdaq and SEC EDGAR. Statement prices: closing prices printed next to your trades and at period ends.</p>
       </section>
     </div>
 

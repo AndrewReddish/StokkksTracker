@@ -24,10 +24,27 @@ The second tab goes beyond reporting:
 
 - **Checkup:** rule-based findings, each tagged Act, Review, Note or Fine. It covers single-stock and sector concentration, look-through company exposure, funds that duplicate each other, regional and bond balance, fund fees, order sizes versus commissions, short holding periods, idle cash, positions below cost, and whether you are ahead of or behind the S&P 500 given your deposit timing. The thresholds are in `RULES` in `js/insights.js`.
 - **Look-through exposure:** each fund is split into its sectors, regions and top holdings from `data/funds.json`. You see the real sector mix against the S&P 500, your largest underlying companies (direct plus via funds), and a fund-overlap matrix.
-- **Rebalance:** start from current weights, equal weight or *Consolidate* (drop positions under 2%, cap each at 20%), or type your own targets. Add new money, a cash reserve, a minimum order size and whole or fractional shares. You get the exact buy and sell orders with estimated commissions and realized gains, and **Copy orders** puts them on the clipboard. Targets are saved in your browser.
+- **Rebalance:** start from current weights, equal weight or *Consolidate* (drop positions under 2%, cap each at 20%), or type your own targets. Add new money, a cash reserve, a minimum order size and whole or fractional shares. You get the buy and sell orders valued at the last close (commissions and taxes are not included), and **Copy orders** puts them on the clipboard. Targets are saved in your browser.
 - **AI review (optional):** paste an Anthropic API key and Claude Opus 5 writes a critique with concrete actions, based on a summary of the page. It never sees your name, account number or trade history, and **See exactly what is sent** shows the payload. The key lives only in the tab's memory: it is never stored and never committed. Without a key, **Copy prompt for claude.ai** gives you the same analysis prompt to paste into claude.ai.
 
-`data/funds.json` holds approximate, dated fund data, curated by hand. `scripts/fetch_funds.py` can refresh top holdings, sector weights, expense ratios and stock sectors from Yahoo Finance, keeping the curated entry whenever a lookup fails. The daily workflow tries it, but Yahoo currently answers `429 Too Many Requests` to GitHub's runners, so run `python3 scripts/fetch_funds.py` on your own computer and commit the result when you want fresher data. Fund region splits are always curated.
+`data/funds.json` holds only fetched data; nothing in it is written by hand or estimated. `scripts/fetch_funds.py` runs in the daily workflow and fetches:
+
+- **ETF holdings:** the issuer's own file where the issuer allows it (currently SPDR/SSGA for SPY, XLP and XBI). Otherwise the top 25 holdings come from stockanalysis.com. Vanguard, iShares, Invesco and Schwab currently block GitHub's servers.
+- **ETF asset class and expense ratio:** the fund's page on stockanalysis.com.
+- **Stocks:** sector from Nasdaq's company profile (Nasdaq's own classification, not GICS), and country from the business address in the company's SEC filings.
+- **Sector and country of a fund's holdings:** each top holding's own Nasdaq and SEC data (foreign listings use their exchange's country). The share of the fund this covers is stored and shown.
+
+Whatever is not covered appears as **Not classified**, and the **Data status** tab lists every gap, failed source and date.
+
+## Data status
+
+The third tab lists what loaded and what did not:
+
+- every ticker's price file (date range, number of days, or why it is missing);
+- the classification or holdings data behind each ticker, with its source and date;
+- warnings for anything that changes or limits the numbers. These include missing prices, deposits converted with a scale factor to match IBKR's total, reconciliation differences, dividends IBKR has accrued but not yet paid, and fund data that covers only part of a fund.
+
+The report tab shows a banner with the warning count.
 
 ## Demo
 
@@ -40,7 +57,7 @@ To regenerate it after the price cache updates, run `node tools/make_demo.mjs`. 
 The page reads daily closes from `data/prices/<SYMBOL>.json`. The **Refresh price cache** GitHub Action (`.github/workflows/prices.yml`) keeps them up to date. It runs every weekday after the US close, on manual dispatch, and whenever `data/tickers.json` changes.
 
 - When you buy something new, add its ticker to `data/tickers.json` and push. The workflow fetches its history.
-- Without a cached price file, a symbol's chart falls back to prices taken from the statements themselves (each trade day's close and the period-end marks) joined by straight lines. The totals stay exact either way.
+- Without a price file, a symbol uses only the prices printed in the statements (each trade day's close and the period-end marks). Its chart shows those points, not lines between them, and on other days the last printed price is carried forward. The **Data status** tab flags every such ticker.
 - The cache stores closes that are not split-adjusted, so they match the share quantities on the statements. Dividends are counted as cash, not folded into prices.
 
 ## Publish on GitHub Pages

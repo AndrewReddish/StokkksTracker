@@ -63,27 +63,30 @@ function bars(rows, esc, colorVar = '--s1') {
 }
 function renderMix({ $, esc }) {
   const { look } = ui;
-  const assetColor = { equity: '--s1', bond: '--s3', cash: '--other', unknown: '--s4' };
+  const assetColor = { equity: '--s1', bond: '--s3', cash: '--s6', real_estate: '--s7', other: '--s5', unknown: '--other' };
   $('#ins-assets').innerHTML = bars(look.assets.map(a => ({ label: a.label, w: a.weight, color: assetColor[a.key] })), esc);
-  $('#ins-regions').innerHTML = look.regions.length ? bars(look.regions.map(r => ({ label: r.label, w: r.ofEquity })), esc)
-    : '<p class="sub">No classified stock holdings.</p>';
+  $('#ins-regions').innerHTML = look.regions.length ? bars(look.regions.map(r => ({ label: r.label, w: r.ofEquity, color: r.key === 'unknown' ? '--other' : '--s1' })), esc)
+    : '<p class="sub">No stock holdings.</p>';
   const er = look.fundExpenseRatio;
-  $('#ins-mix-note').textContent = `${isFinite(er) ? `Funds cost ${er.toFixed(2)}% a year on average. ` : ''}Region split is of your stock holdings; fund data is approximate${look.unknown.length ? `; not classified: ${look.unknown.join(', ')}` : ''}.`;
+  const parts = [];
+  if (isFinite(er)) parts.push(`Weighted fund fee ${er.toFixed(2)}% a year (funds with a loaded fee).`);
+  parts.push('"Not classified" is the part with no loaded data; it is shown, not guessed.');
+  $('#ins-mix-note').textContent = parts.join(' ');
 }
 function renderSectorChart({ state, chart, base, tokens, legend }) {
   const T = tokens();
   const rows = ui.look.sectors.slice().reverse();
-  const m = ui.look.marketSectors;
-  legend('#legend-sectors', [[T.s1, 'Your portfolio (looked through funds)'], [T.other, 'S&P 500']]);
+  const m = ui.look.marketSectors?.weights;
+  legend('#legend-sectors', m ? [[T.s1, 'Your stock holdings (looked through funds)'], [T.other, `S&P 500 (${ui.look.marketSectors.source})`]] : [[T.s1, 'Your stock holdings (looked through funds)']]);
   chart('ch-sectors').setOption(base(T, {
     grid: { left: 20, right: 40, top: 4, bottom: 4, containLabel: true },
     xAxis: { type: 'value', show: false },
     yAxis: { type: 'category', data: rows.map(r => r.label), axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: T.ink2, fontSize: 12 } },
     tooltip: { ...base(T).tooltip, trigger: 'axis', axisPointer: { type: 'shadow' }, valueFormatter: v => (v * 100).toFixed(1) + '%' },
     series: [
-      { name: 'Portfolio', type: 'bar', barWidth: 8, barGap: '30%', data: rows.map(r => r.weight), itemStyle: { color: T.s1, borderRadius: [0, 4, 4, 0] },
+      { name: 'Your stock holdings', type: 'bar', barWidth: 8, barGap: '30%', data: rows.map(r => ({ value: r.ofEquity, itemStyle: { color: r.key === 'unknown' ? T.other : T.s1, borderRadius: [0, 4, 4, 0] } })),
         label: { show: true, position: 'right', color: T.ink2, fontSize: 11, formatter: p => (p.value * 100).toFixed(0) + '%' } },
-      { name: 'S&P 500', type: 'bar', barWidth: 8, data: rows.map(r => m[r.key] || 0), itemStyle: { color: T.other, borderRadius: [0, 4, 4, 0] } },
+      ...(m ? [{ name: 'S&P 500', type: 'bar', barWidth: 8, data: rows.map(r => r.key === 'unknown' ? null : (m[r.key] || 0)), itemStyle: { color: T.axis, borderRadius: [0, 4, 4, 0] } }] : []),
     ],
   }));
 }
@@ -96,7 +99,7 @@ function renderCompanies({ $, esc }) {
 function renderOverlap({ $, esc }) {
   const { overlaps } = ui;
   const fs = overlaps.funds;
-  if (fs.length < 2) { $('#ins-overlap').innerHTML = '<p class="sub">You hold fewer than two funds, so there is nothing to compare.</p>'; return; }
+  if (fs.length < 2) { $('#ins-overlap').innerHTML = '<p class="sub">Fewer than two of your funds have loaded holdings, so there is nothing to compare. See Data status.</p>'; return; }
   const get = (a, b) => overlaps.pairs.find(p => (p.a === a && p.b === b) || (p.a === b && p.b === a));
   const cell = (a, b) => {
     if (a === b) return '<td class="ov-self">—</td>';
@@ -107,8 +110,8 @@ function renderOverlap({ $, esc }) {
   const dups = overlaps.pairs.filter(p => p.duplicate);
   $('#ins-overlap').innerHTML = `<div class="table-wrap"><table class="mini ov-table"><thead><tr><th></th>${fs.map(f => `<th>${esc(f)}</th>`).join('')}</tr></thead>
     <tbody>${fs.map(a => `<tr><th class="l">${esc(a)}</th>${fs.map(b => cell(a, b)).join('')}</tr>`).join('')}</tbody></table></div>
-    <p class="sub">Share of holdings two funds have in common, from their disclosed top holdings (same-index funds count as 100%).</p>
-    ${dups.length ? `<p class="warn-line">Duplicates: ${dups.map(p => `${esc(p.a)} = ${esc(p.b)}`).join(', ')}</p>` : ''}
+    <p class="sub">Weight two funds have in common, summed over the holdings loaded for both. Where only a fund's top holdings are loaded, the true overlap can be higher.</p>
+    ${dups.length ? `<p class="warn-line">Near-identical: ${dups.map(p => `${esc(p.a)} and ${esc(p.b)}`).join(', ')}</p>` : ''}
     ${overlaps.doubled.length ? `<p class="sub">Also held inside your funds: ${overlaps.doubled.map(d => `${esc(d.stock)} in ${esc(d.fund)} (${(d.weightInFund * 100).toFixed(1)}% of the fund)`).join('; ')}.</p>` : ''}`;
 }
 
@@ -165,13 +168,12 @@ function renderPlan(ctx) {
   const sm = plan.summary;
   $('#reb-summary').innerHTML = [
     ['Orders', plan.trades.length, `${plan.trades.filter(t => t.side === 'SELL').length} sells · ${plan.trades.filter(t => t.side === 'BUY').length} buys`],
-    ['Sell', money(sm.sells), `realizes about ${signed(sm.gains)}${sm.shortTermGains > 0 ? ` (${money(sm.shortTermGains)} held under a year)` : ''}`],
-    ['Buy', money(sm.buys), `commissions about ${money(sm.commissions, 2)}`],
+    ['Sell', money(sm.sells), 'at the last close'],
+    ['Buy', money(sm.buys), 'at the last close'],
     ['Drift from target', `${(sm.drift * 100).toFixed(1)}%`, 'share of the portfolio in the wrong place today'],
   ].map(([t, v, n]) => `<div class="kpi"><dt>${t}</dt><dd>${v}</dd><div class="note">${n}</div></div>`).join('');
-  $('#tbl-orders').innerHTML = plan.trades.length ? `<thead><tr><th class="l">Order</th><th>Qty</th><th>Price</th><th>Amount</th><th>Est. commission</th><th>Est. gain</th></tr></thead><tbody>${plan.trades.map(t =>
-    `<tr><td class="l"><span class="pill ${t.side === 'BUY' ? 'buy' : 'sell'}">${t.side === 'BUY' ? 'Buy' : 'Sell'}</span> <b>${esc(t.symbol)}</b></td><td>${qtyFmt(t.qty)}</td><td>${money(t.price, 2)}</td><td>${money(t.value, 2)}</td><td>${money(t.commission, 2)}</td>
-     <td class="${t.gain > 0 ? 'up' : t.gain < 0 ? 'down' : ''}">${t.side === 'SELL' ? signed(t.gain) + (t.shortTerm ? ' <small class="muted">&lt;1y</small>' : '') : ''}</td></tr>`).join('')}</tbody>` : '<tbody><tr><td class="l muted">Nothing to trade: you are within the minimum order size of every target.</td></tr></tbody>';
+  $('#tbl-orders').innerHTML = plan.trades.length ? `<thead><tr><th class="l">Order</th><th>Qty</th><th>Last close</th><th>Value at last close</th></tr></thead><tbody>${plan.trades.map(t =>
+    `<tr><td class="l"><span class="pill ${t.side === 'BUY' ? 'buy' : 'sell'}">${t.side === 'BUY' ? 'Buy' : 'Sell'}</span> <b>${esc(t.symbol)}</b></td><td>${qtyFmt(t.qty)}</td><td>${money(t.price, 2)}</td><td>${money(t.value, 2)}</td></tr>`).join('')}</tbody>` : '<tbody><tr><td class="l muted">Nothing to trade: you are within the minimum order size of every target.</td></tr></tbody>';
 }
 export function initRebalanceControls(ctx) {
   const { $ } = ctx;
@@ -204,7 +206,7 @@ export function initRebalanceControls(ctx) {
   });
   $('#reb-copy').addEventListener('click', async () => {
     if (!ui?.plan) return;
-    const text = ui.plan.trades.map(t => `${t.side} ${+t.qty.toFixed(4)} ${t.symbol} @ ~${t.price.toFixed(2)} (~$${t.value.toFixed(0)})`).join('\n') || 'No orders';
+    const text = ui.plan.trades.map(t => `${t.side} ${+t.qty.toFixed(4)} ${t.symbol} (last close ${t.price.toFixed(2)})`).join('\n') || 'No orders';
     const btn = $('#reb-copy');
     try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
     catch { btn.textContent = 'Copy failed'; }

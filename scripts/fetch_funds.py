@@ -92,7 +92,7 @@ def get(url, headers=None, tries=2):
     for i in range(tries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", **(headers or {})})
-            with urllib.request.urlopen(req, timeout=40) as r:
+            with urllib.request.urlopen(req, timeout=20) as r:
                 return r.read()
         except Exception as e:  # noqa: BLE001
             last = e
@@ -314,7 +314,7 @@ def classify_holdings(entry, cache):
     if not (need_sector or need_region):
         return entry
     sectors, regions, sc, rc = {}, {}, 0.0, 0.0
-    for h in entry["holdings"][:60]:
+    for h in entry["holdings"][:40]:
         sym = (h.get("symbol") or "").strip()
         if not sym or sym.lower() == "n/a":
             continue
@@ -324,12 +324,14 @@ def classify_holdings(entry, cache):
             info = {"country": country, "sector": None}
         elif re.fullmatch(r"[A-Z][A-Z0-9.\-]{0,6}", sym):
             info = cache.get(sym)
+            if info is not None and info.get("checked", "") < (dt.date.today() - dt.timedelta(days=30)).isoformat():
+                info = None  # refresh monthly
             if info is None:
                 try:
                     p = nasdaq_profile(sym)
-                    info = {"sector": p.get("sector"), "country": p.get("country")}
+                    info = {"sector": p.get("sector"), "country": p.get("country"), "checked": dt.date.today().isoformat()}
                 except Exception as e:  # noqa: BLE001
-                    info = {"sector": None, "country": None, "error": str(e)[:120]}
+                    info = {"sector": None, "country": None, "error": str(e)[:120], "checked": dt.date.today().isoformat()}
                 cache[sym] = info
                 time.sleep(0.2)
         if not info:
@@ -350,6 +352,25 @@ def classify_holdings(entry, cache):
         entry["regionCoverage"] = round(rc, 4)
         entry["regionSource"] = "holdings' SEC addresses / listing exchanges"
     return entry
+
+
+def etf_profile(sym):
+    """Asset class and expense ratio from the fund's stockanalysis.com overview page."""
+    page = get(f"https://stockanalysis.com/etf/{sym.lower()}/").decode("utf-8", "replace")
+    text = re.sub(r"\|+", "|", re.sub(r"<[^>]+>", "|", page))
+    out = {}
+    m = re.search(r"\|Asset Class\|\s*([^|]{2,40}?)\s*\|", text)
+    if m:
+        out["assetClassName"] = html.unescape(m.group(1)).strip()
+        low = out["assetClassName"].lower()
+        out["assetClass"] = "bond" if ("fixed" in low or "bond" in low) else "equity" if "equity" in low else "real_estate" if "real estate" in low else "cash" if "cash" in low or "money" in low else "other"
+    m = re.search(r"\|Expense Ratio\|\s*([0-9.]+)%\s*\|", text)
+    if m:
+        out["expenseRatio"] = float(m.group(1))
+    if not out:
+        i = text.find("Expense")
+        raise ValueError(f"fields not found; near 'Expense': {text[max(0, i - 80):i + 120]!r}")
+    return out
 
 
 def fetch(sym, kind_hint):
@@ -385,7 +406,7 @@ def main():
     wanted = sys.argv[1:] or sorted(set(cfg["symbols"]) | {"SPY", "QQQ"})
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     ok = 0
-    holding_cache = {}
+    holding_cache = data.setdefault("holdingProfiles", {})  # reused across runs, refreshed monthly
     for sym in wanted:
         prev = data["funds"].get(sym)
         hint = prev.get("kind") if prev else ("etf" if sym in ISSUERS else None)
@@ -394,6 +415,14 @@ def main():
             entry.setdefault("sectorSource", entry.get("source") if entry.get("sectorCoverage") else None)
             entry.setdefault("regionSource", entry.get("source") if entry.get("regionCoverage") else None)
             entry = classify_holdings(entry, holding_cache)
+            if entry.get("kind") == "etf":
+                try:
+                    prof = etf_profile(sym)
+                    entry.update({k: v for k, v in prof.items() if k not in entry or k == "assetClass"})
+                    entry["profileSource"] = "stockanalysis"
+                except Exception as e:  # noqa: BLE001
+                    errors.append(f"profile: {type(e).__name__}: {str(e)[:200]}")
+                    print(f"    {sym} profile failed: {errors[-1]}", file=sys.stderr)
             entry["asOf"] = now[:10]
             data["funds"][sym] = entry
             ok += 1

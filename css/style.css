@@ -279,3 +279,14 @@ input.num { width: 76px; height: 30px; text-align: right; font-variant-numeric: 
   .ai-form .field input { width: 100%; }
   .ai-form .field { flex: 1 1 100%; }
 }
+
+/* ---------- Data status ---------- */
+.tab-badge { display: inline-block; min-width: 18px; padding: 2px 6px; margin-left: 4px; border-radius: 999px; font: 600 11px/1.2 var(--sans); background: #c98500; color: #fff; vertical-align: 1px; }
+.tab-badge.err { background: var(--loss); }
+.f-error { --sev: var(--loss); } .f-warn { --sev: #c98500; } .f-info { --sev: var(--s1); }
+.sev-error { --sev: var(--loss); } .sev-warn { --sev: #c98500; } .sev-info { --sev: var(--s1); }
+.pill.ok { background: color-mix(in srgb, var(--gain) 14%, transparent); color: var(--gain); }
+.pill.bad { background: color-mix(in srgb, var(--loss) 14%, transparent); color: var(--loss); }
+td.wrap { white-space: normal; min-width: 280px; }
+#tab-status code { font: 12px var(--mono); background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+.banner #btn-go-status { margin-left: 8px; vertical-align: middle; }

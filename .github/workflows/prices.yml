@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: prices-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   refresh:
@@ -30,6 +30,7 @@ jobs:
         run: python scripts/fetch_prices.py
       - name: Refresh fund holdings and classifications
         continue-on-error: true
+        timeout-minutes: 25
         run: python scripts/fetch_funds.py
       - name: Commit updated cache
         run: |
