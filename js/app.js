@@ -413,7 +413,8 @@ function renderValueChart(T) {
   // Rescale y to the visible window.
   const lo = rangeStart();
   const vis = s.dates.map((d, i) => d >= lo ? [s.nav[i], s.netDeposits[i], b ? b.same[i] : s.nav[i]] : null).filter(Boolean).flat();
-  c.setOption({ yAxis: { min: Math.floor(Math.min(...vis) * 0.95 / 100) * 100, max: Math.ceil(Math.max(...vis) * 1.03 / 100) * 100 } });
+  const vmin = Math.min(...vis), vmax = Math.max(...vis);
+  c.setOption({ yAxis: { min: vmin < vmax * 0.25 ? 0 : Math.floor(vmin * 0.95 / 100) * 100, max: Math.ceil(vmax * 1.03 / 100) * 100 } });
 }
 
 function renderTwrChart(T) {
