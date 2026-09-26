@@ -27,7 +27,7 @@ The second tab goes beyond reporting:
 - **Rebalance:** start from current weights, equal weight or *Consolidate* (drop positions under 2%, cap each at 20%), or type your own targets. Add new money, a cash reserve, a minimum order size and whole or fractional shares. You get the exact buy and sell orders with estimated commissions and realized gains, and **Copy orders** puts them on the clipboard. Targets are saved in your browser.
 - **AI review (optional):** paste an Anthropic API key and Claude Opus 5 writes a critique with concrete actions, based on a summary of the page. It never sees your name, account number or trade history, and **See exactly what is sent** shows the payload. The key lives only in the tab's memory: it is never stored and never committed. Without a key, **Copy prompt for claude.ai** gives you the same analysis prompt to paste into claude.ai.
 
-`data/funds.json` holds approximate, dated fund data. The price workflow refreshes top holdings, sector weights, expense ratios and stock sectors from Yahoo Finance (`scripts/fetch_funds.py`) and keeps the curated entry when a lookup fails. Fund region splits are curated by hand.
+`data/funds.json` holds approximate, dated fund data, curated by hand. `scripts/fetch_funds.py` can refresh top holdings, sector weights, expense ratios and stock sectors from Yahoo Finance, keeping the curated entry whenever a lookup fails. The daily workflow tries it, but Yahoo currently answers `429 Too Many Requests` to GitHub's runners, so run `python3 scripts/fetch_funds.py` on your own computer and commit the result when you want fresher data. Fund region splits are always curated.
 
 ## Demo
 
