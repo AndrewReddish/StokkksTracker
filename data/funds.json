@@ -5577,7 +5577,7 @@
  "status": {
   "AMZN": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5587,7 +5587,7 @@
   },
   "ASML": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5597,7 +5597,7 @@
   },
   "AVUV": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "stockanalysis"
    ],
@@ -5607,7 +5607,7 @@
   },
   "BND": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5620,7 +5620,7 @@
   },
   "DUOL": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5630,7 +5630,7 @@
   },
   "FICO": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5640,7 +5640,7 @@
   },
   "GOOG": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5650,7 +5650,7 @@
   },
   "IWM": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "ishares",
     "stockanalysis"
@@ -5663,7 +5663,7 @@
   },
   "JNJ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5673,7 +5673,7 @@
   },
   "MMM": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5683,7 +5683,7 @@
   },
   "MSFT": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5693,7 +5693,7 @@
   },
   "MU": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5703,7 +5703,7 @@
   },
   "NDAQ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5713,7 +5713,7 @@
   },
   "NVDA": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5723,7 +5723,7 @@
   },
   "NVO": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5733,7 +5733,7 @@
   },
   "O": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5743,7 +5743,7 @@
   },
   "QQQ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "invesco"
    ],
@@ -5753,7 +5753,7 @@
   },
   "SCHD": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "schwab",
     "stockanalysis"
@@ -5766,7 +5766,7 @@
   },
   "SGOV": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "ishares",
     "stockanalysis"
@@ -5779,7 +5779,7 @@
   },
   "SPY": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "ssga"
    ],
@@ -5789,7 +5789,7 @@
   },
   "V": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "nasdaq"
    ],
@@ -5799,7 +5799,7 @@
   },
   "VNQ": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5812,7 +5812,7 @@
   },
   "VOO": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5825,7 +5825,7 @@
   },
   "VXUS": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "vanguard",
     "stockanalysis"
@@ -5838,7 +5838,7 @@
   },
   "XBI": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "ssga"
    ],
@@ -5848,7 +5848,7 @@
   },
   "XLP": {
    "ok": true,
-   "checkedAt": "2026-09-26T09:27:08+00:00",
+   "checkedAt": "2026-09-26T09:32:30+00:00",
    "attempts": [
     "ssga"
    ],
@@ -5857,7 +5857,7 @@
    "dataAsOf": "2026-09-26"
   }
  },
- "updated": "2026-09-26T09:27:08+00:00",
+ "updated": "2026-09-26T09:32:30+00:00",
  "holdingProfiles": {
   "MATX": {
    "sector": "consumer_discretionary",
