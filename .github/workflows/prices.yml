@@ -31,7 +31,9 @@ jobs:
       - name: Refresh fund holdings and classifications
         continue-on-error: true
         timeout-minutes: 25
-        run: python scripts/fetch_funds.py
+        env:
+          SEC_CONTACT: ${{ vars.SEC_CONTACT }}
+        run: python -u scripts/fetch_funds.py
       - name: Commit updated cache
         run: |
           git config user.name "github-actions[bot]"

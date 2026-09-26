@@ -15,12 +15,14 @@ Standard library only. Usage: python scripts/fetch_funds.py [SYMBOL ...]
 import csv
 import datetime as dt
 import html
+import os
 import io
 import json
 import pathlib
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 import zipfile
 import xml.etree.ElementTree as ET
@@ -65,17 +67,22 @@ EXCHANGE_COUNTRY = {
     "IST": "Turkey", "WSE": "Poland", "TLV": "Israel", "PSE": "Philippines", "QSE": "Qatar", "ADX": "United Arab Emirates", "DFM": "United Arab Emirates",
     "SNSE": "Chile", "BVC": "Colombia", "ATH": "Greece", "BUD": "Hungary", "PRG": "Czech Republic", "KWSE": "Kuwait", "EGX": "Egypt", "BVL": "Peru",
 }
-SEC_UA = "StokkksTracker portfolio dashboard (github.com/AndrewReddish/StokkksTracker; contact via GitHub)"
+# SEC EDGAR requires a User-Agent with a contact e-mail. Set SEC_CONTACT to your own address
+# (e.g. as a repository variable); the default is GitHub Actions' generic no-reply address.
+SEC_UA = "StokkksTracker " + (os.environ.get("SEC_CONTACT") or "41898282+github-actions[bot]@users.noreply.github.com")
 _sec_map = None
+_sec_down = None  # first error; after it SEC is skipped for the rest of the run
 
 
 def sec_country(sym):
     """Country of a company's business address from its SEC filings."""
-    global _sec_map
+    global _sec_map, _sec_down
+    if _sec_down:
+        raise RuntimeError(f"SEC skipped this run ({_sec_down})")
     if _sec_map is None:
         j = json.loads(get("https://www.sec.gov/files/company_tickers.json", {"User-Agent": SEC_UA}))
         _sec_map = {v["ticker"].upper(): int(v["cik_str"]) for v in j.values()}
-    cik = _sec_map.get(sym.upper().replace(".", "-")) or _sec_map.get(sym.upper())
+    cik = (_sec_map or {}).get(sym.upper().replace(".", "-")) or (_sec_map or {}).get(sym.upper())
     if not cik:
         raise ValueError("ticker not in SEC company list")
     sub = json.loads(get(f"https://data.sec.gov/submissions/CIK{cik:010d}.json", {"User-Agent": SEC_UA}))
@@ -94,6 +101,11 @@ def get(url, headers=None, tries=2):
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", **(headers or {})})
             with urllib.request.urlopen(req, timeout=20) as r:
                 return r.read()
+        except urllib.error.HTTPError as e:
+            if 400 <= e.code < 500 and e.code != 429:
+                raise
+            last = e
+            time.sleep(2 * (i + 1))
         except Exception as e:  # noqa: BLE001
             last = e
             time.sleep(2 * (i + 1))
@@ -297,8 +309,13 @@ def nasdaq_profile(sym):
         raise ValueError(f"no sector in profile (not a stock?): {str(j)[:160]}")
     val = lambda k: ((d.get(k) or {}).get("value") or "").strip() or None  # noqa: E731
     country, country_src = None, None
+    global _sec_down
     try:
         country, country_src = sec_country(sym), "sec"
+    except urllib.error.HTTPError as e:
+        if e.code in (403, 429) and not _sec_down:
+            _sec_down = f"HTTP {e.code}"
+            print(f"    SEC refused ({e}); skipping SEC for the rest of this run", file=sys.stderr)
     except Exception as e:  # noqa: BLE001
         print(f"    {sym}: no SEC country ({e})", file=sys.stderr)
     return {"kind": "stock", "name": val("CompanyName"), "sector": sector_key(val("Sector")), "sectorName": val("Sector"), "sectorSource": "nasdaq",
@@ -432,12 +449,18 @@ def main():
             print(f"{sym}: FAILED ({'; '.join(errors)})")
         data["status"][sym] = {"ok": bool(entry), "checkedAt": now, "attempts": attempts, "errors": errors,
                                "source": (entry or prev or {}).get("source"), "dataAsOf": (entry or prev or {}).get("asOf")}
+        save(data, now)
         time.sleep(0.5)
+    save(data, now)
+    print(f"Fetched {ok}/{len(wanted)} symbols")
+
+
+def save(data, now):
+    """Written after every symbol so a timeout keeps what was fetched."""
     data["updated"] = now
     data["funds"] = dict(sorted(data["funds"].items()))
     data["status"] = dict(sorted(data["status"].items()))
     FUNDS.write_text(json.dumps(data, indent=1) + "\n")
-    print(f"Fetched {ok}/{len(wanted)} symbols")
 
 
 if __name__ == "__main__":
