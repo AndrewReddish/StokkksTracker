@@ -1,5 +1,7 @@
 # Broker statements stay on your machine — never commit them.
 *.csv
+# ...except the fictional demo statement shipped with the site.
+!demo/*.csv
 *.xlsx
 *.xls
 *.pdf

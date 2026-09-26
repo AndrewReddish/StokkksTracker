@@ -16,7 +16,13 @@ What you get:
 2. Open the dashboard (GitHub Pages, or locally with `python3 -m http.server` in this folder and then <http://localhost:8000>).
 3. Click **Add statements** or drag the files onto the page. The data stays in the browser's local storage until you click **Forget data**.
 
-> Statements contain personal data. `.gitignore` blocks `*.csv`, so never commit them.
+> Statements contain personal data. `.gitignore` blocks `*.csv` everywhere except `demo/`, so never commit your own.
+
+## Demo
+
+Click **Show demo report** on the start screen, or open the site with `#demo` at the end of the URL, to see the full report for a fictional 2026 account. It uses the same tickers as a real portfolio, made-up deposits and trades, and real daily closes. The demo is never saved, and **Exit demo** returns you to your own data. You can download the sample file (`demo/demo-statement-2026.csv`) to see the expected CSV format.
+
+To regenerate it after the price cache updates, run `node tools/make_demo.mjs`. The output is deterministic, and the script runs the dashboard's own engine to fill in the statement's NAV, TWR and open positions, so the reconciliation always matches.
 
 ## Daily prices
 

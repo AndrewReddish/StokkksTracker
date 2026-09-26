@@ -8,12 +8,14 @@ const $ = sel => document.querySelector(sel);
 const STORE_KEY = 'stokkks.files.v1';
 const THEME_KEY = 'stokkks.theme';
 const EMBED = window.STOKKKS_EMBED || null; // set by the single-file preview build
+const DEMO_URL = 'demo/demo-statement-2026.csv';
 
 let files = [];
 let state = null;          // { model, book, ledger, kpis, extras }
 let charts = {};
 let selected = null;
 let range = 'ALL';
+let demo = false;           // showing the bundled fictional statement
 
 /* ---------- formatting ---------- */
 const nf0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -53,6 +55,7 @@ function initTheme() {
 
 /* ---------- files ---------- */
 function saveFiles() {
+  if (demo) return; // the demo never replaces the viewer's own saved statements
   try { localStorage.setItem(STORE_KEY, JSON.stringify(files)); } catch { /* quota or disabled: stays in memory */ }
 }
 function loadStoredFiles() {
@@ -60,6 +63,7 @@ function loadStoredFiles() {
 }
 async function addFiles(list) {
   const incoming = await Promise.all([...list].map(async f => ({ name: f.name, text: await f.text() })));
+  if (demo) { demo = false; files = []; clearDemoHash(); }
   for (const f of incoming) {
     const i = files.findIndex(x => x.name === f.name);
     if (i >= 0) files[i] = f; else files.push(f);
@@ -67,7 +71,36 @@ async function addFiles(list) {
   saveFiles();
   await run();
 }
+async function loadDemo() {
+  let text;
+  try {
+    const res = await fetch(DEMO_URL, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    text = await res.text();
+  } catch {
+    showEmptyError('The demo statement could not be loaded. If you opened index.html straight from disk, serve the folder instead: run python3 -m http.server and open http://localhost:8000.', true);
+    return;
+  }
+  demo = true;
+  files = [{ name: 'demo-statement-2026.csv', text }];
+  selected = null;
+  await run();
+}
+function exitDemo() {
+  demo = false;
+  clearDemoHash();
+  files = loadStoredFiles();
+  selected = null;
+  if (files.length) { run(); return; }
+  state = null; disposeCharts();
+  $('#report').hidden = true; $('#empty').hidden = false; $('#btn-clear').hidden = true;
+  $('#acct-line').textContent = 'Portfolio report';
+}
+function clearDemoHash() {
+  if (location.hash === '#demo') history.replaceState(null, '', location.pathname + location.search);
+}
 function initIntake() {
+  $('#btn-demo').addEventListener('click', () => loadDemo());
   $('#file-input').addEventListener('change', e => { if (e.target.files.length) addFiles(e.target.files); e.target.value = ''; });
   $('#btn-clear').addEventListener('click', () => {
     const b = $('#btn-clear');
@@ -102,14 +135,14 @@ async function run() {
   state.cache = cache;
   state.extras = buildExtras(state);
   if (!selected || !state.ledger.positions.find(p => p.symbol === selected)) selected = state.ledger.positions[0]?.symbol;
-  $('#empty').hidden = true; $('#report').hidden = false; $('#btn-clear').hidden = !!EMBED;
+  $('#empty').hidden = true; $('#report').hidden = false; $('#btn-clear').hidden = !!EMBED || demo;
   renderAll();
 }
-function showEmptyError(msg) {
+function showEmptyError(msg, raw = false) {
   $('#empty').hidden = false; $('#report').hidden = true;
   let p = $('#drop .err');
   if (!p) { p = document.createElement('p'); p.className = 'err banner'; $('#drop').appendChild(p); }
-  p.textContent = `Could not read that file: ${msg}. Export the Activity Statement from IBKR in CSV format and try again.`;
+  p.textContent = raw ? msg : `Could not read that file: ${msg}. Export the Activity Statement from IBKR in CSV format and try again.`;
 }
 
 function buildExtras({ ledger, book, kpis }) {
@@ -148,13 +181,15 @@ function renderAll() {
 function renderBanners() {
   const { model, ledger, book } = state;
   const out = [];
+  if (demo) out.push('<b>You are viewing a demo portfolio.</b> The account, deposits and trades are fictional; prices are real daily closes. Add your own statements to replace it.<button class="btn btn-sm" id="btn-exit-demo" type="button">Exit demo</button>');
   const stmtOnly = ledger.positions.filter(p => p.priceSource !== 'market').map(p => p.symbol);
   if (stmtOnly.length) {
     out.push(`<b>${stmtOnly.length} of ${ledger.positions.length} symbols have no daily price file yet</b>, so their charts join the prices found in your statements (trade-day closes and period-end marks) with straight lines. Totals are exact; the lines between trades are approximate. To get daily prices, add ${stmtOnly.slice(0, 8).map(s => `<code>${esc(s)}</code>`).join(' ')}${stmtOnly.length > 8 ? ' …' : ''} to <code>data/tickers.json</code> in the repository; the price workflow fetches them.`);
   }
   if (!book.SPY || book.SPY.source !== 'market') out.push('Index comparisons (S&amp;P 500, Nasdaq-100) appear once the price cache includes <code>SPY</code> and <code>QQQ</code>.');
   for (const w of model.warnings) out.push(esc(w));
-  $('#banners').innerHTML = out.map(t => `<div class="banner" role="note"><span class="ico">i</span><div>${t}</div></div>`).join('');
+  $('#banners').innerHTML = out.map((t, i) => `<div class="banner${demo && i === 0 ? ' banner-demo' : ''}" role="note"><span class="ico">i</span><div>${t}</div></div>`).join('');
+  $('#btn-exit-demo')?.addEventListener('click', exitDemo);
 }
 
 function renderHero() {
@@ -317,7 +352,7 @@ function renderFoot() {
   const { model, cache } = state;
   const updated = Object.values(cache).map(c => c.updated).filter(Boolean).sort().at(-1);
   $('#foot').innerHTML = `<div>Built from ${model.statements.map(s => esc(s.fileName || s.periodStart)).join(', ')}. Figures in ${model.baseCcy}; EUR deposits converted at IBKR's own rates.</div>
-    <div>${updated ? `Daily prices updated ${esc(updated.slice(0, 10))}.` : 'No daily price cache found; prices come from your statements.'} Your statements are processed only in this browser${EMBED ? '' : ' and kept in its local storage until you choose Forget data'}.</div>`;
+    <div>${updated ? `Daily prices updated ${esc(updated.slice(0, 10))}.` : 'No daily price cache found; prices come from your statements.'} ${demo ? 'Demo data is not saved.' : `Your statements are processed only in this browser${EMBED ? '' : ' and kept in its local storage until you choose Forget data'}.`}</div>`;
 }
 
 /* ---------- charts ---------- */
@@ -567,4 +602,6 @@ initTheme();
 initIntake();
 initRange();
 files = EMBED?.files || loadStoredFiles();
-if (files.length) run();
+if (!EMBED && location.hash === '#demo') loadDemo();
+else if (files.length) run();
+window.addEventListener('hashchange', () => { if (location.hash === '#demo' && !demo && !EMBED) loadDemo(); });

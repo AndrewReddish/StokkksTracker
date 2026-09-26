@@ -98,6 +98,13 @@ body {
 .drop h1 { font: 500 clamp(30px, 5vw, 44px)/1.08 var(--serif); margin: 0; letter-spacing: -.015em; text-wrap: balance; }
 .lede { color: var(--ink-2); font-size: 16px; max-width: 60ch; margin: 0; }
 .hint { color: var(--muted); font-size: 12.5px; margin: 6px 0 0; }
+.hint a { color: var(--ink-2); text-underline-offset: 2px; }
+.drop-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn-sm { height: 28px; padding: 0 10px; font-size: 12px; }
+.banner > div { flex: 1; min-width: 0; }
+.banner.banner-demo { background: color-mix(in srgb, var(--s4) 16%, var(--surface)); }
+.banner.banner-demo .ico { background: var(--s4); color: #111417; }
+.banner.banner-demo .btn { margin-left: 10px; vertical-align: middle; }
 .eyebrow { font: 500 11.5px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
 .dropveil { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 18%, transparent); backdrop-filter: blur(2px); }
 .dropveil div { background: var(--surface); padding: 18px 26px; border-radius: 12px; font: 500 18px var(--serif); box-shadow: var(--shadow); }

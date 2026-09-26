@@ -1,0 +1,234 @@
+﻿Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers LLC
+Statement,Data,Title,Activity Statement
+Statement,Data,Period,"January 1, 2026 - September 25, 2026"
+Statement,Data,WhenGenerated,"2026-09-25, 18:00:00 EDT"
+Account Information,Header,Field Name,Field Value
+Account Information,Data,Name,Demo Investor
+Account Information,Data,Account,U0000000
+Account Information,Data,Account Type,Individual
+Account Information,Data,Account Capabilities,Cash
+Account Information,Data,Base Currency,USD
+Net Asset Value,Header,Asset Class,Prior Total,Current Long,Current Short,Current Total,Change
+Net Asset Value,Data,Cash ,0,84.90723,0,84.90723,84.90723
+Net Asset Value,Data,Stock,0,13890.67,0,13890.67,13890.67
+Net Asset Value,Data,Total,0,13975.57723,0,13975.57723,13975.57723
+Net Asset Value,Header,Time Weighted Rate of Return
+Net Asset Value,Data,12.215208957%
+Change in NAV,Header,Field Name,Field Value
+Change in NAV,Data,Starting Value,0
+Change in NAV,Data,Mark-to-Market,886.846010402
+Change in NAV,Data,Deposits & Withdrawals,13036.12325
+Change in NAV,Data,Dividends,149.2
+Change in NAV,Data,Withholding Tax,-22.38
+Change in NAV,Data,Interest,3.79
+Change in NAV,Data,Commissions,-78
+Change in NAV,Data,Ending Value,13975.57723
+Cash Report,Header,Currency Summary,Currency,Total,Securities,Futures,
+Cash Report,Data,Starting Cash,Base Currency Summary,0,0,0,
+Cash Report,Data,Ending Cash,Base Currency Summary,84.90723,84.90723,0,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Stocks,USD,AVUV,13,1,121.477692308,1579.21,120.410004,1565.33,-13.879948,
+Open Positions,Data,Summary,Stocks,USD,MSFT,0.5646,1,501.861165427,283.350814,516.169983,291.43,8.078758402,
+Open Positions,Data,Summary,Stocks,USD,NDAQ,20,1,85.88005,1717.601,93.550003,1871,153.39906,
+Open Positions,Data,Summary,Stocks,USD,O,21,1,61.151904762,1284.19,55.540001,1166.34,-117.849979,
+Open Positions,Data,Summary,Stocks,USD,QQQ,3.165,1,703.225634439,2225.709133,744.5,2356.34,130.633367,
+Open Positions,Data,Summary,Stocks,USD,SCHD,91,1,31.321065934,2850.217,33.209999,3022.11,171.892909,
+Open Positions,Data,Summary,Stocks,USD,VXUS,40,1,82.76335,3310.534,86.349998,3454,143.46592,
+Open Positions,Data,Summary,Stocks,USD,XLP,2,1,84.02,168.04,82.059998,164.12,-3.920004,
+Mark-to-Market Performance Summary,Header,Asset Category,Symbol,Prior Quantity,Current Quantity,Prior Price,Current Price,Mark-to-Market P/L Position,Mark-to-Market P/L Transaction,Mark-to-Market P/L Commissions,Mark-to-Market P/L Other,Mark-to-Market P/L Total,Code
+Mark-to-Market Performance Summary,Data,Stocks,AMZN,0,0,--,--,0,0,-2,0,-65.72,
+Mark-to-Market Performance Summary,Data,Stocks,ASML,0,0,--,--,0,0,-2,0,245.22712,
+Mark-to-Market Performance Summary,Data,Stocks,AVUV,0,13,--,120.4100,0,0,-5,0,-6.559948,
+Mark-to-Market Performance Summary,Data,Stocks,BND,0,0,--,--,0,0,-4,0,-6.598,
+Mark-to-Market Performance Summary,Data,Stocks,GOOG,0,0,--,--,0,0,-3,0,55.05,
+Mark-to-Market Performance Summary,Data,Stocks,MSFT,0,0.5646,--,516.1700,0,0,-1,0,8.508758402,
+Mark-to-Market Performance Summary,Data,Stocks,NDAQ,0,20,--,93.5500,0,0,-6,0,162.80906,
+Mark-to-Market Performance Summary,Data,Stocks,NVDA,0,0,--,--,0,0,-3,0,31.14,
+Mark-to-Market Performance Summary,Data,Stocks,O,0,21,--,55.5400,0,0,-6,0,-89.159979,
+Mark-to-Market Performance Summary,Data,Stocks,QQQ,0,3.165,--,744.5000,0,0,-7,0,226.410174,
+Mark-to-Market Performance Summary,Data,Stocks,SCHD,0,91,--,33.2100,0,0,-8,0,214.982909,
+Mark-to-Market Performance Summary,Data,Stocks,VXUS,0,40,--,86.3500,0,0,-7,0,167.43592,
+Mark-to-Market Performance Summary,Data,Stocks,XBI,0,0,--,--,0,0,-3,0,14.22,
+Mark-to-Market Performance Summary,Data,Stocks,XLP,0,2,--,82.0600,0,0,-1,0,-2.080004,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,AMZN,"2026-01-06, 10:14:05",2,241.38,240.929993,-482.76,-1,483.76,0,-0.9,O
+Trades,Data,Order,Stocks,USD,AMZN,"2026-03-18, 11:25:07",-2,209.52,209.869995,419.04,-1,-483.76,-65.72,-0.7,C
+Trades,Data,Order,Stocks,USD,ASML,"2026-01-06, 14:46:48",0.394,1239.38,1242.189941,-488.31572,-1,489.31572,0,1.1071,O
+Trades,Data,Order,Stocks,USD,ASML,"2026-06-17, 13:00:22",-0.394,1866.86,1867.829956,735.54284,-1,-489.31572,245.22712,-0.3822,C
+Trades,Data,Order,Stocks,USD,AVUV,"2026-03-17, 14:57:10",2,107.69,107.68,-215.38,-1,216.38,0,-0.02,O
+Trades,Data,Order,Stocks,USD,AVUV,"2026-04-23, 12:40:18",4,118.85,118.889999,-475.4,-1,476.4,0,0.16,O
+Trades,Data,Order,Stocks,USD,AVUV,"2026-07-20, 13:11:11",2,124.47,124.57,-248.94,-1,249.94,0,0.2,O
+Trades,Data,Order,Stocks,USD,AVUV,"2026-08-11, 10:00:55",4,127.19,127.220001,-508.76,-1,509.76,0,0.12,O
+Trades,Data,Order,Stocks,USD,AVUV,"2026-08-20, 13:50:30",1,125.73,125.620003,-125.73,-1,126.73,0,-0.11,O
+Trades,Data,Order,Stocks,USD,BND,"2026-01-06, 11:52:39",6,74.149,74.18,-444.894,-1,445.894,0,0.186,O
+Trades,Data,Order,Stocks,USD,BND,"2026-05-05, 11:33:02",1,73.411,73.239998,-73.411,-1,74.411,0,-0.171,O
+Trades,Data,Order,Stocks,USD,BND,"2026-07-20, 10:32:46",1,72.497,72.68,-72.497,-1,73.497,0,0.183,O
+Trades,Data,Order,Stocks,USD,BND,"2026-07-21, 13:44:30",-8,72.573,72.519997,580.584,-1,-593.802,-14.218,0.424,C
+Trades,Data,Order,Stocks,USD,GOOG,"2026-01-06, 10:04:14",1,314,314.549988,-314,-1,315,0,0.55,O
+Trades,Data,Order,Stocks,USD,GOOG,"2026-02-17, 11:41:19",1,303.05,302.820007,-303.05,-1,304.05,0,-0.23,O
+Trades,Data,Order,Stocks,USD,GOOG,"2026-04-22, 14:34:33",-2,337.37,337.730011,674.74,-1,-619.05,54.69,-0.72,C
+Trades,Data,Order,Stocks,USD,MSFT,"2026-09-04, 11:26:07",0.5646,500.09,499.700012,-282.350814,-1,283.350814,0,-0.2202,O
+Trades,Data,Order,Stocks,USD,NDAQ,"2026-02-17, 11:15:33",3,80.27,80.239998,-240.81,-1,241.81,0,-0.09,O
+Trades,Data,Order,Stocks,USD,NDAQ,"2026-02-24, 10:34:31",5,80.986,81.110001,-404.93,-1,405.93,0,0.62,O
+Trades,Data,Order,Stocks,USD,NDAQ,"2026-04-09, 10:44:15",1,84.339,84.209999,-84.339,-1,85.339,0,-0.129,O
+Trades,Data,Order,Stocks,USD,NDAQ,"2026-06-22, 13:06:24",4,82.587,82.610001,-330.348,-1,331.348,0,0.092,O
+Trades,Data,Order,Stocks,USD,NDAQ,"2026-08-20, 15:05:15",2,97.302,97.550003,-194.604,-1,195.604,0,0.496,O
+Trades,Data,Order,Stocks,USD,NDAQ,"2026-09-17, 13:28:19",5,91.314,91.309998,-456.57,-1,457.57,0,-0.02,O
+Trades,Data,Order,Stocks,USD,NVDA,"2026-01-06, 12:27:00",2,187.7,187.240005,-375.4,-1,376.4,0,-0.92,O
+Trades,Data,Order,Stocks,USD,NVDA,"2026-02-20, 12:01:20",-1,189.51,189.820007,189.51,-1,-188.2,0.31,-0.31,C
+Trades,Data,Order,Stocks,USD,NVDA,"2026-08-18, 15:08:59",-1,220.03,219.740005,220.03,-1,-188.2,30.83,0.29,C
+Trades,Data,Order,Stocks,USD,O,"2026-01-06, 15:00:09",8,57.376,57.419998,-459.008,-1,460.008,0,0.352,O
+Trades,Data,Order,Stocks,USD,O,"2026-03-17, 12:10:14",1,64.188,64.089996,-64.188,-1,65.188,0,-0.098,O
+Trades,Data,Order,Stocks,USD,O,"2026-04-09, 15:06:06",3,63.268,63.200001,-189.804,-1,190.804,0,-0.204,O
+Trades,Data,Order,Stocks,USD,O,"2026-04-23, 11:56:28",4,64.007,64.080002,-256.028,-1,257.028,0,0.292,O
+Trades,Data,Order,Stocks,USD,O,"2026-05-05, 14:16:12",1,63.706,63.57,-63.706,-1,64.706,0,-0.136,O
+Trades,Data,Order,Stocks,USD,O,"2026-09-04, 12:38:03",4,61.364,61.25,-245.456,-1,246.456,0,-0.456,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-01-06, 15:08:19",0.783,623.53,623.419983,-488.22399,-1,489.22399,0,-0.0861,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-04-23, 14:19:05",1.0002,649.97,651.419983,-650.099994,-1,651.099994,0,1.4503,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-05-05, 09:37:29",0.4094,680.01,681.609985,-278.396094,-1,279.396094,0,0.655,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-06-05, 11:51:27",0.5329,705.1,705.059998,-375.74779,-1,376.74779,0,-0.0213,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-08-11, 15:33:12",0.8772,717.79,718.450012,-629.645388,-1,630.645388,0,0.579,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-09-04, 13:04:18",0.9187,718.5,718.960022,-660.08595,-1,661.08595,0,0.4226,O
+Trades,Data,Order,Stocks,USD,QQQ,"2026-09-15, 11:19:28",-1.3564,704.2,704.539978,955.17688,-1,-862.490073,91.686807,-0.4611,C
+Trades,Data,Order,Stocks,USD,SCHD,"2026-01-06, 14:21:15",17,28.067,28.09,-477.139,-1,478.139,0,0.391,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-03-17, 13:24:37",9,30.987,30.950001,-278.883,-1,279.883,0,-0.333,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-03-20, 10:36:11",9,30.308,30.389999,-272.772,-1,273.772,0,0.738,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-05-05, 09:21:03",10,31.658,31.690001,-316.58,-1,317.58,0,0.32,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-05-21, 12:44:36",11,32.295,32.25,-355.245,-1,356.245,0,-0.495,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-06-05, 12:57:42",13,32.393,32.299999,-421.109,-1,422.109,0,-1.209,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-07-20, 10:21:53",11,32.754,32.75,-360.294,-1,361.294,0,-0.044,O
+Trades,Data,Order,Stocks,USD,SCHD,"2026-07-23, 13:58:10",11,32.745,32.799999,-360.195,-1,361.195,0,0.605,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-01-06, 10:42:04",6,77.448,77.620003,-464.688,-1,465.688,0,1.032,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-02-17, 14:01:37",12,82.185,82.230003,-986.22,-1,987.22,0,0.54,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-03-20, 10:51:03",3,74.709,74.709999,-224.127,-1,225.127,0,0.003,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-05-21, 15:55:04",4,84.681,84.580002,-338.724,-1,339.724,0,-0.404,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-06-22, 11:57:18",5,87.171,87.059998,-435.855,-1,436.855,0,-0.555,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-07-23, 11:48:36",4,83.37,83.620003,-333.48,-1,334.48,0,1,O
+Trades,Data,Order,Stocks,USD,VXUS,"2026-09-17, 10:37:21",6,86.74,86.5,-520.44,-1,521.44,0,-1.44,O
+Trades,Data,Order,Stocks,USD,XBI,"2026-01-06, 15:35:26",3,122.15,122.089996,-366.45,-1,367.45,0,-0.18,O
+Trades,Data,Order,Stocks,USD,XBI,"2026-02-17, 14:11:25",1,124.33,124.629997,-124.33,-1,125.33,0,0.3,O
+Trades,Data,Order,Stocks,USD,XBI,"2026-05-19, 10:24:37",-4,127,126.790001,508,-1,-492.78,14.22,0.84,C
+Trades,Data,Order,Stocks,USD,XLP,"2026-04-23, 14:56:41",2,83.52,83.480003,-167.04,-1,168.04,0,-0.08,O
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,,Proceeds,Comm in USD,,,MTM in USD,Code
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-01-06, 15:22:12","-4,200",1.17132,,4919.544,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-02-17, 13:30:53","-1,175",1.18482,,1392.1635,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-03-17, 09:28:25",-550,1.15024,,632.632,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-04-09, 13:43:50",-525,1.16624,,612.276,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-04-23, 13:25:30",-525,1.17057,,614.54925,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-05-05, 13:30:24",-700,1.16873,,818.111,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-06-05, 11:05:42",-750,1.16138,,871.035,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-07-20, 11:17:59",-625,1.14262,,714.1375,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-08-11, 12:15:23","-1,125",1.15476,,1299.105,-2,,,0,
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-09-04, 14:50:59","-1,000",1.16257,,1162.57,-2,,,0,
+Deposits & Withdrawals,Header,Currency,Settle Date,Description,Amount
+Deposits & Withdrawals,Data,EUR,2026-01-05,Electronic Fund Transfer,4200
+Deposits & Withdrawals,Data,EUR,2026-02-13,Electronic Fund Transfer,1175
+Deposits & Withdrawals,Data,EUR,2026-03-16,Electronic Fund Transfer,550
+Deposits & Withdrawals,Data,EUR,2026-04-08,Electronic Fund Transfer,525
+Deposits & Withdrawals,Data,EUR,2026-04-22,Electronic Fund Transfer,525
+Deposits & Withdrawals,Data,EUR,2026-05-04,Electronic Fund Transfer,700
+Deposits & Withdrawals,Data,EUR,2026-06-04,Electronic Fund Transfer,750
+Deposits & Withdrawals,Data,EUR,2026-07-17,Electronic Fund Transfer,625
+Deposits & Withdrawals,Data,EUR,2026-08-10,Electronic Fund Transfer,1125
+Deposits & Withdrawals,Data,EUR,2026-09-03,Electronic Fund Transfer,1000
+Deposits & Withdrawals,Data,Total,,,11175
+Deposits & Withdrawals,Data,Total in USD,,,13036.12325
+Deposits & Withdrawals,Data,Total Deposits & Withdrawals in USD,,,13036.12325
+Dividends,Header,Currency,Date,Description,Amount
+Dividends,Data,USD,2026-01-15,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),2.16
+Dividends,Data,USD,2026-02-05,BND(US9219378356) Cash Dividend USD 0.23 per Share (Ordinary Dividend),1.38
+Dividends,Data,USD,2026-02-17,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),2.16
+Dividends,Data,USD,2026-03-05,BND(US9219378356) Cash Dividend USD 0.23 per Share (Ordinary Dividend),1.38
+Dividends,Data,USD,2026-03-16,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),2.16
+Dividends,Data,USD,2026-03-16,GOOG(US02079K1079) Cash Dividend USD 0.21 per Share (Ordinary Dividend),0.42
+Dividends,Data,USD,2026-03-23,VXUS(US9219097683) Cash Dividend USD 0.31 per Share (Ordinary Dividend),6.51
+Dividends,Data,USD,2026-03-25,SCHD(US8085247976) Cash Dividend USD 0.26 per Share (Ordinary Dividend),9.1
+Dividends,Data,USD,2026-03-26,AVUV(US0250728773) Cash Dividend USD 0.41 per Share (Ordinary Dividend),0.82
+Dividends,Data,USD,2026-03-27,NDAQ(US6311031081) Cash Dividend USD 0.27 per Share (Ordinary Dividend),2.16
+Dividends,Data,USD,2026-03-30,QQQ(US46090E1038) Cash Dividend USD 0.72 per Share (Ordinary Dividend),0.56
+Dividends,Data,USD,2026-04-06,BND(US9219378356) Cash Dividend USD 0.23 per Share (Ordinary Dividend),1.38
+Dividends,Data,USD,2026-04-15,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),3.24
+Dividends,Data,USD,2026-05-05,BND(US9219378356) Cash Dividend USD 0.23 per Share (Ordinary Dividend),1.61
+Dividends,Data,USD,2026-05-15,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),4.59
+Dividends,Data,USD,2026-06-05,BND(US9219378356) Cash Dividend USD 0.23 per Share (Ordinary Dividend),1.61
+Dividends,Data,USD,2026-06-15,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),4.59
+Dividends,Data,USD,2026-06-22,VXUS(US9219097683) Cash Dividend USD 0.31 per Share (Ordinary Dividend),9.3
+Dividends,Data,USD,2026-06-24,XLP(US81369Y3080) Cash Dividend USD 0.54 per Share (Ordinary Dividend),1.08
+Dividends,Data,USD,2026-06-25,SCHD(US8085247976) Cash Dividend USD 0.26 per Share (Ordinary Dividend),17.94
+Dividends,Data,USD,2026-06-26,AVUV(US0250728773) Cash Dividend USD 0.41 per Share (Ordinary Dividend),2.46
+Dividends,Data,USD,2026-06-29,NDAQ(US6311031081) Cash Dividend USD 0.27 per Share (Ordinary Dividend),3.51
+Dividends,Data,USD,2026-06-30,QQQ(US46090E1038) Cash Dividend USD 0.72 per Share (Ordinary Dividend),1.96
+Dividends,Data,USD,2026-07-06,BND(US9219378356) Cash Dividend USD 0.23 per Share (Ordinary Dividend),1.61
+Dividends,Data,USD,2026-07-15,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),4.59
+Dividends,Data,USD,2026-08-17,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),4.59
+Dividends,Data,USD,2026-09-11,MSFT(US5949181045) Cash Dividend USD 0.91 per Share (Ordinary Dividend),0.51
+Dividends,Data,USD,2026-09-15,O(US7561091049) Cash Dividend USD 0.27 per Share (Ordinary Dividend),5.67
+Dividends,Data,USD,2026-09-22,VXUS(US9219097683) Cash Dividend USD 0.31 per Share (Ordinary Dividend),12.4
+Dividends,Data,USD,2026-09-24,XLP(US81369Y3080) Cash Dividend USD 0.54 per Share (Ordinary Dividend),1.08
+Dividends,Data,USD,2026-09-25,SCHD(US8085247976) Cash Dividend USD 0.26 per Share (Ordinary Dividend),23.66
+Dividends,Data,USD,2026-09-25,QQQ(US46090E1038) Cash Dividend USD 0.72 per Share (Ordinary Dividend),2.28
+Dividends,Data,USD,2026-09-25,AVUV(US0250728773) Cash Dividend USD 0.41 per Share (Ordinary Dividend),5.33
+Dividends,Data,USD,2026-09-25,NDAQ(US6311031081) Cash Dividend USD 0.27 per Share (Ordinary Dividend),5.4
+Dividends,Data,Total,,,149.2
+Withholding Tax,Header,Currency,Date,Description,Amount,Code
+Withholding Tax,Data,USD,2026-01-15,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.32,
+Withholding Tax,Data,USD,2026-02-05,BND(US9219378356) Cash Dividend USD 0.23 per Share - US Tax,-0.21,
+Withholding Tax,Data,USD,2026-02-17,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.32,
+Withholding Tax,Data,USD,2026-03-05,BND(US9219378356) Cash Dividend USD 0.23 per Share - US Tax,-0.21,
+Withholding Tax,Data,USD,2026-03-16,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.32,
+Withholding Tax,Data,USD,2026-03-16,GOOG(US02079K1079) Cash Dividend USD 0.21 per Share - US Tax,-0.06,
+Withholding Tax,Data,USD,2026-03-23,VXUS(US9219097683) Cash Dividend USD 0.31 per Share - US Tax,-0.98,
+Withholding Tax,Data,USD,2026-03-25,SCHD(US8085247976) Cash Dividend USD 0.26 per Share - US Tax,-1.37,
+Withholding Tax,Data,USD,2026-03-26,AVUV(US0250728773) Cash Dividend USD 0.41 per Share - US Tax,-0.12,
+Withholding Tax,Data,USD,2026-03-27,NDAQ(US6311031081) Cash Dividend USD 0.27 per Share - US Tax,-0.32,
+Withholding Tax,Data,USD,2026-03-30,QQQ(US46090E1038) Cash Dividend USD 0.72 per Share - US Tax,-0.08,
+Withholding Tax,Data,USD,2026-04-06,BND(US9219378356) Cash Dividend USD 0.23 per Share - US Tax,-0.21,
+Withholding Tax,Data,USD,2026-04-15,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.49,
+Withholding Tax,Data,USD,2026-05-05,BND(US9219378356) Cash Dividend USD 0.23 per Share - US Tax,-0.24,
+Withholding Tax,Data,USD,2026-05-15,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.69,
+Withholding Tax,Data,USD,2026-06-05,BND(US9219378356) Cash Dividend USD 0.23 per Share - US Tax,-0.24,
+Withholding Tax,Data,USD,2026-06-15,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.69,
+Withholding Tax,Data,USD,2026-06-22,VXUS(US9219097683) Cash Dividend USD 0.31 per Share - US Tax,-1.4,
+Withholding Tax,Data,USD,2026-06-24,XLP(US81369Y3080) Cash Dividend USD 0.54 per Share - US Tax,-0.16,
+Withholding Tax,Data,USD,2026-06-25,SCHD(US8085247976) Cash Dividend USD 0.26 per Share - US Tax,-2.69,
+Withholding Tax,Data,USD,2026-06-26,AVUV(US0250728773) Cash Dividend USD 0.41 per Share - US Tax,-0.37,
+Withholding Tax,Data,USD,2026-06-29,NDAQ(US6311031081) Cash Dividend USD 0.27 per Share - US Tax,-0.53,
+Withholding Tax,Data,USD,2026-06-30,QQQ(US46090E1038) Cash Dividend USD 0.72 per Share - US Tax,-0.29,
+Withholding Tax,Data,USD,2026-07-06,BND(US9219378356) Cash Dividend USD 0.23 per Share - US Tax,-0.24,
+Withholding Tax,Data,USD,2026-07-15,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.69,
+Withholding Tax,Data,USD,2026-08-17,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.69,
+Withholding Tax,Data,USD,2026-09-11,MSFT(US5949181045) Cash Dividend USD 0.91 per Share - US Tax,-0.08,
+Withholding Tax,Data,USD,2026-09-15,O(US7561091049) Cash Dividend USD 0.27 per Share - US Tax,-0.85,
+Withholding Tax,Data,USD,2026-09-22,VXUS(US9219097683) Cash Dividend USD 0.31 per Share - US Tax,-1.86,
+Withholding Tax,Data,USD,2026-09-24,XLP(US81369Y3080) Cash Dividend USD 0.54 per Share - US Tax,-0.16,
+Withholding Tax,Data,USD,2026-09-25,SCHD(US8085247976) Cash Dividend USD 0.26 per Share - US Tax,-3.55,
+Withholding Tax,Data,USD,2026-09-25,QQQ(US46090E1038) Cash Dividend USD 0.72 per Share - US Tax,-0.34,
+Withholding Tax,Data,USD,2026-09-25,AVUV(US0250728773) Cash Dividend USD 0.41 per Share - US Tax,-0.8,
+Withholding Tax,Data,USD,2026-09-25,NDAQ(US6311031081) Cash Dividend USD 0.27 per Share - US Tax,-0.81,
+Withholding Tax,Data,Total,,,-22.38,
+Interest,Header,Currency,Date,Description,Amount
+Interest,Data,USD,2026-02-02,USD IBKR Managed Securities (SYEP) Interest for Jan-2026,0.66
+Interest,Data,USD,2026-03-02,USD IBKR Managed Securities (SYEP) Interest for Feb-2026,0.14
+Interest,Data,USD,2026-04-01,USD IBKR Managed Securities (SYEP) Interest for Mar-2026,0.36
+Interest,Data,USD,2026-05-01,USD IBKR Managed Securities (SYEP) Interest for Apr-2026,0.15
+Interest,Data,USD,2026-06-01,USD IBKR Managed Securities (SYEP) Interest for May-2026,0.83
+Interest,Data,USD,2026-07-01,USD IBKR Managed Securities (SYEP) Interest for Jun-2026,0.85
+Interest,Data,USD,2026-08-03,USD IBKR Managed Securities (SYEP) Interest for Jul-2026,0.1
+Interest,Data,USD,2026-09-01,USD IBKR Managed Securities (SYEP) Interest for Aug-2026,0.7
+Interest,Data,Total,,,3.79
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Underlying,Listing Exch,Multiplier,Type,Code
+Financial Instrument Information,Data,Stocks,AMZN,AMAZON.COM INC,3691937,US0231351067,AMZN,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,ASML,ASML HOLDING NV-NY REG SHS,117902840,USN070592100,ASML,NASDAQ,1,NY REG SHRS,
+Financial Instrument Information,Data,Stocks,AVUV,AVANTIS US SMALL CAP VALUE,385087149,US0250728773,AVUV,ARCA,1,ETF,
+Financial Instrument Information,Data,Stocks,BND,VANGUARD TOTAL BOND MARKET,43645828,US9219378356,BND,NASDAQ,1,ETF,
+Financial Instrument Information,Data,Stocks,GOOG,ALPHABET INC-CL C,208813720,US02079K1079,GOOG,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,MSFT,MICROSOFT CORP,272093,US5949181045,MSFT,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,NDAQ,NASDAQ INC,29380756,US6311031081,NDAQ,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,NVDA,NVIDIA CORP,4815747,US67066G1040,NVDA,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,O,REALTY INCOME CORP,10672,US7561091049,O,NYSE,1,REIT,
+Financial Instrument Information,Data,Stocks,QQQ,INVESCO QQQ TRUST SERIES 1,320227571,US46090E1038,QQQ,NASDAQ,1,ETF,
+Financial Instrument Information,Data,Stocks,SCHD,SCHWAB US DVD EQUITY ETF,96079912,US8085247976,SCHD,ARCA,1,ETF,
+Financial Instrument Information,Data,Stocks,VXUS,VANGUARD TOTAL INTL STOCK,83512168,US9219097683,VXUS,NASDAQ,1,ETF,
+Financial Instrument Information,Data,Stocks,XBI,SS SPDR S&P BIOTECH ETF,45540828,US78464A8707,XBI,ARCA,1,ETF,
+Financial Instrument Information,Data,Stocks,XLP,SS CONSUMER STAPLES SEL SECT,4215210,US81369Y3080,XLP,ARCA,1,ETF,
