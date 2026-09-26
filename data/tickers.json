@@ -1,0 +1,9 @@
+{
+  "start": "2025-01-01",
+  "symbols": [
+    "AMZN", "ASML", "AVUV", "BND", "DUOL", "FICO", "GOOG", "IWM", "JNJ", "MMM",
+    "MSFT", "MU", "NDAQ", "NVDA", "NVO", "O", "QQQ", "SCHD", "SGOV", "SPY",
+    "V", "VNQ", "VOO", "VXUS", "XBI", "XLP"
+  ],
+  "fx": ["EUR"]
+}
