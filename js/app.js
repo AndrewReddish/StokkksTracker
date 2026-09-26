@@ -389,7 +389,7 @@ function renderYears() {
 function renderFoot() {
   const { model, cache } = state;
   const updated = Object.values(cache).map(c => c.updated).filter(Boolean).sort().at(-1);
-  $('#foot').innerHTML = `<div>Built from ${model.statements.map(s => esc(s.fileName || s.periodStart)).join(', ')}. Figures in ${model.baseCcy}; EUR deposits converted at IBKR's own rates.</div>
+  $('#foot').innerHTML = `<div>Built from ${model.statements.map(s => esc(s.fileName || s.periodStart)).join(', ')}. Figures in ${model.baseCcy}. Non-${model.baseCcy} deposits use each day's exchange rate, scaled to IBKR's totals (see Data status).</div>
     <div>${updated ? `Daily prices updated ${esc(updated.slice(0, 10))}.` : 'No daily price cache found; prices come from your statements.'} ${demo ? 'Demo data is not saved.' : `Your statements are processed only in this browser${EMBED ? '' : ' and kept in its local storage until you choose Forget data'}.`}</div>`;
 }
 
