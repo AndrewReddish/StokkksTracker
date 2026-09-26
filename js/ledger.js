@@ -12,16 +12,26 @@ function groupBy(arr, key) {
   return m;
 }
 
-// Converts each deposit into base currency at the day's FX rate, then scales
-// per statement so the total matches IBKR's own "Total in <base>" figure.
-function depositsInBase(model, book) {
+// Converts each deposit into base currency at that day's observed FX rate, then scales
+// per statement so the total equals IBKR's own "Total in <base>" figure. The scale
+// factor (and any deposit with no observed rate) is reported on the Data status page.
+function depositsInBase(model, book, warnings, fxNotes) {
   const out = model.deposits.map(d => ({ ...d, base: d.amount * book.fx(d.ccy)(d.date) }));
   for (const s of model.statements) {
     for (const [ccy, tot] of Object.entries(s.depositTotals || {})) {
       if (ccy === model.baseCcy || !isFinite(tot.base)) continue;
       const inPeriod = out.filter(d => d.ccy === ccy && d.date >= s.periodStart && d.date <= s.periodEnd);
+      const missing = inPeriod.filter(d => !isFinite(d.base));
+      if (missing.length) {
+        // No observed rate: fall back to IBKR's own period total, spread by amount.
+        for (const d of inPeriod) d.base = d.amount * tot.base / tot.native;
+        warnings.push({ level: 'warn', area: 'FX', text: `No ${ccy}/${model.baseCcy} rate for ${missing.length} deposit(s) in ${s.periodStart} – ${s.periodEnd}; those deposits use IBKR's period total divided by the ${ccy} amount.` });
+        fxNotes.push({ ccy, period: `${s.periodStart} – ${s.periodEnd}`, native: tot.native, base: tot.base, scale: null });
+        continue;
+      }
       const sum = inPeriod.reduce((a, d) => a + d.base, 0);
       if (sum) for (const d of inPeriod) d.base *= tot.base / sum;
+      fxNotes.push({ ccy, period: `${s.periodStart} – ${s.periodEnd}`, native: tot.native, base: tot.base, scale: sum ? tot.base / sum : null });
     }
   }
   return out;
@@ -29,7 +39,8 @@ function depositsInBase(model, book) {
 
 export function runLedger(model, book, { endDate } = {}) {
   const base = model.baseCcy;
-  const deposits = depositsInBase(model, book);
+  const warnings = [], fxNotes = [], unpriced = new Map();
+  const deposits = depositsInBase(model, book, warnings, fxNotes);
   const first = model.statements[0];
 
   // Events keyed by date.
@@ -66,6 +77,7 @@ export function runLedger(model, book, { endDate } = {}) {
     }
     cash[base] = isFinite(first.cash['Starting Cash']) ? first.cash['Starting Cash'] : 0;
     opening = first.nav.start;
+    warnings.push({ level: 'warn', area: 'History', text: `The earliest statement starts on ${first.periodStart} with money already in the account. Add the statements before it for exact cost basis; until then, positions held on that date use that day's close as their cost, and the opening value counts as the first deposit.` });
   }
 
   const lastDate = endDate || model.periodEnd;
@@ -163,11 +175,16 @@ export function runLedger(model, book, { endDate } = {}) {
       const q = qtyOf(sym);
       if (Math.abs(q) < 1e-9) continue;
       const px = book[sym] ? book[sym].at(d) : NaN;
-      const v = q * (isFinite(px) ? px : costOf(sym) / q);
+      if (!isFinite(px) && !unpriced.has(sym)) unpriced.set(sym, d);
+      const v = isFinite(px) ? q * px : 0; // no observed price: not valued (reported on Data status)
       holdings[sym] = v; qtys[sym] = q; costs[sym] = costOf(sym); invested += v; cost += costs[sym];
     }
     let cashBase = 0;
-    for (const [ccy, amt] of Object.entries(cash)) cashBase += amt * book.fx(ccy)(d);
+    for (const [ccy, amt] of Object.entries(cash)) {
+      const r = book.fx(ccy)(d);
+      if (isFinite(r)) cashBase += amt * r;
+      else if (Math.abs(amt) > 0.005 && !unpriced.has('cash:' + ccy)) unpriced.set('cash:' + ccy, d);
+    }
     series.dates.push(d);
     series.nav.push(invested + cashBase);
     series.netDeposits.push(netDeposits);
@@ -206,7 +223,8 @@ export function runLedger(model, book, { endDate } = {}) {
     };
   }).sort((a, b) => b.value - a.value || b.total - a.total);
 
-  return { series, positions, deposits, totals, flowsXirr, cashByCcy: cash, startDate, endDate: end };
+  for (const [sym, d] of unpriced) warnings.push({ level: 'error', area: 'Prices', text: sym.startsWith('cash:') ? `${sym.slice(5)} cash has no exchange rate from ${d}; it is left out of the portfolio value.` : `${sym} has no observed price from ${d}; it is left out of the portfolio value until one exists.` });
+  return { series, positions, deposits, totals, flowsXirr, cashByCcy: cash, startDate, endDate: end, warnings, fxNotes };
 }
 
 // Money-weighted return: annualised IRR of dated cash flows (negative = money in).

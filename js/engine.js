@@ -13,7 +13,7 @@ export function parseFiles(files) {
 
 export function neededSymbols(model) {
   const syms = new Set(model.trades.filter(t => t.kind !== 'forex').map(t => t.symbol));
-  model.mtm.forEach(m => syms.add(m.symbol));
+  model.mtm.filter(m => m.category !== 'Forex').forEach(m => syms.add(m.symbol));
   const fx = new Set(model.deposits.map(d => d.ccy).filter(c => c !== model.baseCcy));
   return { symbols: [...syms].sort(), fx: [...fx].map(fxCacheName), benchmarks: BENCHMARKS };
 }

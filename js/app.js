@@ -3,12 +3,17 @@ import { parseFiles, analyze, neededSymbols } from './engine.js';
 import { loadPriceCache } from './prices.js';
 import { twrIndex, drawdown, periodReturns, benchmarkSameFlows, priceIndex } from './metrics.js';
 import { addDays } from './ledger.js';
+import { loadFunds } from './insights.js';
+import { renderInsights, renderInsightsCharts, initRebalanceControls, initAiControls } from './insights-ui.js';
+import { renderStatus } from './status-ui.js';
+import { MASK, moneyHidden, setMoneyHidden } from './privacy.js';
 
 const $ = sel => document.querySelector(sel);
 const STORE_KEY = 'stokkks.files.v1';
 const THEME_KEY = 'stokkks.theme';
 const EMBED = window.STOKKKS_EMBED || null; // set by the single-file preview build
 const DEMO_URL = 'demo/demo-statement-2026.csv';
+const TAB_KEY = 'stokkks.tab';
 
 let files = [];
 let state = null;          // { model, book, ledger, kpis, extras }
@@ -16,12 +21,14 @@ let charts = {};
 let selected = null;
 let range = 'ALL';
 let demo = false;           // showing the bundled fictional statement
+let fundsDb = null;         // data/funds.json: fund holdings and classifications
+let tab = 'report';
 
 /* ---------- formatting ---------- */
 const nf0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const nf2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const money = (v, d = 0) => !isFinite(v) ? '—' : (v < 0 ? '−$' : '$') + (d ? nf2 : nf0).format(Math.abs(v));
-const signed = (v, d = 0) => !isFinite(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + '$' + (d ? nf2 : nf0).format(Math.abs(v));
+const money = (v, d = 0) => !isFinite(v) ? '—' : moneyHidden() ? MASK : (v < 0 ? '−$' : '$') + (d ? nf2 : nf0).format(Math.abs(v));
+const signed = (v, d = 0) => !isFinite(v) ? '—' : moneyHidden() ? MASK : (v > 0 ? '+' : v < 0 ? '−' : '') + '$' + (d ? nf2 : nf0).format(Math.abs(v));
 const pct = (v, d = 1) => !isFinite(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v * 100).toFixed(d) + '%';
 const qtyFmt = q => !isFinite(q) ? '—' : Math.abs(q - Math.round(q)) < 1e-9 ? nf0.format(q) : q.toFixed(4).replace(/0+$/, '');
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
@@ -38,6 +45,16 @@ function tokens() {
     s1: g('--s1'), s2: g('--s2'), s3: g('--s3'), s4: g('--s4'), s5: g('--s5'), s6: g('--s6'), s7: g('--s7'), other: g('--other'),
     gain: g('--gain'), loss: g('--loss'), deposit: g('--deposit'), accent: g('--accent'), sans: g('--sans'), mono: g('--mono'),
   };
+}
+function initPrivacy() {
+  const b = $('#btn-privacy');
+  const sync = () => { b.setAttribute('aria-pressed', String(moneyHidden())); b.textContent = moneyHidden() ? 'Show $' : 'Hide $'; };
+  sync();
+  b.addEventListener('click', () => {
+    setMoneyHidden(!moneyHidden());
+    sync();
+    if (state) renderAll();
+  });
 }
 function initTheme() {
   try { const t = localStorage.getItem(THEME_KEY); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -130,9 +147,14 @@ async function run() {
     return;
   }
   const need = neededSymbols(model);
-  const cache = EMBED?.prices || await loadPriceCache([...need.symbols, ...need.benchmarks, ...need.fx]);
+  const loaded = EMBED ? { prices: EMBED.prices, status: Object.fromEntries(Object.keys(EMBED.prices).map(k => [k, { state: 'loaded' }])) }
+    : await loadPriceCache([...need.symbols, ...need.benchmarks, ...need.fx]);
+  const cache = loaded.prices;
   state = analyze(model, cache);
   state.cache = cache;
+  state.priceStatus = loaded.status;
+  state.need = need;
+  fundsDb ||= EMBED?.funds || await loadFunds();
   state.extras = buildExtras(state);
   if (!selected || !state.ledger.positions.find(p => p.symbol === selected)) selected = state.ledger.positions[0]?.symbol;
   $('#empty').hidden = true; $('#report').hidden = false; $('#btn-clear').hidden = !!EMBED || demo;
@@ -163,7 +185,6 @@ function renderAll() {
   const { model, kpis, ledger } = state;
   const acct = model.accounts.join(', ');
   $('#acct-line').textContent = `${model.name || 'Account'} · ${acct} · ${model.baseCcy}`;
-  renderBanners();
   renderHero();
   renderOpenTable();
   renderClosedTable();
@@ -175,21 +196,49 @@ function renderAll() {
   renderTradeFilter();
   renderTrades();
   renderFoot();
+  try { renderInsights(insightsCtx()); }
+  catch (err) { console.error('Insights failed', err); }
+  try { state.dataWarnings = renderStatus(insightsCtx()); }
+  catch (err) { console.error('Data status failed', err); }
+  renderBanners();
   renderCharts();
+}
+function insightsCtx() {
+  // Getters so event handlers bound at start-up always see the latest analysis.
+  return { get state() { return state; }, get fundsDb() { return fundsDb; }, get demo() { return demo; }, $, esc, money, signed, pct, qtyFmt, cls, tokens, chart, base, legend };
+}
+function initTabs() {
+  const TABS = ['report', 'insights', 'status'];
+  try { const t = localStorage.getItem(TAB_KEY); tab = TABS.includes(t) ? t : 'report'; } catch {}
+  const show = (t, fromClick) => {
+    tab = t;
+    document.querySelectorAll('.tabs [role=tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+    for (const x of TABS) $(`#tab-${x}`).hidden = t !== x;
+    try { localStorage.setItem(TAB_KEY, t); } catch {}
+    if (state) renderCharts();
+    if (fromClick) $('.tabs').scrollIntoView({ block: 'nearest' });
+  };
+  document.querySelectorAll('.tabs [role=tab]').forEach(b => {
+    b.addEventListener('click', () => show(b.dataset.tab, true));
+    b.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const i = TABS.indexOf(b.dataset.tab);
+      const next = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length];
+      show(next, false); $(`#tabbtn-${next}`).focus();
+    });
+  });
+  show(tab, false);
 }
 
 function renderBanners() {
-  const { model, ledger, book } = state;
   const out = [];
   if (demo) out.push('<b>You are viewing a demo portfolio.</b> The account, deposits and trades are fictional; prices are real daily closes. Add your own statements to replace it.<button class="btn btn-sm" id="btn-exit-demo" type="button">Exit demo</button>');
-  const stmtOnly = ledger.positions.filter(p => p.priceSource !== 'market').map(p => p.symbol);
-  if (stmtOnly.length) {
-    out.push(`<b>${stmtOnly.length} of ${ledger.positions.length} symbols have no daily price file yet</b>, so their charts join the prices found in your statements (trade-day closes and period-end marks) with straight lines. Totals are exact; the lines between trades are approximate. To get daily prices, add ${stmtOnly.slice(0, 8).map(s => `<code>${esc(s)}</code>`).join(' ')}${stmtOnly.length > 8 ? ' …' : ''} to <code>data/tickers.json</code> in the repository; the price workflow fetches them.`);
-  }
-  if (!book.SPY || book.SPY.source !== 'market') out.push('Index comparisons (S&amp;P 500, Nasdaq-100) appear once the price cache includes <code>SPY</code> and <code>QQQ</code>.');
-  for (const w of model.warnings) out.push(esc(w));
+  const w = state.dataWarnings || [];
+  const errs = w.filter(x => x.level === 'error').length, warns = w.filter(x => x.level === 'warn').length;
+  if (errs || warns) out.push(`<b>${[errs && `${errs} data error${errs > 1 ? 's' : ''}`, warns && `${warns} warning${warns > 1 ? 's' : ''}`].filter(Boolean).join(' and ')}.</b> Some data did not load, so parts of the report are incomplete. <button class="btn btn-sm" id="btn-go-status" type="button">Open Data status</button>`);
   $('#banners').innerHTML = out.map((t, i) => `<div class="banner${demo && i === 0 ? ' banner-demo' : ''}" role="note"><span class="ico">i</span><div>${t}</div></div>`).join('');
   $('#btn-exit-demo')?.addEventListener('click', exitDemo);
+  $('#btn-go-status')?.addEventListener('click', () => $('#tabbtn-status').click());
 }
 
 function renderHero() {
@@ -265,7 +314,7 @@ function renderDetailSelect() {
 function renderDetailText() {
   const p = state.ledger.positions.find(x => x.symbol === selected);
   if (!p) return;
-  const src = p.priceSource === 'market' ? 'daily closes' : 'statement prices joined by straight lines';
+  const src = p.priceSource === 'market' ? 'daily closes' : 'only the prices printed in your statements (no daily price file; see Data status)';
   $('#detail-title').textContent = `${p.symbol} · ${p.name}`;
   $('#detail-sub').textContent = `${p.type ? p.type + ' · ' : ''}${p.open ? 'Open' : 'Closed'} · first bought ${fmtDate(p.firstDate)} · price line from ${src}`;
   const items = p.open ? [
@@ -351,7 +400,7 @@ function renderYears() {
 function renderFoot() {
   const { model, cache } = state;
   const updated = Object.values(cache).map(c => c.updated).filter(Boolean).sort().at(-1);
-  $('#foot').innerHTML = `<div>Built from ${model.statements.map(s => esc(s.fileName || s.periodStart)).join(', ')}. Figures in ${model.baseCcy}; EUR deposits converted at IBKR's own rates.</div>
+  $('#foot').innerHTML = `<div>Built from ${model.statements.map(s => esc(s.fileName || s.periodStart)).join(', ')}. Figures in ${model.baseCcy}. Non-${model.baseCcy} deposits use each day's exchange rate, scaled to IBKR's totals (see Data status).</div>
     <div>${updated ? `Daily prices updated ${esc(updated.slice(0, 10))}.` : 'No daily price cache found; prices come from your statements.'} ${demo ? 'Demo data is not saved.' : `Your statements are processed only in this browser${EMBED ? '' : ' and kept in its local storage until you choose Forget data'}.`}</div>`;
 }
 
@@ -387,7 +436,7 @@ const valAxis = (T, fmt) => ({
   axisLabel: { color: T.muted, fontSize: 11, formatter: fmt },
   splitLine: { lineStyle: { color: T.hair, width: 1 } },
 });
-const kfmt = v => (v < 0 ? '−' : '') + '$' + (Math.abs(v) >= 1000 ? (Math.abs(v) / 1000).toFixed(Math.abs(v) >= 10000 ? 0 : 1) + 'k' : nf0.format(Math.abs(v)));
+const kfmt = v => moneyHidden() ? MASK : (v < 0 ? '−' : '') + '$' + (Math.abs(v) >= 1000 ? (Math.abs(v) / 1000).toFixed(Math.abs(v) >= 10000 ? 0 : 1) + 'k' : nf0.format(Math.abs(v)));
 const pfmt = v => (v > 0 ? '+' : '') + Math.round(v * 100) + '%';
 const legend = (id, items) => { $(id).innerHTML = items.map(([c, t, shape = '']) => `<span><i class="${shape}" style="background:${c};color:${c}"></i>${t}</span>`).join(''); };
 const ttRow = (c, name, val) => `<div style="display:flex;gap:10px;justify-content:space-between;align-items:center"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:6px"></span>${name}</span><b style="font-variant-numeric:tabular-nums">${val}</b></div>`;
@@ -405,6 +454,9 @@ function rangeStart() {
 
 function renderCharts() {
   const T = tokens();
+  // Charts only render into the visible tab; hidden containers have no size.
+  if (tab === 'insights') { renderInsightsCharts(insightsCtx()); return; }
+  if (tab === 'status') return;
   renderValueChart(T);
   renderTwrChart(T);
   renderMonthly(T);
@@ -512,19 +564,22 @@ function renderDetailCharts(T = tokens()) {
   const from = addDays(p.firstDate, -21) < s.dates[0] ? s.dates[0] : addDays(p.firstDate, -21);
   const to = p.open ? end : (addDays(p.lastDate, 30) > end ? end : addDays(p.lastDate, 30));
   const days = s.dates.filter(d => d >= from && d <= to);
-  const price = days.map(d => [d, book ? +book.at(d).toFixed(4) : null]);
+  // Daily closes when loaded; otherwise only the observed statement prices, drawn as points.
+  const market = book?.source === 'market';
+  const price = market ? days.filter(d => book.cached && d >= book.cached.first).map(d => [d, +book.at(d).toFixed(4)])
+    : (book?.points.dates || []).map((d, i) => [d, book.points.prices[i]]).filter(([d]) => d >= from && d <= to);
   const idx0 = s.dates.indexOf(days[0]);
   const avg = days.map((d, k) => { const q = s.qty[idx0 + k][p.symbol]; return [d, q ? s.costs[idx0 + k][p.symbol] / q : null]; });
   const amounts = p.trades.map(t => t.amount);
   const maxAmt = Math.max(...amounts, 1);
   const size = a => 9 + 13 * Math.sqrt(a / maxAmt);
   const mk = side => p.trades.filter(t => t.side === side).map(t => ({ value: [t.date, t.price], t, symbolSize: size(t.amount) }));
-  legend('#legend-price', [[T.ink2, book?.source === 'market' ? 'Daily close' : 'Price (from statements)'], [T.muted, 'Average cost', 'dash'], [T.s1, 'Buy', 'tri-up'], [T.s2, 'Sell', 'tri-down']]);
+  legend('#legend-price', [[T.ink2, market ? 'Daily close' : 'Statement price (observed points only)', market ? '' : 'dot'], [T.muted, 'Average cost', 'dash'], [T.s1, 'Buy', 'tri-up'], [T.s2, 'Sell', 'tri-down']]);
   const tradeTip = t => `<div style="font-weight:600;margin-bottom:4px">${t.side === 'BUY' ? 'Bought' : 'Sold'} ${esc(t.symbol)} · ${fmtDate(t.date)}</div>
     ${ttRow(t.side === 'BUY' ? T.s1 : T.s2, 'Quantity', qtyFmt(Math.abs(t.qty)))}${ttRow(T.ink2, 'Price', money(t.price, 2))}${ttRow(T.ink2, 'Amount', money(t.amount, 2))}
     ${t.side === 'SELL' ? ttRow(t.realizedBase >= 0 ? T.gain : T.loss, 'Realized', signed(t.realizedBase, 2)) : ''}${ttRow(T.muted, 'Position after', qtyFmt(t.qtyAfter))}`;
   chart('ch-price').setOption(base(T, {
-    xAxis: timeAxis(T), yAxis: valAxis(T, v => '$' + nf0.format(v)),
+    xAxis: timeAxis(T), yAxis: valAxis(T, v => moneyHidden() ? MASK : '$' + nf0.format(v)),
     tooltip: { ...base(T).tooltip, formatter: ps => {
       const arr = Array.isArray(ps) ? ps : [ps];
       const tr = arr.find(x => x.data?.t);
@@ -534,7 +589,8 @@ function renderDetailCharts(T = tokens()) {
       return `<div style="font-weight:600;margin-bottom:4px">${fmtDate(d)}</div>${pr ? ttRow(T.ink2, 'Price', money(pr.value[1], 2)) : ''}${ac && ac.value[1] ? ttRow(T.muted, 'Average cost', money(ac.value[1], 2)) : ''}`;
     } },
     series: [
-      { name: 'Price', type: 'line', data: price, showSymbol: false, lineStyle: { width: 1.5, color: T.ink2 }, itemStyle: { color: T.ink2 }, z: 2 },
+      market ? { name: 'Price', type: 'line', data: price, showSymbol: false, lineStyle: { width: 1.5, color: T.ink2 }, itemStyle: { color: T.ink2 }, z: 2 }
+        : { name: 'Price', type: 'scatter', data: price, symbolSize: 6, itemStyle: { color: T.ink2 }, z: 2 },
       { name: 'Average cost', type: 'line', step: 'end', data: avg, showSymbol: false, connectNulls: false, lineStyle: { width: 1.5, color: T.muted, type: [5, 4] }, itemStyle: { color: T.muted }, z: 1 },
       { name: 'Buy', type: 'scatter', data: mk('BUY'), symbol: 'triangle', itemStyle: { color: T.s1, borderColor: T.surface, borderWidth: 2 }, z: 5, tooltip: { trigger: 'item' } },
       { name: 'Sell', type: 'scatter', data: mk('SELL'), symbol: 'triangle', symbolRotate: 180, itemStyle: { color: T.s2, borderColor: T.surface, borderWidth: 2 }, z: 5, tooltip: { trigger: 'item' } },
@@ -558,7 +614,7 @@ function renderDivChart(T) {
   const label = p => new Date(p + '-01T00:00:00Z').toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' });
   chart('ch-divs').setOption(base(T, {
     xAxis: { type: 'category', data: m.map(x => label(x[0])), axisLine: { lineStyle: { color: T.axis } }, axisTick: { show: false }, axisLabel: { color: T.muted, fontSize: 11, hideOverlap: true } },
-    yAxis: { ...valAxis(T, v => '$' + nf0.format(v)), scale: false },
+    yAxis: { ...valAxis(T, v => moneyHidden() ? MASK : '$' + nf0.format(v)), scale: false },
     tooltip: { ...base(T).tooltip, trigger: 'item', formatter: p => `<b>${p.name}</b><br>${money(p.value, 2)} net` },
     series: [{ type: 'bar', barMaxWidth: 22, data: m.map(x => x[1]), itemStyle: { color: T.s1, borderRadius: [4, 4, 0, 0] } }],
   }));
@@ -599,8 +655,12 @@ let rt;
 window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => Object.values(charts).forEach(c => c.resize()), 120); });
 
 initTheme();
+initPrivacy();
 initIntake();
 initRange();
+initTabs();
+initRebalanceControls(insightsCtx());
+initAiControls(insightsCtx());
 files = EMBED?.files || loadStoredFiles();
 if (!EMBED && location.hash === '#demo') loadDemo();
 else if (files.length) run();

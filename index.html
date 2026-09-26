@@ -25,6 +25,7 @@
       <label class="btn btn-primary" for="file-input">Add statements</label>
       <input id="file-input" type="file" accept=".csv,text/csv" multiple hidden>
       <button class="btn btn-ghost" id="btn-clear" type="button" hidden>Forget data</button>
+      <button class="btn btn-ghost" id="btn-privacy" type="button" aria-pressed="false" title="Replace every dollar amount with $$$">Hide $</button>
       <button class="btn btn-ghost icon-btn" id="btn-theme" type="button" aria-label="Switch theme" title="Switch theme">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
       </button>
@@ -47,6 +48,14 @@
 
   <main id="report" hidden>
     <div id="banners"></div>
+
+    <nav class="tabs" role="tablist" aria-label="Report sections">
+      <button type="button" role="tab" id="tabbtn-report" data-tab="report" aria-selected="true" aria-controls="tab-report">Performance</button>
+      <button type="button" role="tab" id="tabbtn-insights" data-tab="insights" aria-selected="false" aria-controls="tab-insights">Insights &amp; rebalance</button>
+      <button type="button" role="tab" id="tabbtn-status" data-tab="status" aria-selected="false" aria-controls="tab-status">Data status</button>
+    </nav>
+
+    <div id="tab-report" role="tabpanel" aria-labelledby="tabbtn-report">
 
     <section class="hero">
       <div>
@@ -137,6 +146,116 @@
       </div>
       <div class="table-wrap tall"><table class="data" id="tbl-trades"></table></div>
     </section>
+
+    </div>
+
+    <div id="tab-insights" role="tabpanel" aria-labelledby="tabbtn-insights" hidden>
+      <section class="hero hero-sm">
+        <div>
+          <p class="eyebrow">Portfolio checkup</p>
+          <h1 class="hero-line" id="ins-headline"></h1>
+        </div>
+        <div class="sev-row" id="ins-counts"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><div><h2>Findings</h2><p class="sub">Automatic checks for concentration, overlap, diversification, costs and behaviour. Thresholds are rules of thumb, not advice.</p></div></div>
+        <div class="findings" id="ins-findings"></div>
+      </section>
+
+      <section class="grid-2">
+        <div class="block">
+          <div class="block-head"><div><h2>Sector exposure</h2><p class="sub">Share of your stock holdings by sector, with funds split into their loaded holdings.</p></div></div>
+          <div class="legend" id="legend-sectors"></div>
+          <div class="chart chart-sectors" id="ch-sectors"></div>
+        </div>
+        <div class="block">
+          <div class="block-head"><div><h2>Asset classes and regions</h2><p class="sub" id="ins-mix-note"></p></div></div>
+          <h3 class="h3">Asset classes</h3>
+          <div class="hbars" id="ins-assets"></div>
+          <h3 class="h3">Regions (share of stocks)</h3>
+          <div class="hbars" id="ins-regions"></div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="block">
+          <div class="block-head"><div><h2>Largest underlying companies</h2><p class="sub">Direct holdings plus each fund's loaded holdings, as a share of the whole portfolio.</p></div></div>
+          <div class="table-wrap"><table class="mini" id="tbl-companies"></table></div>
+        </div>
+        <div class="block">
+          <div class="block-head"><div><h2>Fund overlap</h2><p class="sub">Funds that hold the same companies add cost and complexity without adding diversification.</p></div></div>
+          <div id="ins-overlap"></div>
+        </div>
+      </section>
+
+      <section class="block" id="rebalance">
+        <div class="block-head">
+          <div><h2>Rebalance</h2><p class="sub">Pick a starting point, adjust target weights, and see the exact buy and sell orders to get there. Targets are saved in this browser.</p></div>
+          <div class="seg" id="reb-preset" role="group" aria-label="Target preset">
+            <button type="button" data-preset="current">Current weights</button>
+            <button type="button" data-preset="equal">Equal weight</button>
+            <button type="button" data-preset="consolidate">Consolidate</button>
+            <button type="button" data-preset="custom">Custom</button>
+          </div>
+        </div>
+        <div class="controls">
+          <label class="field"><span>New money to invest ($)</span><input id="reb-new" type="number" min="0" step="50" inputmode="decimal"></label>
+          <label class="field"><span>Keep in cash (%)</span><input id="reb-cash" type="number" min="0" max="50" step="0.5" inputmode="decimal"></label>
+          <label class="field"><span>Skip orders under ($)</span><input id="reb-min" type="number" min="0" step="5" inputmode="decimal"></label>
+          <label class="check"><input id="reb-frac" type="checkbox"> Fractional shares</label>
+        </div>
+        <p class="sub preset-help"><b>Consolidate</b> drops positions under 2% and caps any single holding at 20%. <b>Equal weight</b> gives every current holding the same share.</p>
+        <div class="table-wrap"><table class="data" id="tbl-targets"></table></div>
+        <form class="add-row" id="reb-add">
+          <label class="field"><span>Add ticker</span><input id="reb-add-sym" type="text" placeholder="e.g. VOO" autocomplete="off" spellcheck="false"></label>
+          <label class="field"><span>Target %</span><input id="reb-add-w" type="number" min="0" max="100" step="0.5"></label>
+          <label class="field"><span>Price (if not cached)</span><input id="reb-add-px" type="number" min="0" step="0.01"></label>
+          <button class="btn" type="submit">Add to targets</button>
+          <span class="sub" id="reb-add-msg" role="status"></span>
+        </form>
+        <dl class="kpis kpis-sm" id="reb-summary"></dl>
+        <div class="block-head orders-head"><h3 class="h3">Orders</h3><button class="btn btn-sm" id="reb-copy" type="button">Copy orders</button></div>
+        <div class="table-wrap"><table class="data" id="tbl-orders"></table></div>
+        <p class="sub">Quantities and values use the last daily close. Commissions, spreads and taxes are not included; your broker shows them before you confirm an order.</p>
+      </section>
+
+      <section class="block" id="ai">
+        <div class="block-head"><div><h2>AI review with Claude</h2><p class="sub">Claude reads a summary of this page (holdings, weights, exposure, findings, targets) and writes a critique with concrete actions. Your name, account number and trade history are not sent.</p></div></div>
+        <form class="ai-form" id="ai-form" autocomplete="off">
+          <label class="field field-wide"><span>Your goals (optional)</span>
+            <textarea id="ai-goals" rows="3" placeholder="e.g. 20+ year horizon, EU tax resident, invest €1,000 a month, want a simple global core with a few stock picks"></textarea></label>
+          <label class="field"><span>Anthropic API key</span>
+            <input id="ai-key" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false"></label>
+          <div class="ai-buttons">
+            <button class="btn btn-primary" id="ai-run" type="submit">Run AI review</button>
+            <button class="btn" id="ai-copy" type="button">Copy prompt for claude.ai</button>
+          </div>
+        </form>
+        <p class="sub">The key stays in this tab's memory: it is never saved, never committed, and only sent to api.anthropic.com. Get one at console.anthropic.com; each review is billed to that key at Claude Opus 5 API rates, and the token count is shown with the result. No key? Copy the prompt and paste it into claude.ai.</p>
+        <details class="payload"><summary>See exactly what is sent</summary><pre id="ai-payload"></pre></details>
+        <div id="ai-out" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <div id="tab-status" role="tabpanel" aria-labelledby="tabbtn-status" hidden>
+      <section class="hero hero-sm">
+        <div>
+          <p class="eyebrow">Data status</p>
+          <h1 class="hero-line">What loaded, from where, and what is missing.</h1>
+        </div>
+        <dl class="kpis" id="st-summary"></dl>
+      </section>
+      <section class="block">
+        <div class="block-head"><div><h2>Warnings</h2><p class="sub">Nothing in the report is estimated. Where data is missing it is left out or shown as "Not classified", and listed here.</p></div></div>
+        <div class="findings" id="st-warnings"></div>
+      </section>
+      <section class="block">
+        <div class="block-head"><div><h2>Tickers</h2><p class="sub" id="st-sources"></p></div></div>
+        <div class="table-wrap"><table class="data" id="tbl-status"></table></div>
+        <p class="sub">Daily prices: <code>data/prices/</code>, fetched by the "Refresh price cache" workflow for the tickers in <code>data/tickers.json</code>. Classification and holdings: <code>data/funds.json</code>, fetched by <code>scripts/fetch_funds.py</code> from fund issuers, stockanalysis.com, Nasdaq and SEC EDGAR. Statement prices: closing prices printed next to your trades and at period ends.</p>
+      </section>
+    </div>
 
     <footer class="foot" id="foot"></footer>
   </main>

@@ -8,6 +8,7 @@ on:
     paths:
       - data/tickers.json
       - scripts/fetch_prices.py
+      - scripts/fetch_funds.py
       - .github/workflows/prices.yml
 
 permissions:
@@ -15,7 +16,7 @@ permissions:
 
 concurrency:
   group: prices-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   refresh:
@@ -27,15 +28,21 @@ jobs:
           python-version: "3.12"
       - name: Fetch daily closes
         run: python scripts/fetch_prices.py
+      - name: Refresh fund holdings and classifications
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          SEC_CONTACT: ${{ vars.SEC_CONTACT }}
+        run: python -u scripts/fetch_funds.py
       - name: Commit updated cache
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/prices
+          git add data/prices data/funds.json
           if git diff --cached --quiet; then
             echo "No price changes"
           else
-            git commit -m "Update price cache $(date -u +%F)"
+            git commit -m "Update price and fund data $(date -u +%F)"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
