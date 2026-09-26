@@ -69,7 +69,7 @@ function renderMix({ $, esc }) {
     : '<p class="sub">No stock holdings.</p>';
   const er = look.fundExpenseRatio;
   const parts = [];
-  if (isFinite(er)) parts.push(`Weighted fund fee ${er.toFixed(2)}% a year (funds with a loaded fee).`);
+  if (isFinite(er)) parts.push(`Weighted fund fee ${er.toFixed(2)}% a year${ui.look.erCoverage < 0.999 ? ` (fees loaded for ${(ui.look.erCoverage * 100).toFixed(0)}% of your funds by value)` : ''}.`);
   parts.push('"Not classified" is the part with no loaded data; it is shown, not guessed.');
   $('#ins-mix-note').textContent = parts.join(' ');
 }

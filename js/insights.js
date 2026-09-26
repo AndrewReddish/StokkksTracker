@@ -48,7 +48,7 @@ export function lookThrough(positions, cash, fundsDb) {
   const companies = {}, sectors = {}, regions = {}, assets = {};
   if (cash > 0) assets.cash = cash / total;
   const missing = [];
-  let erW = 0, erBase = 0, equityW = 0;
+  let erW = 0, erBase = 0, fundW = 0, equityW = 0;
   const addTo = (map, k, w) => { map[k] = (map[k] || 0) + w; };
   const addCompany = (sym, name, w, via) => {
     const k = canon(sym, aliases);
@@ -74,6 +74,7 @@ export function lookThrough(positions, cash, fundsDb) {
       continue;
     }
     addTo(assets, f.assetClass || 'unknown', w);
+    fundW += w;
     for (const h of f.holdings || []) if (h.symbol && h.symbol !== 'n/a') addCompany(h.symbol, h.name, w * h.weight, p.symbol);
     if (f.assetClass === 'equity' || f.assetClass === 'real_estate') {
       for (const [k, v] of Object.entries(fundBreakdown(f, 'sectors', 'sectorCoverage'))) addTo(sectors, k, w * v);
@@ -94,7 +95,7 @@ export function lookThrough(positions, cash, fundsDb) {
     sectors: sectorList, regions: regionList, assets: fmt(assets, ASSET_LABELS),
     sectorUnknown: sectors.unknown ? sectors.unknown / (equityW || 1) : 0,
     regionUnknown: regions.unknown ? regions.unknown / (equityW || 1) : 0,
-    missing, fundExpenseRatio: erBase ? erW / erBase : NaN, erCoverage: erBase,
+    missing, fundExpenseRatio: erBase ? erW / erBase : NaN, erCoverage: fundW ? erBase / fundW : 0,
     marketSectors: benchmarkSectors(funds), fundsDb,
   };
 }
@@ -209,7 +210,7 @@ export function healthChecks({ kpis, ledger, look, overlaps, bench }) {
 
   if (isFinite(look.fundExpenseRatio)) {
     const pricey = open.filter(p => (funds[p.symbol]?.expenseRatio || 0) >= RULES.expensiveFund);
-    const cov = look.erCoverage < 0.999 ? ` for the funds with a loaded fee (${pct(look.erCoverage)} of the portfolio)` : '';
+    const cov = look.erCoverage < 0.999 ? ` (fees loaded for ${pct(look.erCoverage)} of your fund holdings)` : ' across your funds';
     add(pricey.length ? 'low' : 'good', 'fees', `Weighted fund fee ${look.fundExpenseRatio.toFixed(2)}% a year${cov}`,
       pricey.length ? `${pricey.map(p => `${p.symbol} (${funds[p.symbol].expenseRatio}%)`).join(', ')} cost ${RULES.expensiveFund}% or more a year.` : `No fund costs ${RULES.expensiveFund}% or more a year.`);
   }

@@ -213,8 +213,6 @@ def vanguard(sym):
                     break
                 raise ValueError(f"not JSON; starts: {raw[:160]!r}")
             ents = (j.get("fund") or {}).get("entity") or []
-            if start == 1 and ents:
-                print(f"    vanguard {kind} fields: {sorted(ents[0].keys())}")
             for e in ents:
                 holdings.append({"symbol": e.get("ticker"), "name": e.get("longName") or e.get("shortName"), "weight": num(e.get("percentWeight")),
                                  "sector": e.get("sectorName") or e.get("sector"), "country": e.get("countryName") or e.get("country")})
@@ -259,7 +257,6 @@ def ssga(sym):
     rows = xlsx_rows(get(url))
     head_i = next(i for i, r in enumerate(rows) if any((v or "").strip().lower() == "ticker" for v in r.values()))
     head = {col: (v or "").strip().lower() for col, v in rows[head_i].items()}
-    print(f"    ssga {sym} columns: {sorted(head.values())}")
     col = {name: c for c, name in head.items()}
     hs = []
     for r in rows[head_i + 1:]:
@@ -267,7 +264,6 @@ def ssga(sym):
         if w is None:
             continue
         hs.append({"symbol": r.get(col.get("ticker")), "name": r.get(col.get("name")), "weight": w, "sector": r.get(col.get("sector"))})
-    print(f"    ssga {sym} sample sectors: {sorted({str(h.get('sector')) for h in hs[:40]})[:8]}")
     return finish(hs, source="ssga")
 
 
@@ -276,7 +272,6 @@ def invesco(sym):
         j = json.loads(get(f"https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/{sym}/holdings/fund?idType=ticker&interval=monthly&productType=ETF", {"Accept": "application/json"}))
         items = j.get("holdings") or []
         if items:
-            print(f"    invesco fields: {sorted(items[0].keys())}")
             hs = [{"symbol": h.get("ticker"), "name": h.get("issuerName") or h.get("name"), "weight": num(h.get("percentageOfTotalNetAssets") or h.get("weight")),
                    "sector": h.get("gicsSectorDescription") or h.get("sector"), "country": h.get("countryOfRisk") or h.get("country")} for h in items]
             return finish(hs, source="invesco")
@@ -409,9 +404,6 @@ def etf_profile(sym):
         out["assetClassName"] = html.unescape(m.group(1)).strip()
         low = out["assetClassName"].lower()
         out["assetClass"] = "bond" if ("fixed" in low or "bond" in low) else "equity" if "equity" in low else "real_estate" if "real estate" in low else "cash" if "cash" in low or "money" in low else "other"
-    if "assetClass" not in out:
-        i = text.find("Asset")
-        print(f"    {sym} asset class not found; near 'Asset': {text[max(0, i - 60):i + 100]!r}")
     m = re.search(r"\|Expense Ratio\|\s*([0-9.]+)%\s*\|", text)
     if m:
         out["expenseRatio"] = float(m.group(1))
