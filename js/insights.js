@@ -352,6 +352,8 @@ export function aiPayload({ model, kpis, ledger, look, overlaps, checks, plan, g
     totals: {
       value: r(kpis.nav, 0), netDeposits: r(kpis.netDeposits, 0), totalGain: r(kpis.gain, 0), timeWeightedReturn: r(kpis.twr), moneyWeightedIRR: r(kpis.xirr),
       maxDrawdown: r(kpis.maxDD), dividendsNet: r(kpis.dividends + kpis.tax, 0), commissions: r(-kpis.commissions, 0), cash: r(kpis.cash, 0), trades: kpis.tradeCount,
+      // Paid outside the account and already subtracted from totalGain and both returns.
+      depositCommissionOutsideIbkr: r(kpis.depositFees || 0, 0), taxPaidOutsideIbkr: r(kpis.taxPaid || 0, 0),
     },
     holdings: open.map(p => ({ symbol: p.symbol, name: p.name, type: p.type, weight: r(p.value / look.total), value: r(p.value, 0), unrealizedPct: r(p.costBasis ? p.unrealized / p.costBasis : null), totalReturnUsd: r(p.total, 0), heldDays: p.holdingDays })),
     closedPositions: ledger.positions.filter(p => !p.open).map(p => ({ symbol: p.symbol, totalReturnUsd: r(p.total, 0), returnPct: r(p.returnOnCapital), heldDays: p.holdingDays })),

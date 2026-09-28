@@ -1,5 +1,5 @@
 // Dashboard wiring: file intake, persistence, and rendering of every section.
-import { parseFiles, analyze, neededSymbols } from './engine.js';
+import { parseFiles, analyze, neededSymbols, recost } from './engine.js';
 import { loadPriceCache } from './prices.js';
 import { twrIndex, drawdown, periodReturns, benchmarkSameFlows, priceIndex } from './metrics.js';
 import { addDays } from './ledger.js';
@@ -7,6 +7,8 @@ import { loadFunds } from './insights.js';
 import { renderInsights, renderInsightsCharts, initRebalanceControls, initAiControls } from './insights-ui.js';
 import { renderStatus } from './status-ui.js';
 import { MASK, moneyHidden, setMoneyHidden } from './privacy.js';
+import { normalizeCostSettings, DEFAULT_COST_SETTINGS } from './outside-costs.js';
+import { renderCosts, updateCosts, initCostControls } from './costs-ui.js';
 
 const $ = sel => document.querySelector(sel);
 const STORE_KEY = 'stokkks.files.v1';
@@ -14,6 +16,7 @@ const THEME_KEY = 'stokkks.theme';
 const EMBED = window.STOKKKS_EMBED || null; // set by the single-file preview build
 const DEMO_URL = 'demo/demo-statement-2026.csv';
 const TAB_KEY = 'stokkks.tab';
+const COSTS_KEY = 'stokkks.costs.v1';
 
 let files = [];
 let state = null;          // { model, book, ledger, kpis, extras }
@@ -23,6 +26,8 @@ let range = 'ALL';
 let demo = false;           // showing the bundled fictional statement
 let fundsDb = null;         // data/funds.json: fund holdings and classifications
 let tab = 'report';
+let costSettings = loadCostSettings(); // deposit commission and tax paid outside IBKR
+let demoCostSettings = normalizeCostSettings(DEFAULT_COST_SETTINGS);
 
 /* ---------- formatting ---------- */
 const nf0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -137,6 +142,27 @@ function initIntake() {
   });
 }
 
+/* ---------- costs outside IBKR ---------- */
+function loadCostSettings() {
+  try { return normalizeCostSettings(JSON.parse(localStorage.getItem(COSTS_KEY) || 'null')); } catch { return normalizeCostSettings(); }
+}
+const activeCostSettings = () => demo ? demoCostSettings : costSettings;
+let costTimer;
+function initCosts() {
+  initCostControls(insightsCtx(), edit => {
+    const s = activeCostSettings();
+    edit(s);
+    if (!demo) { try { localStorage.setItem(COSTS_KEY, JSON.stringify(s)); } catch {} }
+    clearTimeout(costTimer);
+    costTimer = setTimeout(() => {
+      if (!state) return;
+      Object.assign(state, recost(state, s));
+      state.extras = buildExtras(state);
+      renderAll({ keepCostInputs: true });
+    }, 200);
+  });
+}
+
 /* ---------- pipeline ---------- */
 async function run() {
   if (!files.length) return;
@@ -150,7 +176,7 @@ async function run() {
   const loaded = EMBED ? { prices: EMBED.prices, status: Object.fromEntries(Object.keys(EMBED.prices).map(k => [k, { state: 'loaded' }])) }
     : await loadPriceCache([...need.symbols, ...need.benchmarks, ...need.fx]);
   const cache = loaded.prices;
-  state = analyze(model, cache);
+  state = analyze(model, cache, activeCostSettings());
   state.cache = cache;
   state.priceStatus = loaded.status;
   state.need = need;
@@ -181,11 +207,12 @@ function buildExtras({ ledger, book, kpis }) {
 }
 
 /* ---------- render ---------- */
-function renderAll() {
+function renderAll({ keepCostInputs = false } = {}) {
   const { model, kpis, ledger } = state;
   const acct = model.accounts.join(', ');
   $('#acct-line').textContent = `${model.name || 'Account'} · ${acct} · ${model.baseCcy}`;
   renderHero();
+  if (keepCostInputs) updateCosts(insightsCtx()); else renderCosts(insightsCtx());
   renderOpenTable();
   renderClosedTable();
   renderDetailSelect();
@@ -245,16 +272,20 @@ function renderHero() {
   const { kpis: k, model, ledger } = state;
   $('#hero-period').textContent = `${fmtDate(ledger.startDate)} — ${fmtDate(ledger.endDate)} · ${model.statements.length} statement${model.statements.length > 1 ? 's' : ''}`;
   const dir = k.gain >= 0 ? 'up' : 'down';
-  $('#hero-line').innerHTML = `You deposited <em>${money(k.netDeposits)}</em>. It is worth <em>${money(k.nav)}</em> today, <em class="${dir}">${signed(k.gain)}</em> (${pct(k.gainPct)}).`;
+  const fees = k.depositFees ? ` plus <em>${money(k.depositFees)}</em> bank commission` : '';
+  const tax = k.taxPaid ? ` after <em>${money(k.taxPaid)}</em> tax paid` : k.depositFees ? ' after that commission' : '';
+  $('#hero-line').innerHTML = `You deposited <em>${money(k.netDeposits)}</em>${fees}. It is worth <em>${money(k.nav)}</em> today, <em class="${dir}">${signed(k.gain)}</em> (${pct(k.gainPct)})${tax}.`;
+  const out = k.outsideTotal > 0;
   const items = [
     ['Portfolio value', money(k.nav), `${money(k.invested)} invested · ${money(k.cash)} cash`],
-    ['Net deposited', money(k.netDeposits), `${ledger.deposits.length} transfers`],
-    ['Total profit', `<span class="${cls(k.gain)}">${signed(k.gain)}</span>`, `${money(k.realized)} realized · ${money(k.unrealized)} open`],
-    ['Time-weighted return', `<span class="${cls(k.twr)}">${pct(k.twr)}</span>`, `IBKR reports ${pct(k.ibkrTwrChain)}`],
-    ['Money-weighted (IRR)', `<span class="${cls(k.xirr)}">${pct(k.xirr)}</span>`, 'per year, on your deposit timing'],
+    ['Net deposited', money(k.netDeposits), `${ledger.deposits.length} transfers${k.depositFees ? ` · ${money(k.depositFees)} commission on top` : ''}`],
+    ['Total profit', `<span class="${cls(k.gain)}">${signed(k.gain)}</span>`, out ? `${signed(k.gainBefore)} before ${money(k.outsideTotal)} outside costs` : `${money(k.realized)} realized · ${money(k.unrealized)} open`],
+    ['Time-weighted return', `<span class="${cls(k.twr)}">${pct(k.twr)}</span>`, k.taxPaid ? `${pct(k.twrBefore)} before tax paid · IBKR ${pct(k.ibkrTwrChain)}` : `IBKR reports ${pct(k.ibkrTwrChain)}`],
+    ['Money-weighted (IRR)', `<span class="${cls(k.xirr)}">${pct(k.xirr)}</span>`, out ? 'per year, after outside costs' : 'per year, on your deposit timing'],
     ['Dividends, net', money(k.dividends + k.tax), `${money(k.dividends)} gross · ${money(-k.tax)} tax`],
     ['Max drawdown', `<span class="${cls(k.maxDD)}">${pct(k.maxDD)}</span>`, k.maxDD < 0 ? `${fmtDate(k.ddPeak)} → ${fmtDate(k.ddTrough)}` : 'none'],
-    ['Costs', money(-k.commissions), `${k.tradeCount} trades · win rate ${isFinite(k.winRate) ? Math.round(k.winRate * 100) + '%' : '—'}`],
+    out ? ['Costs', money(k.commissions - k.outsideTotal), `${money(-k.commissions)} trading · ${money(k.depositFees)} deposit · ${money(k.taxPaid)} tax`]
+      : ['Costs', money(-k.commissions), `${k.tradeCount} trades · win rate ${isFinite(k.winRate) ? Math.round(k.winRate * 100) + '%' : '—'}`],
   ];
   $('#kpis').innerHTML = items.map(([t, v, n]) => `<div class="kpi"><dt>${t}</dt><dd>${v}</dd><div class="note">${n}</div></div>`).join('');
 }
@@ -469,15 +500,19 @@ function renderCharts() {
 function renderValueChart(T) {
   const s = state.ledger.series, b = state.extras.bench.SPY;
   const nav = s.dates.map((d, i) => [d, s.nav[i]]);
-  const dep = s.dates.map((d, i) => [d, s.netDeposits[i]]);
-  const depDots = s.dates.map((d, i) => [d, s.netDeposits[i], s.flow[i]]).filter(x => x[2] > 0.5);
+  // Money in = net deposits plus costs paid outside IBKR, so the gap is the gain after them.
+  const oc = state.kpis.outsideCum, out = state.kpis.outsideTotal > 0;
+  const inAt = i => s.netDeposits[i] + oc[i];
+  const depLabel = out ? 'Deposited + outside costs' : 'Net deposited';
+  const dep = s.dates.map((d, i) => [d, inAt(i)]);
+  const depDots = s.dates.map((d, i) => [d, inAt(i), s.flow[i]]).filter(x => x[2] > 0.5);
   const series = [
     { name: 'Portfolio value', type: 'line', data: nav, showSymbol: false, lineStyle: { width: 2, color: T.s1 }, itemStyle: { color: T.s1 },
       areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: T.s1 + '33' }, { offset: 1, color: T.s1 + '00' }]) }, z: 3 },
-    { name: 'Net deposited', type: 'line', step: 'end', data: dep, showSymbol: false, lineStyle: { width: 1.5, color: T.deposit }, itemStyle: { color: T.deposit }, z: 2 },
+    { name: depLabel, type: 'line', step: 'end', data: dep, showSymbol: false, lineStyle: { width: 1.5, color: T.deposit }, itemStyle: { color: T.deposit }, z: 2 },
     { name: 'Deposit', type: 'scatter', data: depDots, symbolSize: 8, itemStyle: { color: T.deposit, borderColor: T.surface, borderWidth: 2 }, z: 4, tooltip: { show: false } },
   ];
-  const items = [[T.s1, 'Portfolio value'], [T.deposit, 'Net deposited'], [T.deposit, 'Deposit', 'dot']];
+  const items = [[T.s1, 'Portfolio value'], [T.deposit, depLabel], [T.deposit, 'Deposit', 'dot']];
   if (b) {
     series.push({ name: 'Same deposits in S&P 500', type: 'line', data: s.dates.map((d, i) => [d, b.same[i]]), showSymbol: false, lineStyle: { width: 1.5, color: T.s2 }, itemStyle: { color: T.s2 }, z: 2 });
     items.push([T.s2, 'Same deposits in S&P 500 (SPY)']);
@@ -489,8 +524,9 @@ function renderValueChart(T) {
     yAxis: valAxis(T, kfmt),
     tooltip: { ...base(T).tooltip, formatter: ps => {
       const i = ps[0].dataIndex, d = s.dates[i];
-      const rows = [ttRow(T.s1, 'Value', money(s.nav[i])), ttRow(T.deposit, 'Deposited', money(s.netDeposits[i])),
-        ttRow(s.nav[i] - s.netDeposits[i] >= 0 ? T.gain : T.loss, 'Gain', signed(s.nav[i] - s.netDeposits[i]))];
+      const rows = [ttRow(T.s1, 'Value', money(s.nav[i])), ttRow(T.deposit, 'Deposited', money(s.netDeposits[i]))];
+      if (out) rows.push(ttRow(T.deposit, 'Outside costs so far', money(oc[i])));
+      rows.push(ttRow(s.nav[i] - inAt(i) >= 0 ? T.gain : T.loss, 'Gain', signed(s.nav[i] - inAt(i))));
       if (b) rows.push(ttRow(T.s2, 'S&P 500, same deposits', money(b.same[i])));
       if (s.flow[i] > 0.5) rows.push(`<div style="color:${T.muted};margin-top:4px">Deposit ${money(s.flow[i])}</div>`);
       return `<div style="font-weight:600;margin-bottom:4px">${fmtDate(d)}</div>${rows.join('')}`;
@@ -499,7 +535,7 @@ function renderValueChart(T) {
   }));
   // Rescale y to the visible window.
   const lo = rangeStart();
-  const vis = s.dates.map((d, i) => d >= lo ? [s.nav[i], s.netDeposits[i], b ? b.same[i] : s.nav[i]] : null).filter(Boolean).flat();
+  const vis = s.dates.map((d, i) => d >= lo ? [s.nav[i], inAt(i), b ? b.same[i] : s.nav[i]] : null).filter(Boolean).flat();
   const vmin = Math.min(...vis), vmax = Math.max(...vis);
   c.setOption({ yAxis: { min: vmin < vmax * 0.25 ? 0 : Math.floor(vmin * 0.95 / 100) * 100, max: Math.ceil(vmax * 1.03 / 100) * 100 } });
 }
@@ -622,17 +658,22 @@ function renderDivChart(T) {
 
 function renderBridge(T) {
   const k = state.kpis;
-  const price = k.gain - k.dividends - k.tax - k.interest - k.fees - k.commissions;
+  const price = k.gainBefore - k.dividends - k.tax - k.interest - k.fees - k.commissions;
   const steps = [['Deposited', k.netDeposits, 'total'], ['Price gains', price], ['Dividends', k.dividends], ['Tax withheld', k.tax], ['Trading costs', k.commissions], ['Interest', k.interest + k.fees], ['Value today', k.nav, 'total']];
+  if (k.outsideTotal > 0) {
+    if (k.depositFees) steps.push(['Deposit fees', -k.depositFees]);
+    if (k.taxPaid) steps.push(['Tax paid', -k.taxPaid]);
+    steps.push(['After those', k.nav - k.outsideTotal, 'total']);
+  }
   let run = 0;
   const baseArr = [], vals = [], colors = [];
   for (const [, v, kind] of steps) {
-    if (kind === 'total') { baseArr.push(0); vals.push(v); colors.push(kind && v === k.nav ? T.s1 : T.deposit); run = v; }
+    if (kind === 'total') { baseArr.push(0); vals.push(v); colors.push(v === k.netDeposits ? T.deposit : T.s1); run = v; }
     else { const lo = v >= 0 ? run : run + v; baseArr.push(lo); vals.push(Math.abs(v)); colors.push(v >= 0 ? T.gain : T.loss); run += v; }
   }
   chart('ch-bridge').setOption(base(T, {
     grid: { left: 8, right: 16, top: 24, bottom: 8, containLabel: true },
-    xAxis: { type: 'category', data: steps.map(s => s[0]), axisLine: { lineStyle: { color: T.axis } }, axisTick: { show: false }, axisLabel: { color: T.muted, fontSize: 11, interval: 0, width: 70, overflow: 'break' } },
+    xAxis: { type: 'category', data: steps.map(s => s[0]), axisLine: { lineStyle: { color: T.axis } }, axisTick: { show: false }, axisLabel: { color: T.muted, fontSize: steps.length > 7 ? 10 : 11, interval: 0, width: Math.max(54, Math.min(70, $('#ch-bridge').clientWidth / steps.length - 8)), overflow: 'break' } },
     yAxis: { ...valAxis(T, kfmt), scale: false },
     tooltip: { ...base(T).tooltip, trigger: 'item', formatter: p => { const st = steps[p.dataIndex]; return `<b>${st[0]}</b><br>${st[2] ? money(st[1], 2) : signed(st[1], 2)}`; } },
     series: [
@@ -659,6 +700,7 @@ initPrivacy();
 initIntake();
 initRange();
 initTabs();
+initCosts();
 initRebalanceControls(insightsCtx());
 initAiControls(insightsCtx());
 files = EMBED?.files || loadStoredFiles();

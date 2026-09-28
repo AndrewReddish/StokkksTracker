@@ -36,6 +36,15 @@ The second tab goes beyond reporting:
 
 Whatever is not covered appears as **Not classified**, and the **Data status** tab lists every gap, failed source and date.
 
+## Costs outside IBKR
+
+Two costs never show up in the statements, so you enter them in the **Costs outside IBKR** panel on the Performance tab. The settings are saved in your browser.
+
+- **Commission on deposits:** the percentage your bank charged on each transfer in (for example 2–4%, as shown in the banking app). Set one rate for every deposit, or a different rate for individual transfers. It is taken as a percentage of the amount that reached IBKR.
+- **Tax paid:** for each completed calendar year in the data (for example 2025), the income tax you paid on sales and dividends. Until you enter the real figure, the panel estimates it: your chosen rate on net realized gains plus gross dividends, minus the tax IBKR already withheld (never below zero). Tax is counted on 31 December of its year.
+
+Both are subtracted from the total profit and its percentage (which is then measured on deposits plus their commission), the money-weighted IRR, the *Value against money deposited* chart and the gain breakdown. Tax paid also lowers the time-weighted return. The deposit commission does not, because it is a cost of moving money in rather than of the investments. Chained through TWR, it would count each fee against the whole portfolio.
+
 ## Hide $
 
 The **Hide $** button in the top bar replaces every dollar amount with `$$$`. That covers values, prices, profits, chart axes and tooltips, findings, Data status notes, and dollar figures inside an AI review. Counts, quantities, dates and percentages stay visible, so you can share your screen or a screenshot without revealing amounts. The setting is remembered in your browser; click **Show $** to turn it off.
