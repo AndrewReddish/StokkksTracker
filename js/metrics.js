@@ -56,13 +56,39 @@ export function priceIndex(series, priceAt, startIdx = 0) {
   return series.dates.map(d => priceAt(d) / p0);
 }
 
-export function computeKPIs(model, ledger) {
+// Spreads outside costs (see outside-costs.js) over the daily series: each cost is
+// paid on its date (or the next day in the series) with money from outside the
+// account, and is gone. So it enters as an external flow that never reaches the NAV,
+// which the time-weighted return reads as a loss on that day.
+export function withOutsideCosts(series, events = []) {
+  const n = series.dates.length;
+  const day = new Array(n).fill(0), cum = new Array(n).fill(0);
+  for (const e of events) {
+    const i = series.dates.findIndex(d => d >= e.date);
+    if (i >= 0 && isFinite(e.amount)) day[i] += e.amount;
+  }
+  let c = 0;
+  for (let i = 0; i < n; i++) { c += day[i]; cum[i] = c; }
+  return { dates: series.dates, nav: series.nav.map((v, i) => v - cum[i]), flow: series.flow.map((v, i) => v + day[i]), day, cum };
+}
+
+export function computeKPIs(model, ledger, outside = []) {
   const s = ledger.series;
   const n = s.dates.length - 1;
-  const index = twrIndex(s);
+  const adj = withOutsideCosts(s, outside);
+  const inRange = outside.filter(e => e.date <= s.dates[n]);
+  const depositFees = inRange.filter(e => e.kind === 'deposit').reduce((a, e) => a + e.amount, 0);
+  const taxPaid = inRange.filter(e => e.kind === 'tax').reduce((a, e) => a + e.amount, 0);
+  const outsideTotal = depositFees + taxPaid;
+  // Deposit commission is a cost of the transfer, not of the holdings, so it stays out of
+  // the time-weighted return (chained, it would count each fee against the whole
+  // portfolio); it lowers the profit and the IRR. Tax paid lowers all three.
+  const indexBefore = twrIndex(s);
+  const index = taxPaid ? twrIndex(withOutsideCosts(s, inRange.filter(e => e.kind === 'tax'))) : indexBefore;
   const { dd, maxDD, peakAt, troughAt } = drawdown(index);
   const nav = s.nav[n], dep = s.netDeposits[n];
-  const flows = [...ledger.flowsXirr, { date: s.dates[n], amount: nav }];
+  const flows = [...ledger.flowsXirr, ...inRange.map(e => ({ date: e.date, amount: -e.amount })), { date: s.dates[n], amount: nav }]
+    .sort((a, b) => a.date.localeCompare(b.date));
   const years = (Date.parse(s.dates[n]) - Date.parse(s.dates[0])) / (365 * 864e5);
   const open = ledger.positions.filter(p => p.open);
   const closed = ledger.positions.filter(p => !p.open);
@@ -79,7 +105,9 @@ export function computeKPIs(model, ledger) {
   const ibkrTwrChain = model.statements.reduce((a, st) => a * (1 + (isFinite(st.nav.twr) ? st.nav.twr : 0)), 1) - 1;
 
   return {
-    nav, netDeposits: dep, gain: nav - dep, gainPct: dep ? (nav - dep) / dep : NaN,
+    // Gain after costs paid outside the account; the % is on all money put in (deposits plus their commission).
+    nav, netDeposits: dep, gain: nav - dep - outsideTotal, gainPct: dep + depositFees ? (nav - dep - outsideTotal) / (dep + depositFees) : NaN,
+    gainBefore: nav - dep, depositFees, taxPaid, outsideTotal, outsideCum: adj.cum, twrBefore: indexBefore[n] - 1,
     twr: index[n] - 1, twrAnnual: years > 1 ? Math.pow(index[n], 1 / years) - 1 : NaN, ibkrTwrChain,
     xirr: xirr(flows), maxDD, ddPeak: s.dates[peakAt], ddTrough: s.dates[troughAt],
     realized: ledger.positions.reduce((a, p) => a + p.realized, 0),

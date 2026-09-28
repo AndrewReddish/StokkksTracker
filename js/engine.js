@@ -4,6 +4,7 @@ import { mergeStatements } from './merge.js';
 import { buildPriceBook, fxCacheName } from './prices.js';
 import { runLedger } from './ledger.js';
 import { computeKPIs } from './metrics.js';
+import { outsideCosts } from './outside-costs.js';
 
 export const BENCHMARKS = ['SPY', 'QQQ'];
 
@@ -18,9 +19,17 @@ export function neededSymbols(model) {
   return { symbols: [...syms].sort(), fx: [...fx].map(fxCacheName), benchmarks: BENCHMARKS };
 }
 
-export function analyze(model, cache = {}) {
+// costSettings: deposit commission and tax paid outside IBKR (see outside-costs.js).
+export function analyze(model, cache = {}, costSettings) {
   const book = buildPriceBook(model, cache);
   const ledger = runLedger(model, book);
-  const kpis = computeKPIs(model, ledger);
-  return { model, book, ledger, kpis };
+  const costs = outsideCosts(model, ledger, book, costSettings);
+  const kpis = computeKPIs(model, ledger, costs.events);
+  return { model, book, ledger, kpis, costs };
+}
+
+// Re-applies changed outside-cost settings without replaying the ledger.
+export function recost({ model, book, ledger }, costSettings) {
+  const costs = outsideCosts(model, ledger, book, costSettings);
+  return { costs, kpis: computeKPIs(model, ledger, costs.events) };
 }
