@@ -3,7 +3,8 @@
 
 Only data published by a source is stored; nothing is estimated or filled in by hand.
 - ETFs: the issuer's own holdings file (Vanguard, iShares, SPDR/SSGA, Invesco, Schwab),
-  falling back to stockanalysis.com's holdings table (top holdings only, no sectors).
+  then the fund's latest SEC N-PORT filing (every holding with its country, as of the last
+  quarter-end the SEC has published), then stockanalysis.com's holdings table (top holdings only).
   Sector and region weights are sums of holding weights where the file gives a sector or
   country for each holding; the covered share is stored alongside.
 - Stocks: sector, industry and country from Nasdaq's company profile.
@@ -30,7 +31,11 @@ import xml.etree.ElementTree as ET
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FUNDS = ROOT / "data" / "funds.json"
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-MAX_HOLDINGS = 600
+MAX_HOLDINGS = 1000
+# New per-holding profile lookups (Nasdaq / stockanalysis) per run; cached ones are free, so
+# sector coverage of large funds grows over a few runs instead of timing out one.
+LOOKUP_BUDGET = 250
+_budget = {"left": LOOKUP_BUDGET}
 
 # Issuer for each ETF we know how to fetch. iShares needs its product page id and slug.
 ISSUERS = {
@@ -43,6 +48,12 @@ ISSUERS = {
     "SCHD": "schwab", "SCHB": "schwab", "SCHX": "schwab",
 }
 # MSCI emerging-market countries; every other non-US country is treated as developed.
+# N-PORT gives ISO codes: those are mapped only for MSCI markets, so offshore domiciles
+# (Cayman, Bermuda, Jersey...) stay unclassified instead of being guessed.
+EMERGING_ISO = {"CN", "IN", "BR", "TW", "KR", "MX", "ZA", "ID", "TH", "MY", "SA", "TR", "CL", "PL", "PH", "QA", "AE", "KW", "PE",
+                "HU", "GR", "CZ", "CO", "EG"}
+DEVELOPED_ISO = {"JP", "GB", "CA", "FR", "DE", "CH", "AU", "NL", "SE", "DK", "ES", "IT", "HK", "SG", "FI", "BE", "NO", "IL", "IE",
+                 "NZ", "AT", "PT"}
 EMERGING = {"China", "India", "Brazil", "Taiwan", "Korea", "South Korea", "Korea (South)", "Mexico", "South Africa", "Indonesia", "Thailand",
             "Malaysia", "Saudi Arabia", "Turkey", "Chile", "Poland", "Philippines", "Qatar", "United Arab Emirates", "Kuwait", "Peru",
             "Hungary", "Greece", "Czech Republic", "Colombia", "Egypt"}
@@ -57,6 +68,8 @@ SECTORS = {
     "real estate": "real_estate", "materials": "materials", "basic materials": "materials",
     "miscellaneous": "other",
 }
+# Same company under another listing, so look-through adds a fund's local line to your own shares.
+ALIASES = {"GOOGL": "GOOG", "BRK-B": "BRK.B", "TPE:2330": "TSM", "AMS:ASML": "ASML", "CPH:NOVO-B": "NVO"}
 # Listing-exchange prefixes used by stockanalysis.com for non-US holdings (e.g. "TPE: 2330").
 EXCHANGE_COUNTRY = {
     "TPE": "Taiwan", "TWO": "Taiwan", "KRX": "Korea", "KOSDAQ": "Korea", "TYO": "Japan", "HKG": "Hong Kong", "SHA": "China", "SHE": "China",
@@ -71,6 +84,7 @@ EXCHANGE_COUNTRY = {
 # (e.g. as a repository variable); the default is GitHub Actions' generic no-reply address.
 SEC_UA = "StokkksTracker " + (os.environ.get("SEC_CONTACT") or "41898282+github-actions[bot]@users.noreply.github.com")
 _sec_map = None
+_sec_names = None
 _sec_down = None  # first error; after it SEC is skipped for the rest of the run
 
 
@@ -89,14 +103,33 @@ def stockanalysis_country(sym):
     return html.unescape(m.group(1)).strip()
 
 
+def sec_tickers():
+    """SEC's ticker list: ticker -> CIK, and normalised company name -> ticker (first listed wins)."""
+    global _sec_map, _sec_names
+    if _sec_map is None:
+        j = json.loads(get("https://www.sec.gov/files/company_tickers.json", {"User-Agent": SEC_UA}))
+        _sec_map, _sec_names = {}, {}
+        for v in j.values():
+            _sec_map[v["ticker"].upper()] = int(v["cik_str"])
+            _sec_names.setdefault(norm_name(v.get("title")), v["ticker"].upper())
+    return _sec_map, _sec_names
+
+
+NAME_STOP = {"inc", "corp", "corporation", "co", "company", "ltd", "limited", "plc", "sa", "ag", "nv", "se", "the", "class", "cl",
+             "a", "b", "c", "asa", "ab", "spa", "oyj", "holding", "holdings", "adr", "new", "com", "lp", "llc"}
+
+
+def norm_name(n):
+    words = re.findall(r"[a-z0-9]+", html.unescape(n or "").lower().replace("&", " and "))
+    return " ".join(w for w in words if w not in NAME_STOP)
+
+
 def sec_country(sym):
     """Country of a company's business address from its SEC filings."""
     global _sec_map, _sec_down
     if _sec_down:
         raise RuntimeError(f"SEC skipped this run ({_sec_down})")
-    if _sec_map is None:
-        j = json.loads(get("https://www.sec.gov/files/company_tickers.json", {"User-Agent": SEC_UA}))
-        _sec_map = {v["ticker"].upper(): int(v["cik_str"]) for v in j.values()}
+    sec_tickers()
     cik = (_sec_map or {}).get(sym.upper().replace(".", "-")) or (_sec_map or {}).get(sym.upper())
     if not cik:
         raise ValueError("ticker not in SEC company list")
@@ -146,6 +179,8 @@ def region_of(country):
     c = str(country).strip()
     if c in ("United States", "US", "USA", "United States of America"):
         return "us"
+    if len(c) == 2 and c.isupper():
+        return "emerging" if c in EMERGING_ISO else "developed" if c in DEVELOPED_ISO else None
     return "emerging" if c in EMERGING else "developed"
 
 
@@ -298,7 +333,7 @@ def schwab(sym):
     return finish(hs, source="schwab")
 
 
-def stockanalysis(sym):
+def stockanalysis_rows(sym):
     page = get(f"https://stockanalysis.com/etf/{sym.lower()}/holdings/").decode("utf-8", "replace")
     hs = []
     for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.S):
@@ -309,7 +344,120 @@ def stockanalysis(sym):
             hs.append({"symbol": cells[1], "name": cells[2], "weight": pct})
     if not hs:
         raise ValueError(f"no holdings table; page starts: {page[:200]!r}")
-    return finish(hs, source="stockanalysis (top holdings only)")
+    return hs
+
+
+def stockanalysis(sym):
+    return finish(stockanalysis_rows(sym), source="stockanalysis (top holdings only)")
+
+
+def sec_series(sym):
+    """Series id of an ETF share class, from SEC's fund ticker list."""
+    j = json.loads(get("https://www.sec.gov/files/company_tickers_mf.json", {"User-Agent": SEC_UA}))
+    i, si = j["fields"].index("symbol"), j["fields"].index("seriesId")
+    for row in j["data"]:
+        if str(row[i]).upper() == sym.upper():
+            return row[si]
+    raise ValueError("ticker not in SEC fund list")
+
+
+# N-PORT asset categories that are not holdings in the index sense: cash sweeps / collateral
+# reinvestment (STIV) and derivatives.
+NPORT_SKIP = {"STIV", "DCO", "DCR", "DE", "DFE", "DIR", "DO"}
+
+
+def _local(tag):
+    return tag.rsplit("}", 1)[-1]
+
+
+def parse_nport(xml, series=None):
+    """Holdings of one N-PORT-P filing: name, ticker (when given), % of net assets, ISO country."""
+    doc = ET.fromstring(xml)
+    rep_date, sid, hs = None, None, []
+    for el in doc.iter():
+        tag = _local(el.tag)
+        if tag == "repPdDate" and not rep_date:
+            rep_date = (el.text or "").strip()
+        elif tag == "seriesId" and not sid:
+            sid = (el.text or "").strip()
+        elif tag == "invstOrSec":
+            f = {}
+            for c in el:
+                f.setdefault(_local(c.tag), c)
+            txt = lambda k: (f[k].text or "").strip() if k in f and f[k].text else None  # noqa: E731
+            cat = txt("assetCat") or (f["assetConditional"].get("assetCat") if "assetConditional" in f else None)
+            if cat in NPORT_SKIP:
+                continue
+            ticker = None
+            if "identifiers" in f:
+                for idf in f["identifiers"]:
+                    if _local(idf.tag) == "ticker" and idf.get("value"):
+                        ticker = idf.get("value").strip().upper()
+            hs.append({"symbol": ticker, "name": txt("name") or txt("title"), "weight": num(txt("pctVal")),
+                       "country": txt("invCountry"), "assetCat": cat})
+    if series and sid and sid != series:
+        raise ValueError(f"filing is for series {sid}, not {series}")
+    if not hs:
+        raise ValueError("no holdings in filing")
+    return hs, rep_date
+
+
+def attach_tickers(sym, hs):
+    """N-PORT rarely gives tickers. Take them from stockanalysis's top holdings (matched by name and
+    nearest weight), then for US stocks from SEC's company list (matched by name)."""
+    try:
+        rows = [r for r in stockanalysis_rows(sym) if r["symbol"] and r["symbol"].lower() != "n/a"]
+    except Exception as e:  # noqa: BLE001
+        print(f"    {sym}: no stockanalysis tickers to match ({e})", file=sys.stderr)
+        rows = []
+    for r in rows:
+        key = norm_name(r["name"])
+        cands = [h for h in hs if not h["symbol"] and key and norm_name(h["name"]) == key]
+        if cands:
+            min(cands, key=lambda h: abs((h["weight"] or 0) - r["weight"]))["symbol"] = r["symbol"]
+    try:
+        _, names = sec_tickers()
+    except Exception as e:  # noqa: BLE001
+        print(f"    {sym}: no SEC company list ({e})", file=sys.stderr)
+        return
+    for h in hs:
+        if not h["symbol"] and h.get("country") == "US" and h.get("assetCat") == "EC":
+            h["symbol"] = names.get(norm_name(h["name"]))
+
+
+def nport(sym):
+    series = sec_series(sym)
+    atom = get(f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={series}&type=NPORT-P&dateb=&owner=include&count=10&output=atom",
+               {"User-Agent": SEC_UA})
+    hrefs = [(el.text or "").strip() for el in ET.fromstring(atom).iter() if _local(el.tag) == "filing-href"]
+    if not hrefs:
+        raise ValueError(f"no NPORT-P filings for series {series}")
+    time.sleep(0.15)
+    hs, rep_date = parse_nport(get(hrefs[0].rsplit("/", 1)[0] + "/primary_doc.xml", {"User-Agent": SEC_UA}), series)
+    attach_tickers(sym, hs)
+    entry = finish(hs, source=f"SEC N-PORT ({rep_date})")
+    entry["holdingsAsOf"] = rep_date
+    return entry
+
+
+def stockanalysis_quote(sym):
+    """Sector and country of a foreign listing ("TPE:2330") from its stockanalysis.com profile."""
+    ex, code = [x.strip() for x in sym.split(":", 1)]
+    text = pipe_text(get(f"https://stockanalysis.com/quote/{ex.lower()}/{code.lower()}/company/").decode("utf-8", "replace"))
+    field = lambda k: (m := re.search(rf"\|{k}\|([^|]{{2,40}})\|", text)) and html.unescape(m.group(1)).strip()  # noqa: E731
+    sector = field("Sector")
+    if not sector:
+        raise ValueError("no Sector field")
+    return {"sector": sector_key(sector), "country": field("Country") or EXCHANGE_COUNTRY.get(ex)}
+
+
+def nasdaq_sector(sym):
+    """Sector only, for holdings whose country the fund file already gives."""
+    j = json.loads(get(f"https://api.nasdaq.com/api/company/{sym}/company-profile", {"Accept": "application/json", "Origin": "https://www.nasdaq.com", "Referer": "https://www.nasdaq.com/"}))
+    v = (((j.get("data") or {}).get("Sector") or {}).get("value") or "").strip()
+    if not v:
+        raise ValueError("no sector in profile")
+    return sector_key(v)
 
 
 def nasdaq_profile(sym):
@@ -338,8 +486,45 @@ def nasdaq_profile(sym):
             "industry": val("Industry"), "country": country, "countrySource": country_src, "region": region_of(country), "source": "nasdaq" + (f" + {country_src}" if country_src else "")}
 
 
+def holding_info(sym, cache, need_country):
+    """Cached sector/country of one holding; a new lookup spends the run's budget. None when unknown."""
+    fresh = (dt.date.today() - dt.timedelta(days=30)).isoformat()
+    info = cache.get(sym)
+    if info is not None and info.get("checked", "") < fresh:
+        info = None  # refresh monthly
+    if info is not None and need_country and not info.get("country") and not info.get("countryChecked") and ":" not in sym:
+        if _budget["left"] <= 0:
+            return info
+        _budget["left"] -= 1
+        try:
+            info["country"] = stockanalysis_country(sym)
+        except Exception as e:  # noqa: BLE001
+            print(f"    {sym}: no stockanalysis country ({e})")
+        info["countryChecked"] = dt.date.today().isoformat()
+        time.sleep(0.2)
+    if info is not None:
+        return info
+    if _budget["left"] <= 0:
+        return None
+    _budget["left"] -= 1
+    today = dt.date.today().isoformat()
+    try:
+        if ":" in sym:  # foreign listing
+            info = {**stockanalysis_quote(sym), "checked": today}
+        elif need_country:
+            p = nasdaq_profile(sym)
+            info = {"sector": p.get("sector"), "country": p.get("country"), "checked": today}
+        else:
+            info = {"sector": nasdaq_sector(sym), "country": None, "checked": today}
+    except Exception as e:  # noqa: BLE001
+        info = {"sector": None, "country": None, "error": str(e)[:120], "checked": today}
+    cache[sym] = info
+    time.sleep(0.2)
+    return info
+
+
 def classify_holdings(entry, cache):
-    """Add sector/region weights from each top holding's own profile when the fund file had none."""
+    """Add sector/region weights from each holding's own profile when the fund file had none."""
     if entry.get("kind") != "etf":
         return entry
     need_sector = entry.get("sectorCoverage", 0) < 0.5
@@ -347,33 +532,18 @@ def classify_holdings(entry, cache):
     if not (need_sector or need_region):
         return entry
     sectors, regions, sc, rc = {}, {}, 0.0, 0.0
-    for h in entry["holdings"][:40]:
+    for h in entry["holdings"]:
         sym = (h.get("symbol") or "").strip()
         if not sym or sym.lower() == "n/a":
             continue
-        info = None
-        if ":" in sym:  # foreign listing: country from the exchange, no sector lookup
-            country = EXCHANGE_COUNTRY.get(sym.split(":")[0].strip())
-            info = {"country": country, "sector": None}
+        if ":" in sym:
+            info = holding_info(sym, cache, False) if need_sector else None
+            # The listing exchange gives the country even when the profile is not loaded.
+            info = {"sector": (info or {}).get("sector"), "country": EXCHANGE_COUNTRY.get(sym.split(":")[0].strip()) or (info or {}).get("country")}
         elif re.fullmatch(r"[A-Z][A-Z0-9.\-]{0,6}", sym):
-            info = cache.get(sym)
-            if info is not None and info.get("checked", "") < (dt.date.today() - dt.timedelta(days=30)).isoformat():
-                info = None  # refresh monthly
-            if info is not None and not info.get("country") and not info.get("countryChecked"):
-                try:
-                    info["country"] = stockanalysis_country(sym)
-                except Exception as e:  # noqa: BLE001
-                    print(f"    {sym}: no stockanalysis country ({e})")
-                info["countryChecked"] = dt.date.today().isoformat()
-                time.sleep(0.2)
-            if info is None:
-                try:
-                    p = nasdaq_profile(sym)
-                    info = {"sector": p.get("sector"), "country": p.get("country"), "checked": dt.date.today().isoformat()}
-                except Exception as e:  # noqa: BLE001
-                    info = {"sector": None, "country": None, "error": str(e)[:120], "checked": dt.date.today().isoformat()}
-                cache[sym] = info
-                time.sleep(0.2)
+            info = holding_info(sym, cache, need_region)
+        else:
+            info = None
         if not info:
             continue
         if need_sector and info.get("sector"):
@@ -386,7 +556,7 @@ def classify_holdings(entry, cache):
     if need_sector and sc > entry.get("sectorCoverage", 0):
         entry["sectors"] = {k: round(v, 5) for k, v in sectors.items()}
         entry["sectorCoverage"] = round(sc, 4)
-        entry["sectorSource"] = "holdings' Nasdaq profiles"
+        entry["sectorSource"] = "holdings' Nasdaq / stockanalysis profiles"
     if need_region and rc > entry.get("regionCoverage", 0):
         entry["regions"] = {k: round(v, 5) for k, v in regions.items()}
         entry["regionCoverage"] = round(rc, 4)
@@ -425,6 +595,7 @@ def fetch(sym, kind_hint):
         else:
             tries.append((iss, lambda: globals()[iss](sym)))
     if kind_hint != "stock":
+        tries.append(("sec-nport", lambda: nport(sym)))
         tries.append(("stockanalysis", lambda: stockanalysis(sym)))
     for name, fn in tries:
         attempts.append(name)
@@ -441,7 +612,9 @@ def main():
     data = json.loads(FUNDS.read_text()) if FUNDS.exists() else {}
     data.setdefault("funds", {})
     data.setdefault("status", {})
-    data.setdefault("aliases", {"GOOGL": "GOOG", "BRK-B": "BRK.B"})
+    aliases = data.setdefault("aliases", {})
+    for k, v in ALIASES.items():
+        aliases.setdefault(k, v)
     cfg = json.loads((ROOT / "data" / "tickers.json").read_text())
     wanted = sys.argv[1:] or sorted(set(cfg["symbols"]) | {"SPY", "QQQ"})
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")

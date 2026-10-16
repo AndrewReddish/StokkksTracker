@@ -2,7 +2,10 @@
  "note": "Fetched by scripts/fetch_funds.py from fund issuers, stockanalysis.com and Nasdaq. Nothing here is estimated; see 'status' for what loaded.",
  "aliases": {
   "GOOGL": "GOOG",
-  "BRK-B": "BRK.B"
+  "BRK-B": "BRK.B",
+  "TPE:2330": "TSM",
+  "AMS:ASML": "ASML",
+  "CPH:NOVO-B": "NVO"
  },
  "funds": {
   "AMZN": {

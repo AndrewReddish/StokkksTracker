@@ -100,7 +100,11 @@ export function computeKPIs(model, ledger, outside = []) {
     let i = s.dates.findIndex(d => d > st.periodEnd) - 1;
     if (i < 0) i = n;
     const computed = s.nav[i];
-    return { period: `${st.periodStart} → ${st.periodEnd}`, statementNav: st.nav.end, accruals: st.accruals || 0, computed, diff: computed - (st.nav.end - (st.accruals || 0)), ibkrTwr: st.nav.twr };
+    // Split a difference into cash and positions so its source is visible.
+    const ibkrCash = st.cash?.['Ending Cash'];
+    const cashDiff = isFinite(ibkrCash) ? s.cash[i] - ibkrCash : NaN;
+    return { period: `${st.periodStart} → ${st.periodEnd}`, statementNav: st.nav.end, accruals: st.accruals || 0, accrualParts: st.accrualParts || {},
+      computed, diff: computed - (st.nav.end - (st.accruals || 0)), cashDiff, ibkrTwr: st.nav.twr };
   });
   const ibkrTwrChain = model.statements.reduce((a, st) => a * (1 + (isFinite(st.nav.twr) ? st.nav.twr : 0)), 1) - 1;
 

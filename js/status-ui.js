@@ -39,8 +39,12 @@ export function collectWarnings({ state, fundsDb }) {
     }
   }
   for (const r of kpis.recon) {
-    if (Math.abs(r.diff) > 1) add('warn', 'Reconciliation', `${r.period}: rebuilt value differs from IBKR's by ${usd(Math.abs(r.diff), 2)}.`);
-    if (r.accruals) add('info', 'Reconciliation', `${r.period}: IBKR's ending value includes ${usd(r.accruals, 2)} of dividends declared but not yet paid; the report counts dividends when they are paid.`);
+    if (Math.abs(r.diff) > 1) {
+      const where = isFinite(r.cashDiff) ? ` Cash accounts for ${usd(r.cashDiff, 2)} of it, positions for ${usd(r.diff - r.cashDiff, 2)}.` : '';
+      add('warn', 'Reconciliation', `${r.period}: rebuilt value differs from IBKR's by ${usd(Math.abs(r.diff), 2)}.${where}`);
+    }
+    const parts = Object.entries(r.accrualParts || {}).map(([k, v]) => `${usd(v, 2)} of ${k === 'dividend' ? 'dividends declared' : k === 'interest' ? 'interest accrued' : `${k} accrued`}`);
+    if (r.accruals) add('info', 'Reconciliation', `${r.period}: IBKR's ending value includes ${parts.join(' and ') || usd(r.accruals, 2)} but not yet paid; the report counts it when it is paid.`);
   }
 
   if (fundsDb.loadError) add('error', 'Fund data', `data/funds.json did not load: ${fundsDb.loadError}. Look-through, overlap and sector checks are empty.`);
@@ -58,7 +62,9 @@ export function collectWarnings({ state, fundsDb }) {
     if (!f.assetClass) gaps.push('asset class not loaded');
     if ((f.sectorCoverage || 0) < 0.97) gaps.push(`sector known for ${((f.sectorCoverage || 0) * 100).toFixed(0)}% of the fund`);
     if ((f.regionCoverage || 0) < 0.97) gaps.push(`country known for ${((f.regionCoverage || 0) * 100).toFixed(0)}%`);
-    if ((f.storedWeight ?? 0) < 0.97) gaps.push(`holdings: top ${f.holdings.length} only (${(f.storedWeight * 100).toFixed(0)}% of the fund)`);
+    if ((f.storedWeight ?? 0) < 0.97) gaps.push(f.holdingsCount > f.holdings.length
+      ? `holdings: largest ${f.holdings.length} of ${f.holdingsCount} stored (${(f.storedWeight * 100).toFixed(0)}% of the fund)`
+      : `holdings: top ${f.holdings.length} only (${(f.storedWeight * 100).toFixed(0)}% of the fund)`);
     if (gaps.length) {
       const serious = !f.assetClass || (f.sectorCoverage || 0) < 0.5 || (f.regionCoverage || 0) < 0.5;
       add(serious ? 'warn' : 'info', 'Fund data', `${sym} (${f.source}): ${gaps.join('; ')}. The missing part counts as "Not classified".`);
