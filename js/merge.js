@@ -41,7 +41,7 @@ export function mergeStatements(statements) {
     baseCcy: sorted[0].meta.baseCcy,
     periodStart: sorted[0].meta.periodStart,
     periodEnd: sorted.map(s => s.meta.periodEnd).sort().at(-1),
-    statements: sorted.map(s => ({ ...s.meta, nav: s.nav, cash: s.cash, accruals: s.accruals, openPositions: s.openPositions, depositTotals: s.depositTotals })),
+    statements: sorted.map(s => ({ ...s.meta, nav: s.nav, cash: s.cash, accruals: s.accruals, accrualParts: s.accrualParts, openPositions: s.openPositions, depositTotals: s.depositTotals })),
     instruments: Object.assign({}, ...sorted.map(s => s.instruments)),
     mtm: sorted.flatMap(s => s.mtm.map(m => ({ ...m, periodStart: s.meta.periodStart, periodEnd: s.meta.periodEnd }))),
   };

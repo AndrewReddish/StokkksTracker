@@ -184,10 +184,15 @@ export function parseStatement(text, fileName = '') {
     if (r.Currency === 'Base Currency Summary') cash[r['Currency Summary']] = num(r.Total);
   }
 
-  const accruals = (() => {
-    const r = get('Net Asset Value').find(x => (x['Asset Class'] || '').trim() === 'Dividend Accruals');
-    return r ? num(r['Current Total']) : 0;
-  })();
+  // Income IBKR has accrued but not yet paid ("Dividend Accruals", "Interest Accruals").
+  // The ledger books it when it is paid, so reconciliation takes it out of IBKR's NAV.
+  const accrualParts = {};
+  for (const r of get('Net Asset Value')) {
+    const m = (r['Asset Class'] || '').trim().match(/^(\w+) Accruals$/);
+    const v = num(r['Current Total']);
+    if (m && isFinite(v) && v) accrualParts[m[1].toLowerCase()] = v;
+  }
+  const accruals = Object.values(accrualParts).reduce((a, v) => a + v, 0);
 
-  return { meta, nav, trades, deposits, depositTotals, dividends, withholding, interest, fees, openPositions, mtm, instruments, corporateActions, cash, accruals };
+  return { meta, nav, trades, deposits, depositTotals, dividends, withholding, interest, fees, openPositions, mtm, instruments, corporateActions, cash, accruals, accrualParts };
 }

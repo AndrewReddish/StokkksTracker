@@ -29,10 +29,10 @@ The second tab goes beyond reporting:
 
 `data/funds.json` holds only fetched data; nothing in it is written by hand or estimated. `scripts/fetch_funds.py` runs in the daily workflow and fetches:
 
-- **ETF holdings:** the issuer's own file where the issuer allows it (currently SPDR/SSGA for SPY, XLP and XBI). Otherwise the top 25 holdings come from stockanalysis.com. Vanguard, iShares, Invesco and Schwab currently block GitHub's servers.
+- **ETF holdings:** the issuer's own file where the issuer allows it (currently SPDR/SSGA for SPY, XLP and XBI). Vanguard, iShares, Invesco and Schwab currently block GitHub's servers, so next comes the fund's latest **SEC N-PORT** filing: every holding with its weight and country, as of the last quarter-end the SEC has published (it lags by up to a few months). Tickers for those holdings come from stockanalysis.com's top holdings and SEC's company list, matched by name. If N-PORT fails too, the top 25 holdings come from stockanalysis.com.
 - **ETF asset class and expense ratio:** the fund's page on stockanalysis.com.
 - **Stocks:** sector from Nasdaq's company profile (Nasdaq's own classification, not GICS), and country from the business address in the company's SEC filings.
-- **Sector and country of a fund's holdings:** each top holding's own Nasdaq and SEC data (foreign listings use their exchange's country). The share of the fund this covers is stored and shown.
+- **Sector and country of a fund's holdings:** each holding's own Nasdaq and SEC data; foreign listings use their stockanalysis.com profile for the sector and their exchange for the country. Up to 250 new profiles are looked up per run and cached for a month, so coverage of large funds grows over a few days. The share of the fund this covers is stored and shown.
 
 Whatever is not covered appears as **Not classified**, and the **Data status** tab lists every gap, failed source and date.
 
@@ -55,7 +55,7 @@ The third tab lists what loaded and what did not:
 
 - every ticker's price file (date range, number of days, or why it is missing);
 - the classification or holdings data behind each ticker, with its source and date;
-- warnings for anything that changes or limits the numbers. These include missing prices, deposits converted with a scale factor to match IBKR's total, reconciliation differences, dividends IBKR has accrued but not yet paid, and fund data that covers only part of a fund.
+- warnings for anything that changes or limits the numbers. These include missing prices, deposits converted with a scale factor to match IBKR's total, reconciliation differences (split into cash and positions), dividends and interest IBKR has accrued but not yet paid, and fund data that covers only part of a fund.
 
 The report tab shows a banner with the warning count.
 
