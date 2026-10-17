@@ -20,7 +20,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "ASML": {
    "kind": "stock",
@@ -34,7 +34,7 @@
    "region": "developed",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "AVUV": {
    "kind": "etf",
@@ -44,37 +44,37 @@
     {
      "symbol": "MATX",
      "name": "Matson, Inc.",
-     "weight": 0.011
-    },
-    {
-     "symbol": "GATX",
-     "name": "GATX Corporation",
-     "weight": 0.0088
+     "weight": 0.0109
     },
     {
      "symbol": "ANF",
      "name": "Abercrombie & Fitch Co.",
+     "weight": 0.0088
+    },
+    {
+     "symbol": "GATX",
+     "name": "GATX Corporation",
      "weight": 0.0087
     },
     {
      "symbol": "SM",
      "name": "SM Energy Company",
-     "weight": 0.0084
-    },
-    {
-     "symbol": "INSW",
-     "name": "International Seaways, Inc.",
-     "weight": 0.0078
-    },
-    {
-     "symbol": "LNTH",
-     "name": "Lantheus Holdings, Inc.",
-     "weight": 0.0076
+     "weight": 0.0082
     },
     {
      "symbol": "M",
      "name": "Macy's, Inc.",
+     "weight": 0.0079
+    },
+    {
+     "symbol": "LNTH",
+     "name": "Lantheus Holdings, Inc.",
      "weight": 0.0075
+    },
+    {
+     "symbol": "INSW",
+     "name": "International Seaways, Inc.",
+     "weight": 0.0074
     },
     {
      "symbol": "LEA",
@@ -82,18 +82,23 @@
      "weight": 0.0073
     },
     {
+     "symbol": "LYFT",
+     "name": "Lyft, Inc.",
+     "weight": 0.0073
+    },
+    {
+     "symbol": "CAKE",
+     "name": "The Cheesecake Factory Incorporated",
+     "weight": 0.0072
+    },
+    {
      "symbol": "SKYW",
      "name": "SkyWest, Inc.",
      "weight": 0.0071
     },
     {
-     "symbol": "LYFT",
-     "name": "Lyft, Inc.",
-     "weight": 0.0071
-    },
-    {
-     "symbol": "CAKE",
-     "name": "The Cheesecake Factory Incorporated",
+     "symbol": "URBN",
+     "name": "Urban Outfitters, Inc.",
      "weight": 0.007
     },
     {
@@ -104,47 +109,42 @@
     {
      "symbol": "MUR",
      "name": "Murphy Oil Corporation",
-     "weight": 0.0068
-    },
-    {
-     "symbol": "URBN",
-     "name": "Urban Outfitters, Inc.",
-     "weight": 0.0068
+     "weight": 0.0069
     },
     {
      "symbol": "RUSHA",
      "name": "Rush Enterprises, Inc.",
-     "weight": 0.0067
-    },
-    {
-     "symbol": "OSCR",
-     "name": "Oscar Health, Inc.",
-     "weight": 0.0066
-    },
-    {
-     "symbol": "VSAT",
-     "name": "Viasat, Inc.",
-     "weight": 0.0066
+     "weight": 0.0068
     },
     {
      "symbol": "CROX",
      "name": "Crocs, Inc.",
-     "weight": 0.0062
+     "weight": 0.0065
     },
     {
-     "symbol": "MGY",
-     "name": "Magnolia Oil & Gas Corporation",
-     "weight": 0.006
-    },
-    {
-     "symbol": "TPC",
-     "name": "Tutor Perini Corporation",
-     "weight": 0.006
+     "symbol": "VSAT",
+     "name": "Viasat, Inc.",
+     "weight": 0.0065
     },
     {
      "symbol": "SIG",
      "name": "Signet Jewelers Limited",
-     "weight": 0.006
+     "weight": 0.0064
+    },
+    {
+     "symbol": "OSCR",
+     "name": "Oscar Health, Inc.",
+     "weight": 0.0063
+    },
+    {
+     "symbol": "TPC",
+     "name": "Tutor Perini Corporation",
+     "weight": 0.0059
+    },
+    {
+     "symbol": "MGY",
+     "name": "Magnolia Oil & Gas Corporation",
+     "weight": 0.0059
     },
     {
      "symbol": "UNFI",
@@ -152,44 +152,44 @@
      "weight": 0.0059
     },
     {
-     "symbol": "PARR",
-     "name": "Par Pacific Holdings, Inc.",
-     "weight": 0.0058
-    },
-    {
      "symbol": "ATKR",
      "name": "Atkore Inc.",
-     "weight": 0.0058
+     "weight": 0.0057
     },
     {
      "symbol": "IRDM",
      "name": "Iridium Communications Inc.",
-     "weight": 0.0057
+     "weight": 0.0055
+    },
+    {
+     "symbol": "PARR",
+     "name": "Par Pacific Holdings, Inc.",
+     "weight": 0.0054
     }
    ],
    "holdingsCount": 25,
-   "holdingsWeight": 0.1761,
-   "storedWeight": 0.1761,
+   "holdingsWeight": 0.1759,
+   "storedWeight": 0.1759,
    "sectors": {
-    "consumer_discretionary": 0.1222,
-    "energy": 0.027,
-    "healthcare": 0.0142,
+    "consumer_discretionary": 0.1231,
+    "energy": 0.0264,
+    "healthcare": 0.0138,
     "industrials": 0.0069,
-    "other": 0.0058
+    "other": 0.0057
    },
-   "sectorCoverage": 0.1761,
+   "sectorCoverage": 0.1759,
    "regions": {
-    "us": 0.1701,
-    "developed": 0.006
+    "us": 0.1695,
+    "developed": 0.0064
    },
-   "regionCoverage": 0.1761,
+   "regionCoverage": 0.1759,
    "sectorSource": "holdings' Nasdaq / stockanalysis profiles",
    "regionSource": "holdings' SEC addresses / listing exchanges",
    "assetClassName": "Equity",
    "assetClass": "equity",
    "expenseRatio": 0.25,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "BND": {
    "kind": "etf",
@@ -199,12 +199,7 @@
     {
      "symbol": "n/a",
      "name": "Mktliq 12/31/2049",
-     "weight": 0.012
-    },
-    {
-     "symbol": "T.3.5 01.31.28",
-     "name": "United States Treasury Notes",
-     "weight": 0.0047
+     "weight": 0.0092
     },
     {
      "symbol": "T.4.25 11.15.34",
@@ -213,11 +208,6 @@
     },
     {
      "symbol": "T.4.375 05.15.34",
-     "name": "United States Treasury Notes",
-     "weight": 0.0041
-    },
-    {
-     "symbol": "T.3.375 11.30.27",
      "name": "United States Treasury Notes",
      "weight": 0.0041
     },
@@ -232,6 +222,11 @@
      "weight": 0.0041
     },
     {
+     "symbol": "T.3.5 01.31.28",
+     "name": "United States Treasury Notes",
+     "weight": 0.004
+    },
+    {
      "symbol": "T.4 02.15.34",
      "name": "United States Treasury Notes",
      "weight": 0.004
@@ -239,7 +234,7 @@
     {
      "symbol": "T.4.125 02.15.36",
      "name": "United States Treasury Notes",
-     "weight": 0.004
+     "weight": 0.0039
     },
     {
      "symbol": "T.4.25 08.15.35",
@@ -259,10 +254,15 @@
     {
      "symbol": "T.3.875 08.15.33",
      "name": "United States Treasury Notes",
-     "weight": 0.0035
+     "weight": 0.0036
     },
     {
      "symbol": "T.4 02.28.30",
+     "name": "United States Treasury Notes",
+     "weight": 0.0035
+    },
+    {
+     "symbol": "T.4.625 08.15.36",
      "name": "United States Treasury Notes",
      "weight": 0.0035
     },
@@ -284,22 +284,27 @@
     {
      "symbol": "T.4.125 11.15.32",
      "name": "United States Treasury Notes",
+     "weight": 0.0034
+    },
+    {
+     "symbol": "T.0.625 08.15.30",
+     "name": "United States Treasury Notes",
      "weight": 0.0033
     },
     {
-     "symbol": "T.4.375 08.31.31",
+     "symbol": "T.4 05.31.28",
+     "name": "United States Treasury Notes",
+     "weight": 0.0033
+    },
+    {
+     "symbol": "T.3.375 11.30.27",
      "name": "United States Treasury Notes",
      "weight": 0.0033
     },
     {
      "symbol": "T.1.625 05.15.31",
      "name": "United States Treasury Notes",
-     "weight": 0.0032
-    },
-    {
-     "symbol": "T.4 05.31.28",
-     "name": "United States Treasury Notes",
-     "weight": 0.0032
+     "weight": 0.0033
     },
     {
      "symbol": "T.1.875 02.15.32",
@@ -307,7 +312,7 @@
      "weight": 0.0032
     },
     {
-     "symbol": "T.0.625 08.15.30",
+     "symbol": "T.1.125 02.15.31",
      "name": "United States Treasury Notes",
      "weight": 0.0032
     },
@@ -315,16 +320,11 @@
      "symbol": "T.3.5 02.15.33",
      "name": "United States Treasury Notes",
      "weight": 0.0031
-    },
-    {
-     "symbol": "T.2.75 08.15.32",
-     "name": "United States Treasury Notes",
-     "weight": 0.0031
     }
    ],
    "holdingsCount": 25,
-   "holdingsWeight": 0.0993,
-   "storedWeight": 0.0993,
+   "holdingsWeight": 0.0957,
+   "storedWeight": 0.0957,
    "sectors": {},
    "sectorCoverage": 0.0,
    "regions": {},
@@ -335,7 +335,7 @@
    "assetClass": "bond",
    "expenseRatio": 0.03,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "DUOL": {
    "kind": "stock",
@@ -349,7 +349,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "FICO": {
    "kind": "stock",
@@ -363,7 +363,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "GOOG": {
    "kind": "stock",
@@ -377,7 +377,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "IWM": {
    "kind": "etf",
@@ -387,12 +387,12 @@
     {
      "symbol": "BTSG",
      "name": "BrightSpring Health Services, Inc.",
-     "weight": 0.0037
+     "weight": 0.0036
     },
     {
      "symbol": "MOG.A",
      "name": "Moog Inc.",
-     "weight": 0.0036
+     "weight": 0.0035
     },
     {
      "symbol": "FROG",
@@ -400,48 +400,38 @@
      "weight": 0.0035
     },
     {
-     "symbol": "TWST",
-     "name": "Twist Bioscience Corporation",
-     "weight": 0.0034
-    },
-    {
-     "symbol": "GKOS",
-     "name": "Glaukos Corporation",
-     "weight": 0.0033
-    },
-    {
      "symbol": "UMBF",
      "name": "UMB Financial Corporation",
      "weight": 0.0033
     },
     {
-     "symbol": "SM",
-     "name": "SM Energy Company",
+     "symbol": "GKOS",
+     "name": "Glaukos Corporation",
      "weight": 0.0032
     },
     {
-     "symbol": "PCVX",
-     "name": "Vaxcyte, Inc.",
+     "symbol": "TWST",
+     "name": "Twist Bioscience Corporation",
      "weight": 0.0032
+    },
+    {
+     "symbol": "SM",
+     "name": "SM Energy Company",
+     "weight": 0.0031
     },
     {
      "symbol": "FCFS",
      "name": "FirstCash Holdings, Inc.",
-     "weight": 0.0031
+     "weight": 0.003
+    },
+    {
+     "symbol": "PCVX",
+     "name": "Vaxcyte, Inc.",
+     "weight": 0.003
     },
     {
      "symbol": "EAT",
      "name": "Brinker International, Inc.",
-     "weight": 0.0031
-    },
-    {
-     "symbol": "PBF",
-     "name": "PBF Energy Inc.",
-     "weight": 0.003
-    },
-    {
-     "symbol": "CTRE",
-     "name": "CareTrust REIT, Inc.",
      "weight": 0.003
     },
     {
@@ -450,18 +440,23 @@
      "weight": 0.003
     },
     {
-     "symbol": "KRYS",
-     "name": "Krystal Biotech, Inc.",
+     "symbol": "CTRE",
+     "name": "CareTrust REIT, Inc.",
      "weight": 0.003
-    },
-    {
-     "symbol": "TXG",
-     "name": "10x Genomics, Inc.",
-     "weight": 0.0029
     },
     {
      "symbol": "CYTK",
      "name": "Cytokinetics, Incorporated",
+     "weight": 0.0029
+    },
+    {
+     "symbol": "PBF",
+     "name": "PBF Energy Inc.",
+     "weight": 0.0029
+    },
+    {
+     "symbol": "KRYS",
+     "name": "Krystal Biotech, Inc.",
      "weight": 0.0029
     },
     {
@@ -470,28 +465,38 @@
      "weight": 0.0029
     },
     {
-     "symbol": "PTGX",
-     "name": "Protagonist Therapeutics, Inc.",
-     "weight": 0.0029
-    },
-    {
      "symbol": "RHP",
      "name": "Ryman Hospitality Properties, Inc.",
      "weight": 0.0029
     },
     {
-     "symbol": "OSCR",
-     "name": "Oscar Health, Inc.",
+     "symbol": "TXG",
+     "name": "10x Genomics, Inc.",
      "weight": 0.0029
     },
     {
-     "symbol": "VSAT",
-     "name": "Viasat, Inc.",
-     "weight": 0.0027
+     "symbol": "PTGX",
+     "name": "Protagonist Therapeutics, Inc.",
+     "weight": 0.0028
     },
     {
      "symbol": "TGTX",
      "name": "TG Therapeutics, Inc.",
+     "weight": 0.0028
+    },
+    {
+     "symbol": "OSCR",
+     "name": "Oscar Health, Inc.",
+     "weight": 0.0028
+    },
+    {
+     "symbol": "JXN",
+     "name": "Jackson Financial Inc.",
+     "weight": 0.0027
+    },
+    {
+     "symbol": "VSAT",
+     "name": "Viasat, Inc.",
      "weight": 0.0027
     },
     {
@@ -500,41 +505,36 @@
      "weight": 0.0027
     },
     {
-     "symbol": "JXN",
-     "name": "Jackson Financial Inc.",
-     "weight": 0.0026
-    },
-    {
      "symbol": "HQY",
      "name": "HealthEquity, Inc.",
-     "weight": 0.0026
+     "weight": 0.0027
     }
    ],
    "holdingsCount": 25,
-   "holdingsWeight": 0.0761,
-   "storedWeight": 0.0761,
+   "holdingsWeight": 0.075,
+   "storedWeight": 0.075,
    "sectors": {
-    "healthcare": 0.028,
+    "healthcare": 0.0272,
     "technology": 0.0035,
-    "financials": 0.0116,
-    "energy": 0.0062,
-    "consumer_discretionary": 0.0115,
+    "financials": 0.0117,
+    "energy": 0.006,
+    "consumer_discretionary": 0.0114,
     "real_estate": 0.0059,
-    "industrials": 0.0029,
-    "other": 0.0029
+    "other": 0.0029,
+    "industrials": 0.0029
    },
-   "sectorCoverage": 0.0725,
+   "sectorCoverage": 0.0715,
    "regions": {
-    "us": 0.0725
+    "us": 0.0715
    },
-   "regionCoverage": 0.0725,
+   "regionCoverage": 0.0715,
    "sectorSource": "holdings' Nasdaq / stockanalysis profiles",
    "regionSource": "holdings' SEC addresses / listing exchanges",
    "assetClassName": "Equity",
    "assetClass": "equity",
    "expenseRatio": 0.19,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "JNJ": {
    "kind": "stock",
@@ -548,7 +548,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "MMM": {
    "kind": "stock",
@@ -562,7 +562,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "MSFT": {
    "kind": "stock",
@@ -576,7 +576,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "MU": {
    "kind": "stock",
@@ -590,7 +590,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "NDAQ": {
    "kind": "stock",
@@ -604,7 +604,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "NVDA": {
    "kind": "stock",
@@ -618,7 +618,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "NVO": {
    "kind": "stock",
@@ -632,7 +632,7 @@
    "region": "developed",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "O": {
    "kind": "stock",
@@ -646,7 +646,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "QQQ": {
    "kind": "etf",
@@ -1200,7 +1200,7 @@
    "assetClass": "equity",
    "expenseRatio": 0.18,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "SCHD": {
    "kind": "etf",
@@ -1210,21 +1210,21 @@
     {
      "symbol": "TXN",
      "name": "Texas Instruments Incorporated",
-     "weight": 0.047
-    },
-    {
-     "symbol": "QCOM",
-     "name": "QUALCOMM Incorporated",
-     "weight": 0.0433
+     "weight": 0.0453
     },
     {
      "symbol": "PG",
      "name": "The Procter & Gamble Company",
-     "weight": 0.0431
+     "weight": 0.0436
     },
     {
      "symbol": "CVX",
      "name": "Chevron Corporation",
+     "weight": 0.0432
+    },
+    {
+     "symbol": "KO",
+     "name": "The Coca-Cola Company",
      "weight": 0.0428
     },
     {
@@ -1233,79 +1233,79 @@
      "weight": 0.0427
     },
     {
-     "symbol": "KO",
-     "name": "The Coca-Cola Company",
-     "weight": 0.0425
+     "symbol": "QCOM",
+     "name": "QUALCOMM Incorporated",
+     "weight": 0.0418
     },
     {
      "symbol": "UNH",
      "name": "UnitedHealth Group Incorporated",
-     "weight": 0.0393
+     "weight": 0.0407
     },
     {
      "symbol": "MRK",
      "name": "Merck & Co., Inc.",
-     "weight": 0.039
+     "weight": 0.04
     },
     {
      "symbol": "AMGN",
      "name": "Amgen Inc.",
-     "weight": 0.0388
+     "weight": 0.0396
     },
     {
      "symbol": "ABT",
      "name": "Abbott Laboratories",
-     "weight": 0.0386
+     "weight": 0.0384
     },
     {
      "symbol": "HD",
      "name": "The Home Depot, Inc.",
-     "weight": 0.0384
+     "weight": 0.0382
     },
     {
      "symbol": "PEP",
      "name": "PepsiCo, Inc.",
-     "weight": 0.0377
+     "weight": 0.0379
     },
     {
      "symbol": "VZ",
      "name": "Verizon Communications Inc.",
-     "weight": 0.0361
+     "weight": 0.0364
     },
     {
      "symbol": "ACN",
      "name": "Accenture plc",
-     "weight": 0.0329
+     "weight": 0.0328
     },
     {
      "symbol": "MO",
      "name": "Altria Group, Inc.",
-     "weight": 0.0301
+     "weight": 0.0305
     },
     {
      "symbol": "BMY",
      "name": "Bristol-Myers Squibb Company",
-     "weight": 0.0292
+     "weight": 0.0302
     },
     {
      "symbol": "ADP",
      "name": "Automatic Data Processing, Inc.",
-     "weight": 0.0276
+     "weight": 0.0278
     },
     {
      "symbol": "LMT",
      "name": "Lockheed Martin Corporation",
-     "weight": 0.0258
-    },
-    {
-     "symbol": "BX",
-     "name": "Blackstone Inc.",
-     "weight": 0.0208
+     "weight": 0.0265
     },
     {
      "symbol": "EOG",
      "name": "EOG Resources, Inc.",
-     "weight": 0.0203
+     "weight": 0.0202
+    },
+    {
+     "symbol": "BX",
+     "name": "Blackstone Inc.",
+     "weight": 0.0199
     },
     {
      "symbol": "CMCSA",
@@ -1315,7 +1315,7 @@
     {
      "symbol": "SLB",
      "name": "SLB N.V.",
-     "weight": 0.0182
+     "weight": 0.018
     },
     {
      "symbol": "UPS",
@@ -1325,7 +1325,7 @@
     {
      "symbol": "TGT",
      "name": "Target Corporation",
-     "weight": 0.0174
+     "weight": 0.0176
     },
     {
      "symbol": "FAST",
@@ -1334,31 +1334,31 @@
     }
    ],
    "holdingsCount": 25,
-   "holdingsWeight": 0.803,
-   "storedWeight": 0.803,
+   "holdingsWeight": 0.8055,
+   "storedWeight": 0.8055,
    "sectors": {
-    "technology": 0.1179,
-    "consumer_discretionary": 0.1467,
-    "energy": 0.124,
-    "consumer_staples": 0.0802,
-    "healthcare": 0.215,
-    "communication": 0.0547,
-    "industrials": 0.0437,
-    "financials": 0.0208
+    "technology": 0.1149,
+    "consumer_discretionary": 0.1471,
+    "energy": 0.1241,
+    "consumer_staples": 0.0807,
+    "healthcare": 0.2194,
+    "communication": 0.055,
+    "industrials": 0.0444,
+    "financials": 0.0199
    },
-   "sectorCoverage": 0.803,
+   "sectorCoverage": 0.8055,
    "regions": {
-    "us": 0.7701,
-    "developed": 0.0329
+    "us": 0.7727,
+    "developed": 0.0328
    },
-   "regionCoverage": 0.803,
+   "regionCoverage": 0.8055,
    "sectorSource": "holdings' Nasdaq / stockanalysis profiles",
    "regionSource": "holdings' SEC addresses / listing exchanges",
    "assetClassName": "Equity",
    "assetClass": "equity",
    "expenseRatio": 0.06,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "SGOV": {
    "kind": "etf",
@@ -1366,124 +1366,14 @@
    "source": "stockanalysis (top holdings only)",
    "holdings": [
     {
-     "symbol": "B.0 10.20.26",
-     "name": "TREASURY BILL - 0.0 2026-10-20",
-     "weight": 0.1024
-    },
-    {
-     "symbol": "B.0 12.08.26",
-     "name": "TREASURY BILL - 0.0 2026-12-08",
-     "weight": 0.0853
-    },
-    {
-     "symbol": "B.0 11.17.26",
-     "name": "TREASURY BILL - 0.0 2026-11-17",
-     "weight": 0.0763
-    },
-    {
-     "symbol": "B.0 10.27.26",
-     "name": "TREASURY BILL - 0.0 2026-10-27",
-     "weight": 0.0685
-    },
-    {
-     "symbol": "B.0 11.24.26",
-     "name": "TREASURY BILL - 0.0 2026-11-24",
-     "weight": 0.068
-    },
-    {
-     "symbol": "B.0 11.10.26",
-     "name": "TREASURY BILL - 0.0 2026-11-10",
-     "weight": 0.06
-    },
-    {
-     "symbol": "B.0 10.29.26",
-     "name": "TREASURY BILL - 0.0 2026-10-29",
-     "weight": 0.0522
-    },
-    {
-     "symbol": "B.0 11.19.26",
-     "name": "TREASURY BILL - 0.0 2026-11-19",
-     "weight": 0.0443
-    },
-    {
-     "symbol": "B.0 12.01.26",
-     "name": "TREASURY BILL - 0.0 2026-12-01",
-     "weight": 0.0438
-    },
-    {
-     "symbol": "B.0 12.10.26",
-     "name": "TREASURY BILL - 0.0 2026-12-10",
-     "weight": 0.0436
-    },
-    {
-     "symbol": "B.0 12.31.26",
-     "name": "TREASURY BILL - 0.0 2026-12-31",
-     "weight": 0.0427
-    },
-    {
-     "symbol": "B.0 01.14.27",
-     "name": "TREASURY BILL - 0.0 2027-01-14",
-     "weight": 0.0421
-    },
-    {
-     "symbol": "B.0 11.05.26",
-     "name": "TREASURY BILL - 0.0 2026-11-05",
-     "weight": 0.0419
-    },
-    {
-     "symbol": "B.0 10.15.26",
-     "name": "TREASURY BILL - 0.0 2026-10-15",
-     "weight": 0.0414
-    },
-    {
-     "symbol": "B.0 12.17.26",
-     "name": "TREASURY BILL - 0.0 2026-12-17",
-     "weight": 0.0389
-    },
-    {
-     "symbol": "B.0 11.27.26",
-     "name": "TREASURY BILL - 0.0 2026-11-27",
-     "weight": 0.0369
-    },
-    {
-     "symbol": "B.0 12.03.26",
-     "name": "TREASURY BILL - 0.0 2026-12-03",
-     "weight": 0.0322
-    },
-    {
-     "symbol": "B.0 11.12.26",
-     "name": "TREASURY BILL - 0.0 2026-11-12",
-     "weight": 0.0319
-    },
-    {
-     "symbol": "B.0 10.22.26",
-     "name": "TREASURY BILL - 0.0 2026-10-22",
-     "weight": 0.0302
-    },
-    {
-     "symbol": "B.0 12.24.26",
-     "name": "TREASURY BILL - 0.0 2026-12-24",
-     "weight": 0.0285
-    },
-    {
-     "symbol": "B.0 11.03.26",
-     "name": "TREASURY BILL - 0.0 2026-11-03",
-     "weight": 0.0147
-    },
-    {
-     "symbol": "B.0 01.07.27",
-     "name": "TREASURY BILL - 0.0 2027-01-07",
-     "weight": 0.0105
-    },
-    {
-     "symbol": "n/a",
-     "name": "BLK CSH FND TREASURY SL AGENCY",
-     "weight": 0.0056
+     "symbol": "XTSLA",
+     "name": "BlackRock Cash Funds Treasury SL Agency",
+     "weight": 0.57
     }
    ],
-   "holdingsCount": 23,
-   "holdingsWeight": 1.0419,
-   "storedWeight": 1.0419,
+   "holdingsCount": 1,
+   "holdingsWeight": 0.57,
+   "storedWeight": 0.57,
    "sectors": {},
    "sectorCoverage": 0.0,
    "regions": {},
@@ -1494,7 +1384,7 @@
    "assetClass": "bond",
    "expenseRatio": 0.09,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "SPY": {
    "kind": "etf",
@@ -4056,7 +3946,7 @@
    "assetClass": "equity",
    "expenseRatio": 0.09,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "TSM": {
    "kind": "stock",
@@ -4070,7 +3960,7 @@
    "region": "emerging",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "V": {
    "kind": "stock",
@@ -4084,7 +3974,7 @@
    "region": "us",
    "source": "nasdaq + stockanalysis",
    "regionSource": null,
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "VNQ": {
    "kind": "etf",
@@ -4235,7 +4125,7 @@
    "assetClass": "equity",
    "expenseRatio": 0.13,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "VOO": {
    "kind": "etf",
@@ -4245,77 +4135,77 @@
     {
      "symbol": "NVDA",
      "name": "NVIDIA Corporation",
-     "weight": 0.0808
+     "weight": 0.0839
     },
     {
      "symbol": "AAPL",
      "name": "Apple Inc.",
-     "weight": 0.0703
+     "weight": 0.0738
     },
     {
      "symbol": "MSFT",
      "name": "Microsoft Corporation",
-     "weight": 0.057
+     "weight": 0.0578
     },
     {
      "symbol": "AMZN",
      "name": "Amazon.com, Inc.",
-     "weight": 0.0384
+     "weight": 0.0371
     },
     {
      "symbol": "GOOGL",
      "name": "Alphabet Inc.",
-     "weight": 0.0301
+     "weight": 0.0307
     },
     {
      "symbol": "AVGO",
      "name": "Broadcom Inc.",
-     "weight": 0.0265
+     "weight": 0.0254
     },
     {
      "symbol": "GOOG",
      "name": "Alphabet Inc.",
-     "weight": 0.024
+     "weight": 0.0245
     },
     {
      "symbol": "META",
      "name": "Meta Platforms, Inc.",
-     "weight": 0.019
+     "weight": 0.0243
     },
     {
      "symbol": "MU",
      "name": "Micron Technology, Inc.",
-     "weight": 0.0163
+     "weight": 0.0183
     },
     {
      "symbol": "TSLA",
      "name": "Tesla, Inc.",
-     "weight": 0.0157
-    },
-    {
-     "symbol": "JPM",
-     "name": "JPMorgan Chase & Co.",
-     "weight": 0.0144
-    },
-    {
-     "symbol": "BRK.B",
-     "name": "Berkshire Hathaway Inc.",
-     "weight": 0.014
-    },
-    {
-     "symbol": "LLY",
-     "name": "Eli Lilly and Company",
-     "weight": 0.0138
+     "weight": 0.0152
     },
     {
      "symbol": "AMD",
      "name": "Advanced Micro Devices, Inc.",
-     "weight": 0.0116
+     "weight": 0.0152
+    },
+    {
+     "symbol": "BRK.B",
+     "name": "Berkshire Hathaway Inc.",
+     "weight": 0.0141
+    },
+    {
+     "symbol": "LLY",
+     "name": "Eli Lilly and Company",
+     "weight": 0.0141
+    },
+    {
+     "symbol": "JPM",
+     "name": "JPMorgan Chase & Co.",
+     "weight": 0.0134
     },
     {
      "symbol": "XOM",
      "name": "ExxonMobil Holdings Corporation",
-     "weight": 0.0101
+     "weight": 0.0102
     },
     {
      "symbol": "JNJ",
@@ -4325,32 +4215,27 @@
     {
      "symbol": "V",
      "name": "Visa Inc.",
-     "weight": 0.0093
-    },
-    {
-     "symbol": "MA",
-     "name": "Mastercard Incorporated",
-     "weight": 0.0072
-    },
-    {
-     "symbol": "WMT",
-     "name": "Walmart Inc.",
-     "weight": 0.0069
-    },
-    {
-     "symbol": "ABBV",
-     "name": "AbbVie Inc.",
-     "weight": 0.0068
+     "weight": 0.0091
     },
     {
      "symbol": "INTC",
      "name": "Intel Corporation",
-     "weight": 0.0067
+     "weight": 0.0091
     },
     {
-     "symbol": "CSCO",
-     "name": "Cisco Systems, Inc.",
-     "weight": 0.0066
+     "symbol": "WMT",
+     "name": "Walmart Inc.",
+     "weight": 0.007
+    },
+    {
+     "symbol": "ABBV",
+     "name": "AbbVie Inc.",
+     "weight": 0.007
+    },
+    {
+     "symbol": "MA",
+     "name": "Mastercard Incorporated",
+     "weight": 0.0068
     },
     {
      "symbol": "PLTR",
@@ -4358,40 +4243,45 @@
      "weight": 0.0065
     },
     {
-     "symbol": "COST",
-     "name": "Costco Wholesale Corporation",
-     "weight": 0.0063
+     "symbol": "CSCO",
+     "name": "Cisco Systems, Inc.",
+     "weight": 0.0064
     },
     {
-     "symbol": "BAC",
-     "name": "Bank of America Corporation",
-     "weight": 0.0061
+     "symbol": "LRCX",
+     "name": "Lam Research Corporation",
+     "weight": 0.0062
+    },
+    {
+     "symbol": "AMAT",
+     "name": "Applied Materials, Inc.",
+     "weight": 0.0062
     }
    ],
    "holdingsCount": 25,
-   "holdingsWeight": 0.5141,
-   "storedWeight": 0.5141,
+   "holdingsWeight": 0.532,
+   "storedWeight": 0.532,
    "sectors": {
-    "technology": 0.3488,
-    "consumer_discretionary": 0.0681,
-    "industrials": 0.0157,
-    "financials": 0.0205,
-    "healthcare": 0.0303,
-    "energy": 0.0101,
-    "communication": 0.0066
+    "technology": 0.3819,
+    "consumer_discretionary": 0.06,
+    "industrials": 0.0152,
+    "healthcare": 0.0308,
+    "financials": 0.0134,
+    "energy": 0.0102,
+    "communication": 0.0064
    },
-   "sectorCoverage": 0.5001,
+   "sectorCoverage": 0.5179,
    "regions": {
-    "us": 0.5141
+    "us": 0.532
    },
-   "regionCoverage": 0.5141,
+   "regionCoverage": 0.532,
    "sectorSource": "holdings' Nasdaq / stockanalysis profiles",
    "regionSource": "holdings' SEC addresses / listing exchanges",
    "assetClassName": "Equity",
    "assetClass": "equity",
    "expenseRatio": 0.03,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "VXUS": {
    "kind": "etf",
@@ -4550,7 +4440,7 @@
    "assetClass": "equity",
    "expenseRatio": 0.05,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "XBI": {
    "kind": "etf",
@@ -5387,22 +5277,22 @@
    "holdingsWeight": 1.0003,
    "storedWeight": 1.0003,
    "sectors": {
-    "healthcare": 0.96632,
+    "healthcare": 0.99262,
     "financials": 0.00601
    },
-   "sectorCoverage": 0.9723,
+   "sectorCoverage": 0.9986,
    "regions": {
-    "us": 0.92767,
-    "developed": 0.04466
+    "us": 0.95318,
+    "developed": 0.04544
    },
-   "regionCoverage": 0.9723,
+   "regionCoverage": 0.9986,
    "sectorSource": "holdings' Nasdaq / stockanalysis profiles",
    "regionSource": "holdings' SEC addresses / listing exchanges",
    "assetClassName": "Equity",
    "assetClass": "equity",
    "expenseRatio": 0.35,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   },
   "XLP": {
    "kind": "etf",
@@ -5614,33 +5504,33 @@
    "assetClass": "equity",
    "expenseRatio": 0.08,
    "profileSource": "stockanalysis",
-   "asOf": "2026-10-16"
+   "asOf": "2026-10-17"
   }
  },
  "status": {
   "AMZN": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "ASML": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "AVUV": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "sec-nport",
     "stockanalysis"
@@ -5649,11 +5539,11 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "BND": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "vanguard",
     "sec-nport",
@@ -5664,41 +5554,41 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "DUOL": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "FICO": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "GOOG": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "IWM": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "ishares",
     "sec-nport",
@@ -5709,101 +5599,101 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "JNJ": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "MMM": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "MSFT": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "MU": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "NDAQ": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "NVDA": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "NVO": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "O": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "QQQ": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "invesco"
    ],
    "errors": [],
    "source": "invesco",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "SCHD": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "schwab",
     "sec-nport",
@@ -5814,11 +5704,11 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "SGOV": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "ishares",
     "sec-nport",
@@ -5829,41 +5719,41 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "SPY": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "ssga"
    ],
    "errors": [],
    "source": "ssga",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "TSM": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "V": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "nasdaq"
    ],
    "errors": [],
    "source": "nasdaq + stockanalysis",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "VNQ": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "vanguard",
     "sec-nport",
@@ -5874,11 +5764,11 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "VOO": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "vanguard",
     "sec-nport",
@@ -5889,11 +5779,11 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "VXUS": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "vanguard",
     "sec-nport",
@@ -5904,30 +5794,30 @@
     "sec-nport: HTTPError: HTTP Error 403: Forbidden"
    ],
    "source": "stockanalysis (top holdings only)",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "XBI": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "ssga"
    ],
    "errors": [],
    "source": "ssga",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   },
   "XLP": {
    "ok": true,
-   "checkedAt": "2026-10-16T14:25:39+00:00",
+   "checkedAt": "2026-10-17T00:43:22+00:00",
    "attempts": [
     "ssga"
    ],
    "errors": [],
    "source": "ssga",
-   "dataAsOf": "2026-10-16"
+   "dataAsOf": "2026-10-17"
   }
  },
- "updated": "2026-10-16T14:25:39+00:00",
+ "updated": "2026-10-17T00:43:22+00:00",
  "holdingProfiles": {
   "MATX": {
    "sector": "consumer_discretionary",
@@ -9733,6 +9623,156 @@
    "sector": "healthcare",
    "country": "United States",
    "checked": "2026-10-16"
+  },
+  "IRWD": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "ALLO": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "MYGN": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "CTMX": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "ABUS": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "CLYM": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "EBS": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "ALT": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "SGMT": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "EDIT": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "STTK": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "SLDB": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "MNPR": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "DSGN": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "SPRY": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "OCGN": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "MDXG": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "AKTS": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "PRTA": {
+   "sector": "healthcare",
+   "country": "Ireland",
+   "checked": "2026-10-17"
+  },
+  "CABA": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "VNDA": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "NGNE": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "OVID": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "ASMB": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "AURA": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "FTH": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "LXEO": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "CMPX": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "CBIO": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
+  },
+  "BBOT": {
+   "sector": "healthcare",
+   "country": "United States",
+   "checked": "2026-10-17"
   }
  }
 }
